@@ -27,8 +27,8 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
                 "cost": line.get("Cost")
             }
             cleaned_data.append({k: v if not type(v) == str else v.strip() for k, v in row.items()})
-    with open(os.path.join(output_dir, "data.json"), mode="w") as f:
-        f.write(json.dumps(cleaned_data))
+    with open(os.path.join(output_dir, "data.js"), mode="w") as f:
+        f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
 
 
 def get_special_focus(line: dict) -> list:
