@@ -1,5 +1,6 @@
 import argparse
 import csv
+import json
 import os
 import us
 
@@ -9,24 +10,31 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
     for fi in os.listdir(raw_data_dir):
         row_gen = get_non_comment_rows(os.path.join(raw_data_dir, fi))
         for line in csv.DictReader(row_gen):
-            cost = "Free" if line.get("Cost", "").strip().lower() == "free" else "Not Free"
             locations = clean_locations(line.get("Location"))
             special_focus = get_special_focus(line)
-            cleaned_data.append({
+            targets = [t.strip() for t in line.get("Target", "").split(",")]
+            # TODO: add urls after updating google sheet
+            row = {
                 "name": line["Program"],
                 "type": line["Type"],
                 "organization": line.get("Organization"),
-                "target": line.get("Target", "").split(),
-                "cost": cost,
+                "target": targets,
+                "is_free": line.get("Cost", "").strip().lower() == "free",
                 "location": locations,
-                "underrep": special_focus
-            })
+                "underrep": special_focus,
+                "objective": line.get("Objective"),
+                "level": line.get("Level"),
+                "cost": line.get("Cost")
+            }
+            cleaned_data.append({k: v if not type(v) == str else v.strip() for k, v in row.items()})
+    with open(os.path.join(output_dir, "data.json"), mode="w") as f:
+        f.write(json.dumps(cleaned_data))
 
 
 def get_special_focus(line: dict) -> list:
     foci = []
     for key in ["Underrepresented", "Community", "Gender"]:
-        if key in line:
+        if key in line and len(line[key].strip()) > 0:
             foci.append(line[key])
     return foci
 
@@ -37,7 +45,7 @@ def clean_locations(location: str) -> list:
     clean_locations = []
     for loc in location.strip().split(","):
         if len(loc) == 2:
-            loc = us.states.lookup(loc)
+            loc = us.states.lookup(loc).name
         clean_locations.append(loc)
     return clean_locations
 
