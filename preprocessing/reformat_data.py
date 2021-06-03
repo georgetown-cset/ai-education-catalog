@@ -36,8 +36,10 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             for k, v in row.items():
                 if type(v) == str:
                     v = v.strip()
-                    if k != "name":
+                    if k not in {"name", "objective", "short_objective"}:
                         v = v.title()
+                elif type(v) == list:
+                    v = [elt.strip() for elt in v if len(elt.strip()) > 0]
                 if v == "":
                     v = None
                 clean_row[k] = v
@@ -50,6 +52,8 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
 def get_short_objective(objective: str) -> str:
     if objective is None:
         return objective
+    # make sentence break criterion simpler
+    objective = objective + " "
     return objective.split(". ")[0]+"."
 
 

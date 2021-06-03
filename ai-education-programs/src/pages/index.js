@@ -180,11 +180,11 @@ const ProgramCard = (props) => {
       if(ary === null || ary.length === 0){
         return null;
       } else if(ary.length === 1){
-        return ary[0];
+        return ary[0].toLowerCase();
       } else if(ary.length === 2){
-        return ary[0]+" and "+ary[1];
+        return (ary[0]+" and "+ary[1]).toLowerCase();
       } else{
-        return ary.slice(0, ary.length -1).join(", ")+" and "+ary[ary.length -1];
+        return (ary.slice(0, ary.length -1).join(", ")+" and "+ary[ary.length -1]).toLowerCase();
       }
     };
 
