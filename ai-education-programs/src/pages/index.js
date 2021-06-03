@@ -18,22 +18,105 @@ const IndexPage = () => {
   useEffect(() => {
     document.title = "AI Education Programs";
     document.documentElement.lang = "en";
-    //window.addEventListener("resize", handleWindowResize);
-    //handleWindowResize();
+    handleFilterRows(null, [], "name");
   }, []);
-
-  const [filteredPrograms, setFilteredPrograms] = React.useState(data.slice(0));
 
   // thank you https://stackoverflow.com/a/63066975
   const isSSR = typeof window === "undefined";
 
   const labelElts = [
     {"key": "name", "label": "Search for a Program"},
+    {"key": "organization", "label": "Hosting Organization"},
+    {"key": "type", "label": "Program Type"},
+    {"key": "target", "label": "Target Audience"},
+    {"key": "location", "label": "Location"},
+    {"key": "underrep", "label": "Underrepresented Groups"}
   ];
 
+  const defaultFilterValues = {
+    "name": [],
+    "organization": [],
+    "type": [],
+    "target": [],
+    "location": [],
+    "underrep": []
+  };
+  const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
+  const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
+  const [filteredPrograms, setFilteredPrograms] = React.useState(data.slice(0));
 
+  const handleFilterRows = (evt, filters, changed_key, reset = false) => {
+    const cleanFilters = filters.filter(k => (k !== null) && (k !== ""));
+    let updatedFilterValues = {...filterValues};
+    updatedFilterValues[changed_key] = cleanFilters;
+    if(reset){
+      updatedFilterValues = {...defaultFilterValues};
+    }
+    setFilterValues(updatedFilterValues);
 
-  let simplify = false;
+    const filteredData = [];
+    const filteredProgramMetadata = {};
+    for(let key in filterValues){
+      filteredProgramMetadata[key] = [];
+    }
+    for(let program of data) {
+      let include = true;
+      const includeKeyFilt = {};
+      for(let key in filteredProgramMetadata){
+        includeKeyFilt[key] = true;
+      }
+      for (let key in filterValues) {
+        if ((updatedFilterValues[key].length !== 0) &&
+          ((typeof(program[key]) === "string" && !updatedFilterValues[key].includes(program[key])) ||
+            (typeof(program[key]) === "object" && !hasOverlap(updatedFilterValues[key], program[key])))) {
+          include = false;
+          for(let other_key in filteredProgramMetadata){
+            if(other_key !== key) {
+              includeKeyFilt[other_key] = false;
+            }
+          }
+        }
+      }
+      if(include){
+        filteredData.push(program);
+      }
+      for(let key in filterValues){
+        if(includeKeyFilt[key] && (key in program) && (program[key] !== null)){
+          if(filteredProgramMetadata[key] === null){
+            filteredProgramMetadata[key] = [];
+          }
+          if(typeof(program[key]) === "string") {
+            filteredProgramMetadata[key].push(program[key])
+          } else {
+            filteredProgramMetadata[key].push(...program[key])
+          }
+        }
+      }
+    }
+    for(let key in filteredProgramMetadata) {
+      filteredProgramMetadata[key] = [...new Set(filteredProgramMetadata[key])].sort();
+    }
+
+    setFilteredPrograms(filteredData);
+    setFilterMetadata(filteredProgramMetadata);
+  };
+
+  const hasOverlap = (ary_a, ary_b) => {
+    if(ary_a === null || ary_b === null){
+      return false;
+    }
+    for(let elt of ary_a){
+      if(ary_b.includes(elt)){
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const resetFilter = () => {
+    setFilteredPrograms(data.slice(0));
+    handleFilterRows(null, [], "name", true);
+  };
 
   return (
     <div>
@@ -58,16 +141,28 @@ const IndexPage = () => {
         <React.Suspense fallback={<div style={{textAlign: "center"}}><CircularProgress/></div>}>
           <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
             <div id={"search-bar"} style={{padding: "10px", textAlign: "center"}}>
-              filters to go here
-              <div style={{display: (simplify ? "block" : "inline-block"), verticalAlign: "bottom"}}>
-                <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}}>
+              {labelElts.map(labelElt =>
+              <Autocomplete
+                multiple
+                options={filterMetadata[labelElt.key]}
+                style={{ width: (labelElt.key === "name" ? "40%" : "20%"),
+                  minWidth: "250px", padding:"0px 20px 10px 0px", display: "inline-block"}}
+                size="small"
+                key={labelElt.key}
+                renderInput={(params) => <TextField {...params} label={labelElt.label}/>}
+                onChange={(evt, values) => handleFilterRows(evt, values, labelElt.key)}
+                value={filterValues[labelElt.key]}
+               />
+              )}
+              <div style={{display: "inline-block", verticalAlign: "bottom"}}>
+                <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
                   Clear Filters
                 </Button>
               </div>
             </div>
             <div>
             {filteredPrograms.map(program => (
-              <ProgramCard key={program.name} program={program} simplify={simplify}/>
+              <ProgramCard key={program.id+"-"+program.name} program={program}/>
             ))}
             </div>
           </div>
@@ -78,7 +173,7 @@ const IndexPage = () => {
 };
 
 const ProgramCard = (props) => {
-    const {program, simplify} = props;
+    const {program} = props;
     const [showLongSummary, setShowLongSummary] = React.useState(false);
 
     const get_pretty_list = function(ary){
@@ -98,7 +193,7 @@ const ProgramCard = (props) => {
         display: "inline-block", textAlign: "left",
         minHeight: "400px", backgroundColor: "rgba(0,160,0,0.05)"}}>
         <ProgramCardHeader program={program}/>
-        <div style={{padding: (simplify ? "0px" : "10px 20px 20px 20px"), marginTop: "10px"}}>
+        <div style={{padding: "10px 20px 20px 20px", marginTop: "10px"}}>
           <div style={{marginBottom: "20px"}}>
             <Typography variant={"h6"}>
               <Link rel={"noreferrer"} target={"_blank"} href={""} style={{color: "rgba(0,160,0,1)"}}>{program.name}</Link>
@@ -122,6 +217,7 @@ const ProgramCard = (props) => {
 
 const ProgramCardHeader = (props) => {
   const {program} = props;
+
   return (
     <div>
         <CardActionArea style={{backgroundColor: "rgba(0,160,0,1)", padding: "7px 5px", color: "white", textAlign: "center"}}>
