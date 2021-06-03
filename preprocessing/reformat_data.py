@@ -66,8 +66,12 @@ def clean_locations(location: str) -> list:
         return []
     clean_locations = []
     for loc in location.strip().split(","):
-        if len(loc) == 2:
-            loc = us.states.lookup(loc).name
+        if len(loc.strip()) == 2:
+            loc_obj = us.states.lookup(loc.strip())
+            if loc_obj is None:
+                print("Could not convert location for "+loc)
+            else:
+                loc = loc_obj.name
         clean_locations.append(loc)
     return clean_locations
 

@@ -31,6 +31,8 @@ const IndexPage = () => {
     {"key": "name", "label": "Search for a Program"},
   ];
 
+
+
   let simplify = false;
 
   return (
@@ -91,8 +93,8 @@ const ProgramCard = (props) => {
     };
 
     return (
-      <Card elevation={2} style={{margin: "20px", width: (simplify ? "80%" : "500px"),
-        display: "inline-block", textAlign: "left", padding: (simplify ? "20px" : "0px"),
+      <Card elevation={2} style={{margin: "20px", width: "500px",
+        display: "inline-block", textAlign: "left",
         minHeight: "500px", backgroundColor: "rgba(0,160,0,0.05)"}}>
         <ProgramCardHeader program={program}/>
         <div style={{padding: (simplify ? "0px" : "10px 20px 20px 20px"), marginTop: "10px"}}>
