@@ -140,14 +140,14 @@ const IndexPage = () => {
       {!isSSR && (
         <React.Suspense fallback={<div style={{textAlign: "center"}}><CircularProgress/></div>}>
           <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
-            <div id={"search-bar"} style={{padding: "10px", textAlign: "center"}}>
+            <div id={"search-bar"} style={{padding: "10px 40px", textAlign: "center"}}>
               {labelElts.map(labelElt =>
               <Autocomplete
                 multiple
                 options={filterMetadata[labelElt.key]}
-                style={{ width: (labelElt.key === "name" ? "40%" : "20%"),
-                  minWidth: "250px", padding:"0px 20px 10px 0px", display: "inline-block"}}
-                size="small"
+                style={{ minWidth: "250px", width: (labelElt.key === "name" ? "40%" : "20%"),
+                  padding:"0px 20px 10px 0px", display: "inline-block"}}
+                size={"small"}
                 key={labelElt.key}
                 renderInput={(params) => <TextField {...params} label={labelElt.label}/>}
                 onChange={(evt, values) => handleFilterRows(evt, values, labelElt.key)}

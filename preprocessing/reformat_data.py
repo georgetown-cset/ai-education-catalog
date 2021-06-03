@@ -7,9 +7,9 @@ import us
 
 def reformat_data(raw_data_dir: str, output_dir: str) -> None:
     cleaned_data = []
+    counter = 0
     for fi in os.listdir(raw_data_dir):
         row_gen = get_non_comment_rows(os.path.join(raw_data_dir, fi))
-        counter = 0
         for line in csv.DictReader(row_gen):
             locations = clean_locations(line.get("Location"))
             special_focus = get_special_focus(line)
