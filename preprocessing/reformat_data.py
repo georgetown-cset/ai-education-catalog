@@ -20,7 +20,8 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             row = {
                 "id": counter,
                 "name": line["Program"],
-                "type": line["Type"],
+                # TODO: temporary hack to fix spelling issues
+                "type": "Curriculum" if line["Type"].startswith("Curri") else line["Type"],
                 "organization": line.get("Organization Type"),
                 "target": targets,
                 "is_free": line.get("Cost", "").strip().lower() == "free",
@@ -45,6 +46,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
                 clean_row[k] = v
             cleaned_data.append(clean_row)
             counter += 1
+    cleaned_data.sort(key=lambda r: r["name"])
     with open(os.path.join(output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
 
