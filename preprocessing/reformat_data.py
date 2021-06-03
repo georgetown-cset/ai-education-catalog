@@ -14,6 +14,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             special_focus = get_special_focus(line)
             targets = get_targets(line.get("Target"))
             pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
+            short_obj = get_short_objective(line.get("Objective"))
             # TODO: add urls after updating google sheet
             row = {
                 "name": line["Program"],
@@ -24,6 +25,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
                 "location": locations,
                 "underrep": special_focus,
                 "objective": line.get("Objective"),
+                "short_objective": short_obj,
                 "level": line.get("Level"),
                 "cost": line.get("Cost"),
                 "pre_reqs": pre_reqs
@@ -38,6 +40,12 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             cleaned_data.append(clean_row)
     with open(os.path.join(output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+
+
+def get_short_objective(objective: str) -> str:
+    if objective is None:
+        return objective
+    return objective.split(". ")[0]+"."
 
 
 def get_targets(raw_targets: str) -> list:

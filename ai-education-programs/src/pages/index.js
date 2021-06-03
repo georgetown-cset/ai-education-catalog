@@ -79,6 +79,7 @@ const IndexPage = () => {
 
 const ProgramCard = (props) => {
     const {program, simplify} = props;
+    const [showLongSummary, setShowLongSummary] = React.useState(false);
 
     const get_pretty_list = function(ary){
       if(ary === null || ary.length === 0){
@@ -95,7 +96,7 @@ const ProgramCard = (props) => {
     return (
       <Card elevation={2} style={{margin: "20px", width: "500px",
         display: "inline-block", textAlign: "left",
-        minHeight: "500px", backgroundColor: "rgba(0,160,0,0.05)"}}>
+        minHeight: "400px", backgroundColor: "rgba(0,160,0,0.05)"}}>
         <ProgramCardHeader program={program}/>
         <div style={{padding: (simplify ? "0px" : "10px 20px 20px 20px"), marginTop: "10px"}}>
           <div style={{marginBottom: "20px"}}>
@@ -103,9 +104,14 @@ const ProgramCard = (props) => {
               <Link rel={"noreferrer"} target={"_blank"} href={""} style={{color: "rgba(0,160,0,1)"}}>{program.name}</Link>
             </Typography>
           </div>
-          <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
-            {program.objective}
-          </Typography>
+          {program.objective !== null && (showLongSummary ?
+            <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
+              {program.objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer"}} onClick={() => setShowLongSummary(false)}>Show less...</Link>}
+            </Typography> :
+            <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
+              {program.short_objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer"}} onClick={() => setShowLongSummary(true)}>Show more...</Link>}
+            </Typography>)
+          }
           <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "80%"}}>
             This program is targeted to {program.underrep !== null && program.underrep.length > 0 && get_pretty_list(program.underrep)+" "}{get_pretty_list(program.target)}{program.pre_reqs !== null && program.pre_reqs.length > 0 && " who have the following pre-requisites: " + get_pretty_list(program.pre_reqs)}.
           </Typography>
