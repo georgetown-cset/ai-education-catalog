@@ -9,6 +9,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
     cleaned_data = []
     for fi in os.listdir(raw_data_dir):
         row_gen = get_non_comment_rows(os.path.join(raw_data_dir, fi))
+        counter = 0
         for line in csv.DictReader(row_gen):
             locations = clean_locations(line.get("Location"))
             special_focus = get_special_focus(line)
@@ -17,9 +18,10 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             short_obj = get_short_objective(line.get("Objective"))
             # TODO: add urls after updating google sheet
             row = {
+                "id": counter,
                 "name": line["Program"],
                 "type": line["Type"],
-                "organization": line.get("Organization"),
+                "organization": line.get("Organization Type"),
                 "target": targets,
                 "is_free": line.get("Cost", "").strip().lower() == "free",
                 "location": locations,
@@ -34,10 +36,13 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             for k, v in row.items():
                 if type(v) == str:
                     v = v.strip()
+                    if k != "name":
+                        v = v.title()
                 if v == "":
                     v = None
                 clean_row[k] = v
             cleaned_data.append(clean_row)
+            counter += 1
     with open(os.path.join(output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
 
@@ -49,7 +54,7 @@ def get_short_objective(objective: str) -> str:
 
 
 def get_targets(raw_targets: str) -> list:
-    targets = [t.strip() for t in raw_targets.split(",")]
+    targets = [t.strip().title() for t in raw_targets.replace(".", ",").split(",")]
     clean_targets = []
     for t in targets:
         if t in {"Elementary", "Middle", "High"}:
@@ -65,7 +70,7 @@ def get_special_focus(line: dict) -> list:
     foci = []
     for key in ["Underrepresented", "Community", "Gender"]:
         if key in line and len(line[key].strip()) > 0:
-            foci.append(line[key])
+            foci.extend([elt.strip().title() for elt in line[key].split(",")])
     return foci
 
 
