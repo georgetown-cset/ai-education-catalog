@@ -12,7 +12,8 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
         for line in csv.DictReader(row_gen):
             locations = clean_locations(line.get("Location"))
             special_focus = get_special_focus(line)
-            targets = [t.strip() for t in line.get("Target", "").split(",")]
+            targets = get_targets(line.get("Target"))
+            pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
             # TODO: add urls after updating google sheet
             row = {
                 "name": line["Program"],
@@ -24,11 +25,30 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
                 "underrep": special_focus,
                 "objective": line.get("Objective"),
                 "level": line.get("Level"),
-                "cost": line.get("Cost")
+                "cost": line.get("Cost"),
+                "pre_reqs": pre_reqs
             }
-            cleaned_data.append({k: v if not type(v) == str else v.strip() for k, v in row.items()})
+            clean_row = {}
+            for k, v in row.items():
+                if type(v) == str:
+                    v = v.strip()
+                if v == "":
+                    v = None
+                clean_row[k] = v
+            cleaned_data.append(clean_row)
     with open(os.path.join(output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+
+
+def get_targets(raw_targets: str) -> str:
+    targets = [t.strip() for t in raw_targets.split(",")]
+    clean_targets = []
+    for t in targets:
+        if t in {"Elementary", "Middle", "High"}:
+            clean_targets.append(t+" school students")
+        else:
+            clean_targets.append(t)
+    return clean_targets
 
 
 def get_special_focus(line: dict) -> list:
@@ -60,12 +80,17 @@ def get_non_comment_rows(filename: str) -> iter:
         "summer_camps.csv": 3
     }
     num_commment_rows = name_to_comment_rows[os.path.basename(filename)]
+    num_seen_rows = 0
     with open(filename) as f:
         for line in f:
-            if num_commment_rows > 0:
-                num_commment_rows -= 1
+            num_seen_rows += 1
+            if num_commment_rows >= num_seen_rows:
                 continue
-            yield line
+            if num_seen_rows == num_commment_rows + 1:
+                # this is the csv header and we want to strip all whitespace around column names
+                yield ",".join([e.strip() for e in line.strip().split(",")])+"\n"
+            else:
+                yield line
 
 
 if __name__ == "__main__":
