@@ -40,12 +40,14 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
 
 
-def get_targets(raw_targets: str) -> str:
+def get_targets(raw_targets: str) -> list:
     targets = [t.strip() for t in raw_targets.split(",")]
     clean_targets = []
     for t in targets:
         if t in {"Elementary", "Middle", "High"}:
             clean_targets.append(t+" school students")
+        elif t == "Postsecondary":
+            clean_targets.append(t+" students")
         else:
             clean_targets.append(t)
     return clean_targets
