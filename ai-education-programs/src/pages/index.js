@@ -181,9 +181,9 @@ const ProgramCard = (props) => {
       "Afterschool Program": "rgba(122, 196, 165",
       "Apprenticeship": "rgba(60, 135, 134",
       "Challenge": "rgba(21, 175, 208",
-      "Conference": "rgba(131, 157, 197",
+      "Conference": "rgba(181, 58, 109",
       "Curriculum": "rgba(124, 51, 111",
-      "Fellowship": "rgba(181, 58, 109",
+      "Fellowship": "rgba(131, 157, 197",
       "Hackathon": "rgba(241, 127, 76",
       "Internship": "rgba(229, 191, 33",
       "Robotics": "rgba(180, 32, 37",
@@ -205,7 +205,7 @@ const ProgramCard = (props) => {
     };
 
     return (
-      <Card elevation={2} style={{margin: "20px", width: "500px",
+      <Card elevation={2} style={{margin: "20px", width: "480px",
         display: "inline-block", textAlign: "left",
         minHeight: "450px", backgroundColor: programTypeColors[program.type]+",0.05)"}}>
         <ProgramCardHeader program={program} color={programTypeColors[program.type]}/>
@@ -217,10 +217,10 @@ const ProgramCard = (props) => {
           </div>
           {program.objective !== null && (showLongSummary ?
             <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
-              {program.objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer"}} onClick={() => setShowLongSummary(false)}>Show less...</Link>}
+              {program.objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer", color: programTypeColors[program.type]+",1)"}} onClick={() => setShowLongSummary(false)}>Show less...</Link>}
             </Typography> :
             <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
-              {program.short_objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer"}} onClick={() => setShowLongSummary(true)}>Show more...</Link>}
+              {program.short_objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer", color: programTypeColors[program.type]+",1)"}} onClick={() => setShowLongSummary(true)}>Show more...</Link>}
             </Typography>)
           }
           <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "80%"}}>
@@ -234,10 +234,27 @@ const ProgramCard = (props) => {
 const ProgramCardHeader = (props) => {
   const {program, color} = props;
 
+  const programEmoji = {
+    "Afterschool Program": "🎒",
+    "Apprenticeship": "🛠️",
+    "Challenge": "💪",
+    "Conference": "🗣️",
+    "Curriculum": "✏️",
+    "Fellowship": "🎓",
+    "Hackathon": "💻",
+    "Internship": "📓",
+    "Robotics": "🤖",
+    "Scholarship": "💸",
+    "Summer Camp": "⛺",
+    "Summer Program": "☀️",
+  };
+
   return (
     <div>
         <CardActionArea style={{backgroundColor: color+",1)", padding: "7px 5px", color: "white", textAlign: "center"}}>
-          <Typography variant={"body1"} style={{fontWeight: "bold", marginBottom: "5px"}}>{program.type}</Typography>
+          <Typography variant={"body1"} style={{fontWeight: "bold", marginBottom: "5px"}}>
+            {programEmoji[program.type]} {program.type}
+          </Typography>
         </CardActionArea>
         <CardActionArea style={{backgroundColor: color+",0.7)", padding: "7px 5px", color: "white", textAlign: "center"}}>
           <div>
