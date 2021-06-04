@@ -16,7 +16,7 @@ import "../styles/styles.css";
 const IndexPage = () => {
 
   useEffect(() => {
-    document.title = "AI Education Programs";
+    document.title = "AI Education Catalog";
     document.documentElement.lang = "en";
     handleFilterRows(null, [], "name");
   }, []);
@@ -121,7 +121,7 @@ const IndexPage = () => {
 
   return (
     <div>
-      <div id="toolbar" style={{"margin": "20px"}}>
+      <div id="toolbar" style={{"margin": "20px 20px 0px 20px"}}>
         <div style={{width: "50%", display: "inline-block"}}>
           <a href={"https://cset.georgetown.edu"} target="_blank" rel="noreferrer"
             title="Link to CSET website, cset.georgetown.edu">
@@ -135,8 +135,10 @@ const IndexPage = () => {
           </a>
         </div>
       </div>
-      <div id="project-description" style={{"margin": "50px 10%"}}>
-        ...header info...
+      <div id="project-description" style={{"margin": "0px 10% 50px 10%", textAlign: "center"}}>
+        <h1>🤖 AI Education Catalog 🤖</h1>
+        <h4>A joint project of the <Link>Center for Security and Emerging Technology</Link> and the <Link>AI Education Project</Link>.</h4>
+        <h4><Link style={{padding: "0px 10px"}}>About</Link> • <Link style={{padding: "0px 5px"}}>Team</Link> • <Link style={{padding: "0px 5px"}}>Contact Us</Link></h4>
       </div>
       {!isSSR && (
         <React.Suspense fallback={<div style={{textAlign: "center"}}><CircularProgress/></div>}>
@@ -259,10 +261,10 @@ const ProgramCardHeader = (props) => {
         <CardActionArea style={{backgroundColor: color+",0.7)", padding: "7px 5px", color: "white", textAlign: "center"}}>
           <div>
             <div style={{display: "inline-block", minWidth: "100px", width: "50%", textAlign: "center", borderRight: "1px solid white"}}>
-              <Typography variant={"body2"} style={{fontSize: "80%"}}>Cost: {program.cost}</Typography>
+              <Typography variant={"body2"} style={{fontSize: "80%", fontWeight: "bold"}}>Cost: {program.cost}</Typography>
             </div>
             <div style={{display: "inline-block", minWidth: "100px", width: "50%", textAlign: "center"}}>
-              <Typography variant={"body2"} style={{fontSize: "80%"}}>Location: {program.location.join(", ")}</Typography>
+              <Typography variant={"body2"} style={{fontSize: "80%", fontWeight: "bold"}}>Location: {program.location.join(", ")}</Typography>
             </div>
           </div>
         </CardActionArea>
