@@ -16,6 +16,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             targets = get_targets(line.get("Target"))
             pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
             short_obj = get_short_objective(line.get("Objective"))
+            level = get_level(line.get("Level"))
             # TODO: add urls after updating google sheet
             row = {
                 "id": counter,
@@ -29,7 +30,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
                 "underrep": special_focus,
                 "objective": line.get("Objective"),
                 "short_objective": short_obj,
-                "level": line.get("Level"),
+                "level": level,
                 "cost": line.get("Cost"),
                 "pre_reqs": pre_reqs
             }
@@ -37,7 +38,7 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
             for k, v in row.items():
                 if type(v) == str:
                     v = v.strip()
-                    if k not in {"name", "objective", "short_objective"}:
+                    if k not in {"name", "objective", "short_objective", "level"}:
                         v = v.title()
                 elif type(v) == list:
                     v = [elt.strip() for elt in v if len(elt.strip()) > 0]
@@ -51,10 +52,16 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
 
 
+def get_level(level: str) -> str:
+    if not level:
+        return None
+    return level.lower().strip()
+
+
 def get_short_objective(objective: str) -> str:
     if objective is None:
         return objective
-    soft_char_limit = 120
+    soft_char_limit = 140
     words = objective.split()
     short_objective = ""
     for idx, word in enumerate(words):
