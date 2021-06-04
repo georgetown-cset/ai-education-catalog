@@ -54,9 +54,14 @@ def reformat_data(raw_data_dir: str, output_dir: str) -> None:
 def get_short_objective(objective: str) -> str:
     if objective is None:
         return objective
-    # make sentence break criterion simpler
-    objective = objective + " "
-    return objective.split(". ")[0]+"."
+    soft_char_limit = 120
+    words = objective.split()
+    short_objective = ""
+    for idx, word in enumerate(words):
+        if len(short_objective) >= soft_char_limit:
+            break
+        short_objective += word + " "
+    return short_objective
 
 
 def get_targets(raw_targets: str) -> list:

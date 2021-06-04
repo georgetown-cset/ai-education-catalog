@@ -209,23 +209,23 @@ const ProgramCard = (props) => {
     return (
       <Card elevation={2} style={{margin: "20px", width: "480px",
         display: "inline-block", textAlign: "left",
-        minHeight: "450px", backgroundColor: programTypeColors[program.type]+",0.05)"}}>
+        minHeight: "320px", backgroundColor: programTypeColors[program.type]+",0.05)"}}>
         <ProgramCardHeader program={program} color={programTypeColors[program.type]}/>
         <div style={{padding: "10px 20px 20px 20px", marginTop: "10px"}}>
           <div style={{marginBottom: "20px"}}>
-            <Typography variant={"h6"}>
+            <Typography variant={"h6"} style={{fontSize: "100%", fontWeight: "bold"}}>
               <Link rel={"noreferrer"} target={"_blank"} href={""} style={{color: programTypeColors[program.type]+",1)"}}>{program.name}</Link>
             </Typography>
           </div>
           {program.objective !== null && (showLongSummary ?
-            <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
+            <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
               {program.objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer", color: programTypeColors[program.type]+",1)"}} onClick={() => setShowLongSummary(false)}>Show less...</Link>}
             </Typography> :
-            <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363"}}>
+            <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
               {program.short_objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer", color: programTypeColors[program.type]+",1)"}} onClick={() => setShowLongSummary(true)}>Show more...</Link>}
             </Typography>)
           }
-          <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "80%"}}>
+          <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "75%"}}>
             This program is targeted to {program.underrep !== null && program.underrep.length > 0 && get_pretty_list(program.underrep)+" "}{get_pretty_list(program.target)}{program.pre_reqs !== null && program.pre_reqs.length > 0 && " who have the following pre-requisites: " + get_pretty_list(program.pre_reqs)}.
           </Typography>
         </div>
@@ -254,11 +254,11 @@ const ProgramCardHeader = (props) => {
   return (
     <div>
         <CardActionArea style={{backgroundColor: color+",1)", padding: "7px 5px", color: "white", textAlign: "center"}}>
-          <Typography variant={"body1"} style={{fontWeight: "bold", marginBottom: "5px"}}>
+          <Typography variant={"body2"} style={{fontWeight: "bold"}}>
             {programEmoji[program.type]} {program.type}
           </Typography>
         </CardActionArea>
-        <CardActionArea style={{backgroundColor: color+",0.7)", padding: "7px 5px", color: "white", textAlign: "center"}}>
+        <CardActionArea style={{backgroundColor: color+",0.7)", padding: "3px 5px", color: "white", textAlign: "center"}}>
           <div>
             <div style={{display: "inline-block", minWidth: "100px", width: "50%", textAlign: "center", borderRight: "1px solid white"}}>
               <Typography variant={"body2"} style={{fontSize: "80%", fontWeight: "bold"}}>Cost: {program.cost}</Typography>
