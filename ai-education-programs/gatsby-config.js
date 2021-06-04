@@ -13,6 +13,13 @@ module.exports = {
         name: `images`,
         path: `${__dirname}/src/images`,
       },
-    }
+    },
+    {
+      resolve: 'gatsby-plugin-manifest',
+      options: {
+        start_url: '/',
+        icon: 'src/images/favicon.ico',
+      },
+    },
   ],
 }
