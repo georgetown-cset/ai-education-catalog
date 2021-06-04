@@ -161,6 +161,7 @@ const IndexPage = () => {
                 <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
                   Clear Filters
                 </Button>
+                <span>Showing {filteredPrograms.length} results!</span>
               </div>
             </div>
             <div>
