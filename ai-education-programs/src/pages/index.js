@@ -5,10 +5,12 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import {CSVLink} from "react-csv";
 
 import {data} from "../data/data";
 import cset_logo from "../images/cset_logo.svg";
@@ -48,6 +50,22 @@ const IndexPage = () => {
   const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
   const [filteredPrograms, setFilteredPrograms] = React.useState(data.slice(0));
+
+  // setup CSV
+  const exportFilename = "ai-education-programs.csv";
+  const headers = [
+    { label: "program_name", key: "name" },
+    { label: "url", key: "url" },
+    { label: "objective", key: "objective" },
+    { label: "program_type", key: "type" },
+    { label: "organization_type", key: "organization" },
+    { label: "target_audience", key: "target" },
+    { label: "cost", key: "cost" },
+    { label: "location", key: "location" },
+    { label: "special_focus", key: "underrep" },
+    { label: "participant_level", key: "level" },
+    { label: "prerequisites", key: "pre_reqs" },
+  ];
 
   const handleToggleChange = () => {
     handleFilterRows("", [!filterValues["is_free"][0]], "is_free");
@@ -176,11 +194,18 @@ const IndexPage = () => {
                 }
                 label="Show only Free Programs"
               />
+            </div>
+            <div>
               <div style={{display: "inline-block", verticalAlign: "bottom"}}>
                 <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
-                  Clear Filters
+                  Clear filters
                 </Button>
-                <span>Showing {filteredPrograms.length} results!</span>
+                <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}}>
+                  <CloudDownloadIcon size="small"/><CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
+                           style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
+                    &nbsp;Download {filteredPrograms.length} result{filteredPrograms.length === 1 ? "" : "s"}
+                  </CSVLink>
+                </Button>
               </div>
             </div>
             <div>
