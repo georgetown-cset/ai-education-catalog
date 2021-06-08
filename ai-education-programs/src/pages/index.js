@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import {data} from "../data/data";
 import cset_logo from "../images/cset_logo.svg";
@@ -39,12 +41,17 @@ const IndexPage = () => {
     "type": [],
     "target": [],
     "location": [],
-    "underrep": []
+    "underrep": [],
+    "is_free": [false]
   };
 
   const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
   const [filteredPrograms, setFilteredPrograms] = React.useState(data.slice(0));
+
+  const handleToggleChange = () => {
+    handleFilterRows("", [!filterValues["is_free"][0]], "is_free");
+  };
 
   const handleFilterRows = (evt, filters, changed_key, reset = false) => {
     const cleanFilters = filters.filter(k => (k !== null) && (k !== ""));
@@ -69,7 +76,8 @@ const IndexPage = () => {
       for (let key in filterValues) {
         if ((updatedFilterValues[key].length !== 0) &&
           ((typeof(program[key]) === "string" && !updatedFilterValues[key].includes(program[key])) ||
-            (typeof(program[key]) === "object" && !hasOverlap(updatedFilterValues[key], program[key])))) {
+            (typeof(program[key]) === "object" && !hasOverlap(updatedFilterValues[key], program[key])) ||
+            (key === "is_free" && updatedFilterValues[key][0] && !program[key]))) {
           include = false;
           for(let other_key in filteredProgramMetadata){
             if(other_key !== key) {
@@ -86,7 +94,7 @@ const IndexPage = () => {
           if(filteredProgramMetadata[key] === null){
             filteredProgramMetadata[key] = [];
           }
-          if(typeof(program[key]) === "string") {
+          if(typeof(program[key]) !== "object") {
             filteredProgramMetadata[key].push(program[key])
           } else {
             filteredProgramMetadata[key].push(...program[key])
@@ -157,6 +165,17 @@ const IndexPage = () => {
                 value={filterValues[labelElt.key]}
                />
               )}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={filterValues["is_free"][0]}
+                    onChange={handleToggleChange}
+                    name="show_free"
+                    color="primary"
+                  />
+                }
+                label="Show only Free Programs"
+              />
               <div style={{display: "inline-block", verticalAlign: "bottom"}}>
                 <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
                   Clear Filters
