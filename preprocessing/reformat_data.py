@@ -37,7 +37,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
         for k, v in row.items():
             if type(v) == str:
                 v = v.strip()
-                if k not in {"name", "objective", "short_objective", "level"}:
+                if k not in {"name", "objective", "short_objective", "level", "url"}:
                     v = v.title()
             elif type(v) == list:
                 v = [elt.strip() for elt in v if len(elt.strip()) > 0]

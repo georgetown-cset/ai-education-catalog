@@ -234,7 +234,12 @@ const ProgramCard = (props) => {
         <div style={{padding: "10px 20px 20px 20px", marginTop: "10px"}}>
           <div style={{marginBottom: "20px"}}>
             <Typography variant={"h6"} style={{fontSize: "100%", fontWeight: "bold"}}>
-              <Link rel={"noreferrer"} target={"_blank"} href={""} style={{color: programTypeColors[program.type]+",1)"}}>{program.name}</Link>
+              {program.url ?
+                <Link rel={"noreferrer"} target={"_blank"} href={program.url}
+                      style={{color: programTypeColors[program.type] + ",1)"}}>{program.name}</Link>
+                :
+                <span>{program.name}</span>
+              }
             </Typography>
           </div>
           {program.objective !== null && (showLongSummary ?
