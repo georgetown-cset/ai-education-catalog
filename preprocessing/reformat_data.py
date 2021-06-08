@@ -19,6 +19,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
         row = {
             "id": counter,
             "name": line["Program"],
+            "url": line["URL"],
             # TODO: temporary hack to fix spelling issues
             "type": "Curriculum" if line["Type"].startswith("Curri") else line["Type"],
             "organization": line.get("Organization Type"),
@@ -125,10 +126,12 @@ def get_rows(filename: str) -> iter:
             if col_names is None:
                 col_names = [c.value.strip() for c in row if c.value is not None]
             else:
-                row = {key: "" if row[idx].value is None else str(row[idx].value) for idx, key in enumerate(col_names)}
-                if not row["Program"]:
+                clean_row = {key: "" if row[idx].value is None else str(row[idx].value)
+                             for idx, key in enumerate(col_names)}
+                if not clean_row["Program"]:
                     continue
-                yield row
+                clean_row["URL"] = row[0].hyperlink.target
+                yield clean_row
 
 
 if __name__ == "__main__":
