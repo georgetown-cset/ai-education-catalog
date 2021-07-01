@@ -5,6 +5,7 @@ import Link from '@material-ui/core/Link';
 import cset_logo from "../images/cset_logo.svg";
 import aiedu_logo from "../images/aiedu_logo.png";
 import "../styles/styles.css";
+import "../components/layout.css"
 
 const ProgramCardArea = React.lazy(() => import("../components/program_card_area"));
 
