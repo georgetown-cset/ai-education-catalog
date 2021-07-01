@@ -136,7 +136,7 @@ def get_rows(filename: str) -> iter:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("raw_data")
+    parser.add_argument("--raw_data", default="raw_data/AI Education Catalog.xlsx")
     parser.add_argument("--output_dir", default="../ai-education-programs/src/data")
     args = parser.parse_args()
 
