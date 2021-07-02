@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import TextField from "@material-ui/core/TextField/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Switch from "@material-ui/core/Switch/Switch";
 import Button from "@material-ui/core/Button";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
@@ -15,7 +15,7 @@ const ProgramCardArea = () => {
   }, []);
 
   const labelElts = [
-    {"key": "name", "label": "Search for a Program"},
+    {"key": "name", "label": "Search for a Specific Program"},
     {"key": "organization", "label": "Hosting Organization"},
     {"key": "type", "label": "Program Type"},
     {"key": "target", "label": "Target Audience"},
@@ -133,7 +133,7 @@ const ProgramCardArea = () => {
 
   return (
     <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
-      <div id={"search-bar"} style={{padding: "10px 40px", textAlign: "center"}}>
+      <div id={"search-bar"} style={{padding: "10px 40px", textAlign: "center", fontSize: "100%"}}>
         {labelElts.map(labelElt =>
         <Autocomplete
           multiple
@@ -147,20 +147,19 @@ const ProgramCardArea = () => {
           value={filterValues[labelElt.key]}
          />
         )}
-        <FormControlLabel
-          control={
-            <Switch
-              checked={filterValues["is_free"][0]}
-              onChange={handleToggleChange}
-              name="show_free"
-              color="primary"
-            />
-          }
-          label="Show only Free Programs"
-        />
       </div>
       <div>
         <div style={{display: "inline-block", verticalAlign: "bottom"}}>
+          <FormControlLabel
+          control={
+            <Checkbox
+              checked={filterValues["is_free"][0]}
+              onChange={handleToggleChange}
+              inputProps={{'aria-label': 'primary checkbox'}}
+            />
+          }
+          label={"Free Only"}
+          />
           <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
             Clear filters
           </Button>
@@ -170,6 +169,7 @@ const ProgramCardArea = () => {
               &nbsp;Download {filteredPrograms.length} result{filteredPrograms.length === 1 ? "" : "s"}
             </CSVLink>
           </Button>
+
         </div>
       </div>
       <div>
