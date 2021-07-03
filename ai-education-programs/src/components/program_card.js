@@ -39,23 +39,24 @@ const ProgramCard = (props) => {
 
     return (
       <Card elevation={2} style={{margin: "20px", width: "480px",
-        display: "inline-block", textAlign: "left",
-        minHeight: "320px", backgroundColor: programTypeColors[program.type]+",0.05)"}}>
+          display: "inline-block", textAlign: "left",
+          backgroundColor: programTypeColors[program.type]+",0.05)"}}>
         <ProgramCardHeader program={program} color={programTypeColors[program.type]}/>
-        <div>
-        <ProgramCardSidebar program={program} color={programTypeColors[program.type]}/>
-        <div style={{padding: "10px 20px 20px 20px", marginTop: "10px", width: "322px", display: "inline-block"}}>
-          {program.objective !== null && (expand ?
-            <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
-              {program.objective} {program.objective.length !== program.short_objective.length}
-            </Typography> :
-            <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
-              {program.short_objective} {program.objective.length !== program.short_objective.length}
-            </Typography>)
-          }
-          <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "75%"}}>
-          </Typography>
-        </div>
+        <div style={{height: "280px"}}>
+          <div style={{padding: "10px 20px 20px 20px", marginTop: "10px", width: "340px", display: "inline-block",
+          verticalAlign: "top", height: "100%"}}>
+            {program.objective !== null && (expand ?
+              <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
+                {program.objective} {program.objective.length !== program.short_objective.length}
+              </Typography> :
+              <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
+                {program.short_objective} {program.objective.length !== program.short_objective.length}
+              </Typography>)
+            }
+            <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "75%"}}>
+            </Typography>
+          </div>
+          <ProgramCardSidebar program={program} color={programTypeColors[program.type]}/>
         </div>
       </Card>
     )

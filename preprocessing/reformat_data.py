@@ -69,8 +69,6 @@ def clean_cost(cost: str) -> str:
         return cost
     elif cost == "Request a Quote":
         return "Cost Not Specified"
-    elif not (cost.startswith("$") or cost == "Free"):
-        return "Cost "+cost
     return cost
 
 
@@ -81,7 +79,7 @@ def get_level(level: str) -> str:
 
 
 def get_short_objective(objective: str) -> str:
-    soft_char_limit = 200
+    soft_char_limit = 400
     if objective is None or len(objective) <= soft_char_limit:
         return objective
     words = objective.split()

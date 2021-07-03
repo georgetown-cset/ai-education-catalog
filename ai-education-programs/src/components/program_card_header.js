@@ -24,8 +24,8 @@ const ProgramCardHeader = (props) => {
 
   return (
     <div>
-        <CardActionArea style={{backgroundColor: color+",1)", padding: "7px 5px", color: "white",
-          paddingLeft: "20px", height: "100%"}}>
+        <CardActionArea style={{backgroundColor: color+",1)", color: "white",
+          padding: "0px 20px", height: "80px"}}>
           <Typography variant={"h6"} style={{fontSize: "110%"}}>
             {programEmoji[program.type]}&nbsp;&nbsp;{program.url ?
               <Link rel={"noreferrer"} target={"_blank"} href={program.url} style={{color: "white"}}>{program.name}</Link>
