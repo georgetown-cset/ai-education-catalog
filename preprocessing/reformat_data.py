@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import re
 import us
 
 from openpyxl import load_workbook
@@ -11,7 +12,6 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
     counter = 0
     for line in get_rows(input_fi):
         locations = clean_locations(line.get("Location"))
-        special_focus = get_special_focus(line)
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
         short_obj = get_short_objective(line.get("Objective"))
@@ -33,7 +33,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
             "objective": line.get("Objective"),
             "short_objective": short_obj,
             "level": level,
-            "cost": line.get("Cost"),
+            "cost": clean_cost(line.get("Cost")),
             "pre_reqs": pre_reqs
         }
         clean_row = {}
@@ -52,6 +52,15 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
     cleaned_data.sort(key=lambda r: r["name"])
     with open(os.path.join(output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+
+
+def clean_cost(cost: str) -> str:
+    if not cost or cost.strip() == "Not Specified":
+        return "Cost Not Specified"
+    cost = cost.strip()
+    if re.search(r"^\d", cost):
+        return "$"+cost
+    return cost
 
 
 def get_level(level: str) -> str:
