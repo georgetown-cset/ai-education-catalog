@@ -26,7 +26,10 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
-            "underrep": special_focus,
+            "is_underrep": bool(line.get("Underrepresented")),
+            "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
+            "race/ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
+            "is_community_program": bool(line.get("Community")),
             "objective": line.get("Objective"),
             "short_objective": short_obj,
             "level": level,
@@ -58,16 +61,16 @@ def get_level(level: str) -> str:
 
 
 def get_short_objective(objective: str) -> str:
-    if objective is None:
+    soft_char_limit = 200
+    if objective is None or len(objective) <= soft_char_limit:
         return objective
-    soft_char_limit = 140
     words = objective.split()
     short_objective = ""
     for idx, word in enumerate(words):
         if len(short_objective) >= soft_char_limit:
             break
         short_objective += word + " "
-    return short_objective
+    return short_objective+"..."
 
 
 def get_targets(raw_targets: str) -> list:

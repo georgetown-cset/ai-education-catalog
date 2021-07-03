@@ -20,7 +20,6 @@ const ProgramCardArea = () => {
     {"key": "type", "label": "Program Type"},
     {"key": "target", "label": "Target Audience"},
     {"key": "location", "label": "Location"},
-    {"key": "underrep", "label": "Underrepresented Groups"}
   ];
 
   const defaultFilterValues = {
@@ -29,9 +28,12 @@ const ProgramCardArea = () => {
     "type": [],
     "target": [],
     "location": [],
-    "underrep": [],
-    "is_free": [false]
+    "is_free": [false],
+    "is_underrep": [false],
+    "is_community_program": [false]
   };
+
+  const checkboxes = ["is_free", "is_underrep", "is_community_program"];
 
   const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
@@ -48,13 +50,14 @@ const ProgramCardArea = () => {
     { label: "target_audience", key: "target" },
     { label: "cost", key: "cost" },
     { label: "location", key: "location" },
-    { label: "special_focus", key: "underrep" },
+    { label: "gender", key: "gender" },
+    { label: "race/ethnicity", key: "race/ethnicity"},
     { label: "participant_level", key: "level" },
     { label: "prerequisites", key: "pre_reqs" },
   ];
 
-  const handleToggleChange = () => {
-    handleFilterRows("", [!filterValues["is_free"][0]], "is_free");
+  const handleToggleChange = (changed_key) => {
+    handleFilterRows("", [!filterValues[changed_key][0]], changed_key);
   };
 
   const handleFilterRows = (evt, filters, changed_key, reset = false) => {
@@ -81,7 +84,7 @@ const ProgramCardArea = () => {
         if ((updatedFilterValues[key].length !== 0) &&
           ((typeof(program[key]) === "string" && !updatedFilterValues[key].includes(program[key])) ||
             (typeof(program[key]) === "object" && !hasOverlap(updatedFilterValues[key], program[key])) ||
-            (key === "is_free" && updatedFilterValues[key][0] && !program[key]))) {
+            (checkboxes.includes(key) && updatedFilterValues[key][0] && !program[key]))) {
           include = false;
           for(let other_key in filteredProgramMetadata){
             if(other_key !== key) {
@@ -151,14 +154,34 @@ const ProgramCardArea = () => {
       <div>
         <div style={{display: "inline-block", verticalAlign: "bottom"}}>
           <FormControlLabel
-          control={
-            <Checkbox
-              checked={filterValues["is_free"][0]}
-              onChange={handleToggleChange}
-              inputProps={{'aria-label': 'primary checkbox'}}
-            />
-          }
-          label={"Free Only"}
+            control={
+              <Checkbox
+                checked={filterValues["is_free"][0]}
+                onChange={() => handleToggleChange("is_free")}
+                inputProps={{'aria-label': 'primary checkbox'}}
+              />
+            }
+            label={"Free"}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={filterValues["is_underrep"][0]}
+                onChange={() => handleToggleChange("is_underrep")}
+                inputProps={{'aria-label': 'primary checkbox'}}
+              />
+            }
+            label={"Underrepresented Population"}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={filterValues["is_community_program"][0]}
+                onChange={() => handleToggleChange("is_community_program")}
+                inputProps={{'aria-label': 'primary checkbox'}}
+              />
+            }
+            label={"Community Program"}
           />
           <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
             Clear filters
