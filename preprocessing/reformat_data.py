@@ -11,7 +11,8 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
     cleaned_data = []
     counter = 0
     for line in get_rows(input_fi):
-        locations = clean_locations(line.get("Location"))
+        orig_locations = line.get("Location")
+        locations = clean_locations(orig_locations)
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
         short_obj = get_short_objective(line.get("Objective"))
@@ -26,7 +27,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
-            "location_details": get_detailed_location(locations, line.get("Detailed Location")),
+            "location_details": get_detailed_location(orig_locations, line.get("Detailed Location")),
             "is_underrep": bool(line.get("Underrepresented")),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
             "race_ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
@@ -56,13 +57,14 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
 
 
-def get_detailed_location(general_locations: list, detailed_location: str) -> str:
+def get_detailed_location(general_location: str, detailed_location: str) -> str:
     if not detailed_location:
         return None
-    detailed_location = detailed_location.strip()
-    if len(general_locations) == 0:
+    if not general_location or not general_location.strip():
         return detailed_location
-    if general_locations[0] == detailed_location:
+    detailed_location = detailed_location.strip()
+    general_location = general_location.strip()
+    if general_location == detailed_location:
         return None
     return detailed_location
 
