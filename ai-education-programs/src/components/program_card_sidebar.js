@@ -15,7 +15,7 @@ const ProgramCardSidebar = (props) => {
         <SidebarElement label={"Location"} Icon={LocationOnIcon}
                         value={program.location.length > 1 ? "Multiple" :
                                 ((program.location_details === null || program.location_details === undefined) ?
-                                  program.location[0] : program.location_details+" (" + program.location[0] + ")")}/>
+                                  program.location[0] : program.location_details+", " + program.location[0])}/>
         }
         {program.target.length > 0 &&
         <SidebarElement label={"Target Audience"} Icon={PeopleIcon}

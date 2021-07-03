@@ -29,13 +29,14 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
             "location_details": get_detailed_location(locations, line.get("Detailed Location")),
             "is_underrep": bool(line.get("Underrepresented")),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
-            "race/ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
+            "race_ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
             "is_community_program": bool(line.get("Community")),
             "objective": line.get("Objective"),
             "short_objective": short_obj,
             "level": level,
             "cost": clean_cost(line.get("Cost")),
-            "pre_reqs": pre_reqs
+            "pre_reqs": pre_reqs,
+            "duration": line.get("Duration")
         }
         clean_row = {}
         for k, v in row.items():
@@ -86,7 +87,7 @@ def clean_cost(cost: str) -> str:
 def get_level(level: str) -> str:
     if not level:
         return None
-    return level.lower().strip()
+    return level.strip()
 
 
 def get_short_objective(objective: str) -> str:

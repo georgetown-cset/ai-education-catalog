@@ -6,6 +6,7 @@ import ProgramCardHeader from "./program_card_header";
 import "../styles/styles.css";
 import ProgramCardSidebar from "./program_card_sidebar";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import ProgramMetadataTable from "./program_metadata_table";
 
 const ProgramCard = (props) => {
     const {program} = props;
@@ -57,15 +58,14 @@ const ProgramCard = (props) => {
                 {program.short_objective} {program.objective.length !== program.short_objective.length}
               </Typography>)
             }
-            <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "75%"}}>
-            </Typography>
           </div>
+          {expand && <ProgramMetadataTable program={program} color={programTypeColors[program.type]}/>}
         </div>
         <CardActionArea style={{backgroundColor: programTypeColors[program.type]+",1)", color: "white",
           padding: "0px 20px", height: "40px", textAlign: "center"}}
           onClick={() => setExpand(!expand)}>
           <Typography variant={"body2"} style={{fontWeight: "bold"}}>
-            {expand ? "Hide Details" : "Show Details"}
+            {expand ? "Hide "+program.type+" Details" : "Show "+program.type+" Details"}
           </Typography>
         </CardActionArea>
       </Card>
