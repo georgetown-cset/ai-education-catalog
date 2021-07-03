@@ -26,6 +26,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
+            "location_details": line.get("Detailed Location"),
             "is_underrep": bool(line.get("Underrepresented")),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
             "race/ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
@@ -55,11 +56,13 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
 
 
 def clean_cost(cost: str) -> str:
-    if not cost or cost.strip() == "Not Specified":
+    if not cost:
         return "Cost Not Specified"
     cost = cost.strip()
     if re.search(r"^\d", cost):
         return "$"+cost
+    elif not (cost.startswith("$") or cost == "Free"):
+        return "Cost "+cost
     return cost
 
 
