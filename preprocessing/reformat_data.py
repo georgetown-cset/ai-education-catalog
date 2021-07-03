@@ -26,7 +26,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
-            "location_details": line.get("Detailed Location"),
+            "location_details": get_detailed_location(locations, line.get("Detailed Location")),
             "is_underrep": bool(line.get("Underrepresented")),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
             "race/ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
@@ -53,6 +53,17 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
     cleaned_data.sort(key=lambda r: r["name"])
     with open(os.path.join(output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+
+
+def get_detailed_location(general_locations: list, detailed_location: str) -> str:
+    if not detailed_location:
+        return None
+    detailed_location = detailed_location.strip()
+    if len(general_locations) == 0:
+        return detailed_location
+    if general_locations[0] == detailed_location:
+        return None
+    return detailed_location
 
 
 def clean_cost(cost: str) -> str:

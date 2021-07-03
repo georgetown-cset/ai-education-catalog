@@ -31,10 +31,10 @@ const SidebarElement = (props) => {
   const {label, value, Icon} = props;
 
   return (
-    <div style={{marginBottom: "25px"}}>
+    <div style={{marginBottom: "25px", paddingLeft: "5px"}}>
       <Typography variant={"body2"} style={{fontSize: "60%", marginBottom: "5px"}}>
         <Icon style={{fontSize: "120%", verticalAlign: "top"}}/> {label}</Typography>
-      <Typography variant={"body2"} style={{fontWeight: 600, fontSize: "75%", marginLeft: "5px"}}>
+      <Typography variant={"body2"} style={{fontWeight: 600, fontSize: "75%"}}>
         {value}
       </Typography>
     </div>
