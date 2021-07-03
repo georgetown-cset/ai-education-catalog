@@ -1,25 +1,44 @@
 import React, {useEffect} from "react";
+import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import TextField from "@material-ui/core/TextField/TextField";
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
+import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import Paper from "@material-ui/core/Paper";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
 import ProgramCard from "./program_card";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+  },
+  button: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+}));
 
 const ProgramCardArea = () => {
   useEffect(() => {
     handleFilterRows(null, [], "name");
   }, []);
 
+  const classes = useStyles();
+
   const labelElts = [
-    {"key": "name", "label": "Search for a Specific Program"},
-    {"key": "organization", "label": "Hosting Organization"},
-    {"key": "type", "label": "Program Type"},
-    {"key": "target", "label": "Target Audience"},
-    {"key": "location", "label": "Location"},
+    {"key": "name", "label": "Search for Specific Programs"},
+    {"key": "organization", "label": "Select Hosting Organizations"},
+    {"key": "target", "label": "Select Target Audiences"},
   ];
 
   const defaultFilterValues = {
@@ -132,69 +151,147 @@ const ProgramCardArea = () => {
   const resetFilter = () => {
     setFilteredPrograms(data.slice(0));
     handleFilterRows(null, [], "name", true);
+    setActiveStep(-1);
   };
+
+  const [activeStep, setActiveStep] = React.useState(-1);
+  const steps = getSteps();
+
+  const handleStep = (step) => () => {
+    setActiveStep(step);
+  };
+
+  function getSteps() {
+    return ["Select Locations", "Select Program Types", "Customize Search"];
+  }
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (
+          <div style={{marginLeft: "30px"}}>
+            <Autocomplete
+            multiple
+            options={filterMetadata["location"]}
+            style={{ minWidth: "300px",
+              padding:"0px 20px 10px 0px", display: "inline-block"}}
+            size={"small"}
+            renderInput={(params) => <TextField {...params} label={"Select locations..."}/>}
+            onChange={(evt, values) => handleFilterRows(evt, values, "location")}
+            value={filterValues["location"]}
+           />
+          </div>
+        );
+      case 1:
+        return (
+          <div style={{marginLeft: "30px"}}>
+            <Autocomplete
+            multiple
+            options={filterMetadata["type"]}
+            style={{ minWidth: "300px",
+              padding:"0px 20px 10px 0px", display: "inline-block"}}
+            size={"small"}
+            renderInput={(params) => <TextField {...params} label={"Select program types..."}/>}
+            onChange={(evt, values) => handleFilterRows(evt, values, "type")}
+            value={filterValues["type"]}
+           />
+          </div>
+        );
+      case 2:
+        return (
+          <div style={{marginLeft: "30px"}}>
+            <div>
+              <Typography component={"body2"} style={{fontWeight: "500"}}>Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filterValues["is_free"][0]}
+                    onChange={() => handleToggleChange("is_free")}
+                    inputProps={{'aria-label': 'primary checkbox'}}
+                  />
+                }
+                label={"Free"}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filterValues["is_underrep"][0]}
+                    onChange={() => handleToggleChange("is_underrep")}
+                    inputProps={{'aria-label': 'primary checkbox'}}
+                  />
+                }
+                label={"Serve underrepresented populations"}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={filterValues["is_community_program"][0]}
+                    onChange={() => handleToggleChange("is_community_program")}
+                    inputProps={{'aria-label': 'primary checkbox'}}
+                  />
+                }
+                label={"Community-run"}
+              />
+            </div>
+            <div>
+            {labelElts.map(labelElt =>
+              <Autocomplete
+                multiple
+                options={filterMetadata[labelElt.key]}
+                style={{ minWidth: "300px",
+                  padding:"0px 20px 10px 0px", display: "inline-block"}}
+                size={"small"}
+                key={labelElt.key}
+                renderInput={(params) => <TextField {...params} label={labelElt.label}/>}
+                onChange={(evt, values) => handleFilterRows(evt, values, labelElt.key)}
+                value={filterValues[labelElt.key]}
+               />
+              )}
+            </div>
+          </div>
+        );
+      default:
+        return 'Unknown step';
+    }
+  }
 
   return (
     <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
-      <div id={"search-bar"} style={{padding: "10px 40px", textAlign: "center", fontSize: "100%"}}>
-        {labelElts.map(labelElt =>
-        <Autocomplete
-          multiple
-          options={filterMetadata[labelElt.key]}
-          style={{ minWidth: "250px", width: (labelElt.key === "name" ? "40%" : "20%"),
-            padding:"0px 20px 10px 0px", display: "inline-block"}}
-          size={"small"}
-          key={labelElt.key}
-          renderInput={(params) => <TextField {...params} label={labelElt.label}/>}
-          onChange={(evt, values) => handleFilterRows(evt, values, labelElt.key)}
-          value={filterValues[labelElt.key]}
-         />
-        )}
-      </div>
-      <div>
-        <div style={{display: "inline-block", verticalAlign: "bottom"}}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filterValues["is_free"][0]}
-                onChange={() => handleToggleChange("is_free")}
-                inputProps={{'aria-label': 'primary checkbox'}}
-              />
-            }
-            label={"Free"}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filterValues["is_underrep"][0]}
-                onChange={() => handleToggleChange("is_underrep")}
-                inputProps={{'aria-label': 'primary checkbox'}}
-              />
-            }
-            label={"Underrepresented Population"}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filterValues["is_community_program"][0]}
-                onChange={() => handleToggleChange("is_community_program")}
-                inputProps={{'aria-label': 'primary checkbox'}}
-              />
-            }
-            label={"Community Program"}
-          />
-          <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}} onClick={resetFilter}>
-            Clear filters
+      <Paper id={"search-bar"} elevation={2} style={{paddingBottom: "10px"}}>
+        <div style={{padding: "10px 40px", textAlign: "center", fontSize: "100%",
+          display: "inline-block", width: "70%"}}>
+          <div className={classes.root} style={{textAlign: "left"}}>
+            <Stepper nonLinear activeStep={activeStep}>
+              {steps.map((label, index) => (
+                <Step key={label}>
+                  <StepButton onClick={handleStep(index)}>
+                    {label}
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
+        </div>
+        <div style={{display: "inline-block", verticalAlign: "top", width: "30%", minWidth: "200px"}}>
+          <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}} onClick={resetFilter}>
+            Reset filters
           </Button>
-          <Button color="primary" size="small" variant="contained" style={{marginRight: "10px"}}>
+          <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}}>
             <CloudDownloadIcon size="small"/><CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
               &nbsp;Download {filteredPrograms.length} result{filteredPrograms.length === 1 ? "" : "s"}
             </CSVLink>
           </Button>
-
         </div>
-      </div>
+        <div style={{textAlign: "left", padding: activeStep > -1 ? "10px 40px 20px 40px": "0", backgroundColor: "rgba(66, 83, 175, 0.05)"}}>
+          {activeStep > -1 &&
+            getStepContent(activeStep)
+          }
+        </div>
+        <div style={{padding: "10px 0px 5px 0px"}}>
+          <Typography variant={"body1"} style={{fontWeight: "500"}}>Displaying {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}</Typography>
+        </div>
+      </Paper>
       <div>
       {filteredPrograms.map(program => (
         <ProgramCard key={program.id+"-"+program.name} program={program}/>
