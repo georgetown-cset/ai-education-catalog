@@ -48,7 +48,7 @@ const ProgramCard = (props) => {
           {!expand &&
             <ProgramCardSidebar program={program} color={programTypeColors[program.type]}/>
           }
-          <div style={{padding: "10px 20px 20px 20px", marginTop: "10px", width: expand? "auto": "340px", display: "inline-block",
+          <div style={{padding: "12px 20px 10px 20px", marginTop: "10px", width: expand? "auto": "340px", display: "inline-block",
           verticalAlign: "top", height: "100%"}}>
             {program.objective !== null && (expand ?
               <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
