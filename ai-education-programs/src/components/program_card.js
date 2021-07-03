@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "@material-ui/core/Card/Card";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 import ProgramCardHeader from "./program_card_header";
 import "../styles/styles.css";
 import ProgramCardSidebar from "./program_card_sidebar";
