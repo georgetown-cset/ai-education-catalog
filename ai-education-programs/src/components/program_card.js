@@ -4,10 +4,11 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import ProgramCardHeader from "./program_card_header";
 import "../styles/styles.css";
+import ProgramCardSidebar from "./program_card_sidebar";
 
 const ProgramCard = (props) => {
     const {program} = props;
-    const [showLongSummary, setShowLongSummary] = React.useState(false);
+    const [expand, setExpand] = React.useState(false);
 
     const programTypeColors = {
       "Afterschool Program": "rgba(122, 196, 165",
@@ -41,27 +42,20 @@ const ProgramCard = (props) => {
         display: "inline-block", textAlign: "left",
         minHeight: "320px", backgroundColor: programTypeColors[program.type]+",0.05)"}}>
         <ProgramCardHeader program={program} color={programTypeColors[program.type]}/>
-        <div style={{padding: "10px 20px 20px 20px", marginTop: "10px"}}>
-          <div style={{marginBottom: "20px"}}>
-            <Typography variant={"h6"} style={{fontSize: "100%", fontWeight: "bold"}}>
-              {program.url ?
-                <Link rel={"noreferrer"} target={"_blank"} href={program.url}
-                      style={{color: programTypeColors[program.type] + ",1)"}}>{program.name}</Link>
-                :
-                <span>{program.name}</span>
-              }
-            </Typography>
-          </div>
-          {program.objective !== null && (showLongSummary ?
+        <div>
+        <ProgramCardSidebar program={program} color={programTypeColors[program.type]}/>
+        <div style={{padding: "10px 20px 20px 20px", marginTop: "10px", width: "322px", display: "inline-block"}}>
+          {program.objective !== null && (expand ?
             <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
-              {program.objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer", color: programTypeColors[program.type]+",1)"}} onClick={() => setShowLongSummary(false)}>Show less...</Link>}
+              {program.objective} {program.objective.length !== program.short_objective.length}
             </Typography> :
             <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
-              {program.short_objective} {program.objective.length !== program.short_objective.length && <Link style={{cursor: "pointer", color: programTypeColors[program.type]+",1)"}} onClick={() => setShowLongSummary(true)}>Show more...</Link>}
+              {program.short_objective} {program.objective.length !== program.short_objective.length}
             </Typography>)
           }
           <Typography variant={"body2"} style={{marginBottom: "20px", color: "#636363", fontWeight: "bold", fontSize: "75%"}}>
           </Typography>
+        </div>
         </div>
       </Card>
     )

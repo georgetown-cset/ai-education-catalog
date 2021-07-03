@@ -59,8 +59,16 @@ def clean_cost(cost: str) -> str:
     if not cost:
         return "Cost Not Specified"
     cost = cost.strip()
-    if re.search(r"^\d", cost):
-        return "$"+cost
+    if re.search(r"\d", cost):
+        try:
+            cost = str(int(float(str(cost).strip("$"))))
+        except:
+            pass
+        if re.search(r"^\d", cost):
+            return "$"+cost
+        return cost
+    elif cost == "Request a Quote":
+        return "Cost Not Specified"
     elif not (cost.startswith("$") or cost == "Free"):
         return "Cost "+cost
     return cost

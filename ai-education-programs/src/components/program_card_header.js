@@ -2,6 +2,7 @@ import React from "react";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import "../styles/styles.css";
+import Link from "@material-ui/core/Link";
 
 const ProgramCardHeader = (props) => {
   const {program, color} = props;
@@ -23,9 +24,14 @@ const ProgramCardHeader = (props) => {
 
   return (
     <div>
-        <CardActionArea style={{backgroundColor: color+",1)", padding: "7px 5px", color: "white", textAlign: "center"}}>
-          <Typography variant={"body2"} style={{fontWeight: "bold"}}>
-            {programEmoji[program.type]} {program.type} - {program.cost}
+        <CardActionArea style={{backgroundColor: color+",1)", padding: "7px 5px", color: "white",
+          paddingLeft: "20px", height: "100%"}}>
+          <Typography variant={"h6"} style={{fontSize: "110%"}}>
+            {programEmoji[program.type]}&nbsp;&nbsp;{program.url ?
+              <Link rel={"noreferrer"} target={"_blank"} href={program.url} style={{color: "white"}}>{program.name}</Link>
+              :
+              <span>{program.name}</span>
+            }
           </Typography>
         </CardActionArea>
     </div>
