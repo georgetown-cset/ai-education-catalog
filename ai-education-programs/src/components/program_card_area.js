@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProgramCardArea = () => {
+const ProgramCardArea = (props) => {
+  const {simplify} = props;
+
   useEffect(() => {
     handleFilterRows(null, [], "name");
   }, []);
@@ -260,9 +262,9 @@ const ProgramCardArea = () => {
     <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
       <Paper id={"search-bar"} elevation={2} style={{paddingBottom: "10px"}}>
         <div style={{padding: "10px 40px", textAlign: "center", fontSize: "100%",
-          display: "inline-block", minWidth: "750px", width: "70%"}}>
+          display: "inline-block", minWidth: simplify? "200px" : "750px", width: "70%"}}>
           <div className={classes.root} style={{textAlign: "left"}}>
-            <Stepper nonLinear activeStep={activeStep}>
+            <Stepper nonLinear activeStep={activeStep} orientation={simplify ? "vertical" : "horizontal"}>
               {steps.map((label, index) => (
                 <Step key={label}>
                   <StepButton onClick={handleStep(index)}>
@@ -295,7 +297,7 @@ const ProgramCardArea = () => {
       </Paper>
       <div>
       {filteredPrograms.map(program => (
-        <ProgramCard key={program.id+"-"+program.name} program={program}/>
+        <ProgramCard key={program.id+"-"+program.name} program={program} simplify={simplify}/>
       ))}
       </div>
     </div>

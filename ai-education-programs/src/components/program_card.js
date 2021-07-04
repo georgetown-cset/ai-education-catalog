@@ -8,7 +8,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import ProgramMetadataTable from "./program_metadata_table";
 
 const ProgramCard = (props) => {
-    const {program} = props;
+    const {program, simplify} = props;
     const [expand, setExpand] = React.useState(false);
 
     const programTypeColors = {
@@ -26,30 +26,18 @@ const ProgramCard = (props) => {
       "Summer Program": "rgba(0, 160, 0",
     };
 
-    const get_pretty_list = function(ary){
-      if(ary === null || ary.length === 0){
-        return null;
-      } else if(ary.length === 1){
-        return ary[0].toLowerCase();
-      } else if(ary.length === 2){
-        return (ary[0]+" and "+ary[1]).toLowerCase();
-      } else{
-        return (ary.slice(0, ary.length -1).join(", ")+" and "+ary[ary.length -1]).toLowerCase();
-      }
-    };
-
     return (
-      <Card elevation={2} style={{margin: "20px", width: "520px",
+      <Card elevation={2} style={{margin: "20px", width: simplify ? "auto" : "520px",
           display: "inline-block", textAlign: "left",
           backgroundColor: programTypeColors[program.type]+",0.05)"}}>
         <ProgramCardHeader program={program} color={programTypeColors[program.type]}/>
-        <div style={{height: expand ? "auto" : "280px"}}>
-          {!expand &&
+        <div style={{height: (expand || simplify) ? "auto" : "280px"}}>
+          {!(expand || simplify) &&
             <ProgramCardSidebar program={program} color={programTypeColors[program.type]}/>
           }
-          <div style={{padding: "12px 20px 10px 20px", marginTop: "10px", width: expand? "auto": "380px", display: "inline-block",
+          <div style={{padding: "12px 20px 10px 20px", marginTop: "10px", width: (expand || simplify)? "auto": "380px", display: "inline-block",
           verticalAlign: "top", height: "100%"}}>
-            {program.objective !== null && (expand ?
+            {program.objective !== null && ((expand || simplify) ?
               <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
                 {program.objective} {program.objective.length !== program.short_objective.length}
               </Typography> :
@@ -58,15 +46,18 @@ const ProgramCard = (props) => {
               </Typography>)
             }
           </div>
-          {expand && <ProgramMetadataTable program={program} color={programTypeColors[program.type]}/>}
+          {(expand || simplify) && <ProgramMetadataTable program={program} color={programTypeColors[program.type]}/>}
         </div>
-        <CardActionArea style={{backgroundColor: programTypeColors[program.type]+",1)", color: "white",
-          padding: "0px 20px", height: "40px", textAlign: "center"}}
-          onClick={() => setExpand(!expand)}>
+        {!simplify &&
+        <CardActionArea style={{
+          backgroundColor: programTypeColors[program.type] + ",1)", color: "white",
+          padding: "0px 20px", height: "40px", textAlign: "center"
+        }} onClick={() => setExpand(!expand)}>
           <Typography variant={"body2"} style={{fontWeight: "bold"}}>
-            {expand ? "Hide "+program.type+" Details" : "Show "+program.type+" Details"}
+            {expand ? "Hide " + program.type + " Details" : "Show " + program.type + " Details"}
           </Typography>
         </CardActionArea>
+        }
       </Card>
     )
 };

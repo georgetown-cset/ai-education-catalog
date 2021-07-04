@@ -14,7 +14,14 @@ const IndexPage = () => {
   useEffect(() => {
     document.title = "AI Education Catalog";
     document.documentElement.lang = "en";
+    window.addEventListener("resize", handleWindowResize);
+    handleWindowResize();
   }, []);
+
+  const [simplify, setSimplify] = React.useState(true);
+  const handleWindowResize = () => {
+    setSimplify(window.innerWidth < 750)
+  };
 
   // thank you https://stackoverflow.com/a/63066975
   const isSSR = typeof window === "undefined";
@@ -42,7 +49,7 @@ const IndexPage = () => {
       </div>
       {!isSSR && (
         <React.Suspense fallback={<div style={{textAlign: "center"}}><CircularProgress/></div>}>
-          <ProgramCardArea/>
+          <ProgramCardArea simplify={simplify}/>
         </React.Suspense>
       )}
     </div>
