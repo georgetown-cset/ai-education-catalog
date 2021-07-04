@@ -202,7 +202,7 @@ const ProgramCardArea = () => {
         return (
           <div style={{marginLeft: "30px"}}>
             <div>
-              <Typography component={"body2"} style={{fontWeight: "500"}}>Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
+              <Typography component={"body2"} style={{fontWeight: "bold"}}>Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -290,7 +290,7 @@ const ProgramCardArea = () => {
           }
         </div>
         <div style={{padding: "10px 0px 5px 0px"}}>
-          <Typography variant={"body1"} style={{fontWeight: "500"}}>Displaying {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}</Typography>
+          <Typography variant={"body1"} style={{fontWeight: "bold"}}>Displaying {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}</Typography>
         </div>
       </Paper>
       <div>

@@ -40,7 +40,7 @@ const ProgramMetadataTable = (props) => {
           }
           <TableRow>
             <TableCell style={{borderColor: color+",1)"}}></TableCell>
-            <TableCell component="th" scope="row" style={{paddingLeft: "10px", fontWeight: "500",
+            <TableCell component="th" scope="row" style={{paddingLeft: "10px", fontWeight: "bold",
               textAlign: "right", borderColor: color+",1)"}}>
               <Link href={program.url} rel={"noreferrer"} target={"_blank"}
                     style={{color: "white"}}>
@@ -60,7 +60,7 @@ const MetadataRow = (props) => {
   return (
     <TableRow>
       <TableCell component="th" scope="row" style={{paddingLeft: "15px", width: "175px",
-        fontWeight: "500", color: "white", borderColor: color+",1)"}}>{label}</TableCell>
+        fontWeight: "bold", color: "white", borderColor: color+",1)"}}>{label}</TableCell>
       <TableCell align="left" style={{color: "white", borderColor: color+",1)"}}>
         {value}
       </TableCell>
