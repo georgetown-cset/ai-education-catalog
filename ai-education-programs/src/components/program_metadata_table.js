@@ -59,7 +59,7 @@ const MetadataRow = (props) => {
 
   return (
     <TableRow>
-      <TableCell component="th" scope="row" style={{paddingLeft: "10px", width: "160px",
+      <TableCell component="th" scope="row" style={{paddingLeft: "15px", width: "175px",
         fontWeight: "500", color: "white", borderColor: color+",1)"}}>{label}</TableCell>
       <TableCell align="left" style={{color: "white", borderColor: color+",1)"}}>
         {value}

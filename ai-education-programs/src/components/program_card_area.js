@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import ClearIcon from '@material-ui/icons/Clear';
 import Paper from "@material-ui/core/Paper";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
@@ -259,7 +260,7 @@ const ProgramCardArea = () => {
     <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
       <Paper id={"search-bar"} elevation={2} style={{paddingBottom: "10px"}}>
         <div style={{padding: "10px 40px", textAlign: "center", fontSize: "100%",
-          display: "inline-block", width: "70%"}}>
+          display: "inline-block", minWidth: "750px", width: "70%"}}>
           <div className={classes.root} style={{textAlign: "left"}}>
             <Stepper nonLinear activeStep={activeStep}>
               {steps.map((label, index) => (
@@ -272,14 +273,14 @@ const ProgramCardArea = () => {
             </Stepper>
           </div>
         </div>
-        <div style={{display: "inline-block", verticalAlign: "top", width: "30%", minWidth: "200px"}}>
+        <div style={{display: "inline-block", verticalAlign: "top", width: "30%", minWidth: "300px"}}>
           <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}} onClick={resetFilter}>
-            Reset filters
+            <ClearIcon size={"small"}/>&nbsp;Reset
           </Button>
           <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}}>
             <CloudDownloadIcon size="small"/><CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
-              &nbsp;Download {filteredPrograms.length} result{filteredPrograms.length === 1 ? "" : "s"}
+              &nbsp;Download
             </CSVLink>
           </Button>
         </div>

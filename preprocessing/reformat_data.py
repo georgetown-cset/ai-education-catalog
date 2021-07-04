@@ -66,7 +66,7 @@ def get_detailed_location(general_location: str, detailed_location: str) -> str:
     general_location = general_location.strip()
     if general_location == detailed_location:
         return None
-    return detailed_location
+    return detailed_location.strip("*").strip()
 
 
 def clean_cost(cost: str) -> str:
@@ -93,7 +93,7 @@ def get_level(level: str) -> str:
 
 
 def get_short_objective(objective: str) -> str:
-    soft_char_limit = 400
+    soft_char_limit = 470
     if objective is None or len(objective) <= soft_char_limit:
         return objective
     words = objective.split()
