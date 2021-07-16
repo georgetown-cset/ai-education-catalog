@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ClearIcon from '@material-ui/icons/Clear';
+import Chip from '@material-ui/core/Chip';
 import Paper from "@material-ui/core/Paper";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
@@ -158,15 +159,11 @@ const ProgramCardArea = (props) => {
   };
 
   const [activeStep, setActiveStep] = React.useState(-1);
-  const steps = getSteps();
+  const steps = ["Select Locations", "Select Program Types", "Customize Search"];
 
   const handleStep = (step) => () => {
     setActiveStep(step);
   };
-
-  function getSteps() {
-    return ["Select Locations", "Select Program Types", "Customize Search"];
-  }
 
   function getStepContent(step) {
     switch (step) {
@@ -258,6 +255,35 @@ const ProgramCardArea = (props) => {
     }
   }
 
+  function prettyLabel(key, value=null){
+    if(value == null){
+      switch(key) {
+        case "is_free":
+          return "Free";
+        case "is_underrep":
+          return "Serves Underrepresented Populations";
+        case "is_community_program":
+          return "Community-run";
+      }
+    }
+    return value.substring(0,1).toUpperCase()+value.substring(1);
+  }
+
+  function isComplete(label){
+    switch(label){
+      case "Select Locations":
+        return filterValues["location"].length > 0;
+      case "Select Program Types":
+        return filterValues["type"].length > 0;
+      default:
+          const boolSelected = filterValues["is_free"][0] || filterValues["is_underrep"][0] ||
+                                  filterValues["is_community_program"][0];
+          const arySelected = filterValues["name"].length > 0 || filterValues["organization"].length > 0 ||
+                                  filterValues["target"].length > 0;
+          return boolSelected || arySelected;
+    }
+  }
+
   return (
     <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
       <Paper id={"search-bar"} elevation={2} style={{paddingBottom: "10px"}}>
@@ -266,7 +292,7 @@ const ProgramCardArea = (props) => {
           <div className={classes.root} style={{textAlign: "left"}}>
             <Stepper nonLinear activeStep={activeStep} orientation={simplify ? "vertical" : "horizontal"}>
               {steps.map((label, index) => (
-                <Step key={label}>
+                <Step key={label} completed={isComplete(label)}>
                   <StepButton onClick={handleStep(index)}>
                     {label}
                   </StepButton>
@@ -293,6 +319,14 @@ const ProgramCardArea = (props) => {
         </div>
         <div style={{padding: "10px 0px 5px 0px"}}>
           <Typography variant={"body1"} style={{fontWeight: "bold"}}>Displaying {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}</Typography>
+          <div>
+            {Object.keys(filterValues).map((key) => (
+              key.startsWith("is_") ?
+                (filterValues[key][0] && <Chip style={{"margin": "10px"}} label={prettyLabel(key)} color="primary" />)
+                :
+                (filterValues[key].map((value) => <Chip style={{"margin": "10px 5px"}} label={prettyLabel(key, value)} color="primary" />))
+            ))}
+          </div>
         </div>
       </Paper>
       <div>
