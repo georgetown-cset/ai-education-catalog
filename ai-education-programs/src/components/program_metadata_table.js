@@ -42,7 +42,7 @@ const ProgramMetadataTable = (props) => {
             <TableCell style={{borderColor: color+",1)"}}></TableCell>
             <TableCell component="th" scope="row" style={{paddingLeft: "10px", fontWeight: "bold",
               textAlign: "right", borderColor: color+",1)"}}>
-              <Link href={program.url} rel={"noreferrer"} target={"_blank"}
+              <Link href={program.url} rel={"noopener"} target={"_blank"}
                     style={{color: "white"}}>
                 Visit Website <LaunchIcon style={{fontSize: "100%", verticalAlign: "middle"}}/>
               </Link>
