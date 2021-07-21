@@ -312,7 +312,7 @@ const ProgramCardArea = (props) => {
             </CSVLink>
           </Button>
         </div>
-        <div style={{textAlign: "left", padding: activeStep > -1 ? "10px 40px 20px 40px": "0", backgroundColor: "rgba(66, 83, 175, 0.05)"}}>
+        <div style={{textAlign: "left", padding: activeStep > -1 ? "10px 40px 20px 40px": "0", borderBottom: activeStep > -1 ? "1px dashed blue" : ""}}>
           {activeStep > -1 &&
             getStepContent(activeStep)
           }
