@@ -30,6 +30,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+// Durstenfeld shuffle https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm , thanks
+// to https://stackoverflow.com/a/12646864 for the reference
+function shuffle(ary) {
+  for (let i = ary.length - 1; i > 0; i--) {
+    const j = getRandomInt(0, i);
+    const tmp = ary[i];
+    ary[i] = ary[j];
+    ary[j] = tmp;
+  }
+}
+
+const shuffledData = data.slice(0);
+shuffle(shuffledData);
+
 const ProgramCardArea = (props) => {
   const {simplify} = props;
 
@@ -60,7 +81,8 @@ const ProgramCardArea = (props) => {
 
   const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
-  const [filteredPrograms, setFilteredPrograms] = React.useState(data.slice(0));
+  // randomly shuffle, but keep ordering consistent until user refreshes the page
+  const [filteredPrograms, setFilteredPrograms] = React.useState(shuffledData.slice(0));
 
   // setup CSV
   const exportFilename = "ai-education-programs.csv";
@@ -97,7 +119,7 @@ const ProgramCardArea = (props) => {
     for(let key in filterValues){
       filteredProgramMetadata[key] = [];
     }
-    for(let program of data) {
+    for(let program of shuffledData) {
       let include = true;
       const includeKeyFilt = {};
       for(let key in filteredProgramMetadata){
@@ -153,7 +175,7 @@ const ProgramCardArea = (props) => {
   };
 
   const resetFilter = () => {
-    setFilteredPrograms(data.slice(0));
+    setFilteredPrograms(shuffledData.slice(0));
     handleFilterRows(null, [], "name", true);
     setActiveStep(-1);
   };
