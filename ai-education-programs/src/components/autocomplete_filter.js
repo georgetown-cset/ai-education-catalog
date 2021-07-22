@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import TextField from "@material-ui/core/TextField/TextField";
 import {ArrayParam, useQueryParam} from "use-query-params";

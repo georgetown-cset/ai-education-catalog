@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import {BooleanParam, useQueryParam} from "use-query-params";
