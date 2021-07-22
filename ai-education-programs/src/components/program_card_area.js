@@ -1,14 +1,10 @@
 import React, {useEffect} from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
-import TextField from "@material-ui/core/TextField/TextField";
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ClearIcon from '@material-ui/icons/Clear';
 import Chip from '@material-ui/core/Chip';
@@ -17,6 +13,7 @@ import {CSVLink} from "react-csv";
 import {data} from "../data/data";
 import ProgramCard from "./program_card";
 import AutocompleteFilter from "./autocomplete_filter";
+import CheckboxFilter from "./checkbox_filter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,17 +52,18 @@ shuffle(shuffledData);
 const ProgramCardArea = (props) => {
   const {simplify} = props;
 
-  useEffect(() => {
-    handleFilterRows(null, [], "name");
-  }, []);
-
   const classes = useStyles();
 
-  const labelElts = [
+  const dropdownLabelElts = [
     {"key": "name", "label": "Search for Specific Programs"},
     {"key": "organization", "label": "Select Hosting Organizations"},
     {"key": "target", "label": "Select Target Audiences"},
   ];
+  const checkboxLabels = {
+    "is_free": "Free",
+    "is_underrep": "Serves underrepresented populations",
+    "is_community_program": "Community-run"
+  };
 
   const dropdowns = ["name", "organization", "type", "target", "location"];
   const checkboxes = ["is_free", "is_underrep", "is_community_program"];
@@ -76,6 +74,7 @@ const ProgramCardArea = (props) => {
   for(let checkbox of checkboxes){
     defaultFilterValues[checkbox] = [false];
   }
+  const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
   // randomly shuffle, but keep ordering consistent until user refreshes the page
   const [filteredPrograms, setFilteredPrograms] = React.useState(shuffledData.slice(0));
@@ -97,20 +96,11 @@ const ProgramCardArea = (props) => {
     { label: "prerequisites", key: "pre_reqs" },
   ];
 
-  const handleToggleChange = (changed_key) => {
-    handleFilterRows("", [!filterValues[changed_key][0]], changed_key);
-  };
-
-  const handleFilterRows = (evt, filters, changed_key, reset = false) => {
-    const cleanFilters = filters.filter(k => (k !== null) && (k !== ""));
+  const handleFilterRows = (filters, changed_key) => {
     let updatedFilterValues = {...filterValues};
-    updatedFilterValues[changed_key] = cleanFilters;
-    if(reset){
-      updatedFilterValues = {...defaultFilterValues};
-    }
-    for(let key of updatedFilterValues) {
-      setFilterValues[key](updatedFilterValues[key]);
-    }
+    updatedFilterValues[changed_key] = filters;
+    setFilterValues(updatedFilterValues);
+    alert(filters)
 
     const filteredData = [];
     const filteredProgramMetadata = {};
@@ -201,43 +191,18 @@ const ProgramCardArea = (props) => {
         return (
           <div style={{marginLeft: "30px"}}>
             <div>
-              <Typography component={"body2"} style={{fontWeight: "bold"}}>Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filterValues["is_free"][0]}
-                    onChange={() => handleToggleChange("is_free")}
-                    inputProps={{'aria-label': 'primary checkbox'}}
-                  />
-                }
-                label={"Free"}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filterValues["is_underrep"][0]}
-                    onChange={() => handleToggleChange("is_underrep")}
-                    inputProps={{'aria-label': 'primary checkbox'}}
-                  />
-                }
-                label={"Serve underrepresented populations"}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={filterValues["is_community_program"][0]}
-                    onChange={() => handleToggleChange("is_community_program")}
-                    inputProps={{'aria-label': 'primary checkbox'}}
-                  />
-                }
-                label={"Community-run"}
-              />
+              <Typography component={"body2"} style={{fontWeight: "bold"}}>
+                Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
+              {checkboxes.map(checkboxKey =>
+                <CheckboxFilter keyLabel={checkboxKey} userLabel={checkboxLabels[checkboxKey]}
+                                handleFilterRows={handleFilterRows}/>
+              )};
             </div>
             <div>
-            {labelElts.map(labelElt =>
+            {dropdownLabelElts.map(labelElt =>
               <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
                                   options={filterMetadata[labelElt.key]} handleFilterRows={handleFilterRows}/>
-            };
+            )};
             </div>
           </div>
         );
@@ -248,14 +213,7 @@ const ProgramCardArea = (props) => {
 
   function prettyLabel(key, value=null){
     if(value == null){
-      switch(key) {
-        case "is_free":
-          return "Free";
-        case "is_underrep":
-          return "Serves Underrepresented Populations";
-        case "is_community_program":
-          return "Community-run";
-      }
+      return checkboxLabels[key];
     }
     return value.substring(0,1).toUpperCase()+value.substring(1);
   }
