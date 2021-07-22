@@ -16,6 +16,7 @@ import Paper from "@material-ui/core/Paper";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
 import ProgramCard from "./program_card";
+import AutocompleteFilter from "./autocomplete_filter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,20 +67,15 @@ const ProgramCardArea = (props) => {
     {"key": "target", "label": "Select Target Audiences"},
   ];
 
-  const defaultFilterValues = {
-    "name": [],
-    "organization": [],
-    "type": [],
-    "target": [],
-    "location": [],
-    "is_free": [false],
-    "is_underrep": [false],
-    "is_community_program": [false]
-  };
-
+  const dropdowns = ["name", "organization", "type", "target", "location"];
   const checkboxes = ["is_free", "is_underrep", "is_community_program"];
-
-  const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
+  const defaultFilterValues = {};
+  for(let dropdown of dropdowns){
+    defaultFilterValues[dropdown] = [];
+  }
+  for(let checkbox of checkboxes){
+    defaultFilterValues[checkbox] = [false];
+  }
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
   // randomly shuffle, but keep ordering consistent until user refreshes the page
   const [filteredPrograms, setFilteredPrograms] = React.useState(shuffledData.slice(0));
@@ -112,7 +108,9 @@ const ProgramCardArea = (props) => {
     if(reset){
       updatedFilterValues = {...defaultFilterValues};
     }
-    setFilterValues(updatedFilterValues);
+    for(let key of updatedFilterValues) {
+      setFilterValues[key](updatedFilterValues[key]);
+    }
 
     const filteredData = [];
     const filteredProgramMetadata = {};
@@ -191,33 +189,13 @@ const ProgramCardArea = (props) => {
     switch (step) {
       case 0:
         return (
-          <div style={{marginLeft: "30px"}}>
-            <Autocomplete
-            multiple
-            options={filterMetadata["location"]}
-            style={{ minWidth: "300px",
-              padding:"0px 20px 10px 0px", display: "inline-block"}}
-            size={"small"}
-            renderInput={(params) => <TextField {...params} label={"Select locations..."}/>}
-            onChange={(evt, values) => handleFilterRows(evt, values, "location")}
-            value={filterValues["location"]}
-           />
-          </div>
+          <AutocompleteFilter keyLabel={"location"} userLabel={"Select locations..."}
+                              options={filterMetadata["location"]} handleFilterRows={handleFilterRows}/>
         );
       case 1:
         return (
-          <div style={{marginLeft: "30px"}}>
-            <Autocomplete
-            multiple
-            options={filterMetadata["type"]}
-            style={{ minWidth: "300px",
-              padding:"0px 20px 10px 0px", display: "inline-block"}}
-            size={"small"}
-            renderInput={(params) => <TextField {...params} label={"Select program types..."}/>}
-            onChange={(evt, values) => handleFilterRows(evt, values, "type")}
-            value={filterValues["type"]}
-           />
-          </div>
+          <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
+                              options={filterMetadata["type"]} handleFilterRows={handleFilterRows}/>
         );
       case 2:
         return (
@@ -257,18 +235,9 @@ const ProgramCardArea = (props) => {
             </div>
             <div>
             {labelElts.map(labelElt =>
-              <Autocomplete
-                multiple
-                options={filterMetadata[labelElt.key]}
-                style={{ minWidth: "300px",
-                  padding:"0px 20px 10px 0px", display: "inline-block"}}
-                size={"small"}
-                key={labelElt.key}
-                renderInput={(params) => <TextField {...params} label={labelElt.label}/>}
-                onChange={(evt, values) => handleFilterRows(evt, values, labelElt.key)}
-                value={filterValues[labelElt.key]}
-               />
-              )}
+              <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
+                                  options={filterMetadata[labelElt.key]} handleFilterRows={handleFilterRows}/>
+            };
             </div>
           </div>
         );
