@@ -2,7 +2,6 @@ import React from "react";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import "../styles/styles.css";
-import Link from "@material-ui/core/Link";
 
 const ProgramCardHeader = (props) => {
   const {program, color} = props;

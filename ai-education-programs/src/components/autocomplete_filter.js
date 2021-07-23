@@ -1,28 +1,20 @@
 import React from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import TextField from "@material-ui/core/TextField/TextField";
-import {ArrayParam, useQueryParam} from "use-query-params";
 
 const AutocompleteFilter = (props) => {
-  const {keyLabel, userLabel, options, handleFilterRows, reset} = props;
-  const [values = [], setValues] = useQueryParam(keyLabel, ArrayParam);
-
-  const update = (filters) => {
-    const cleanValues = filters.filter(k => (k !== null) && (k !== ""));
-    setValues(cleanValues);
-    handleFilterRows(cleanValues, keyLabel);
-  };
+  const {keyLabel, userLabel, options, currFilters, update, indent=false} = props;
 
   return (
-    <div style={{marginLeft: "30px"}}>
+    <div style={{marginRight: "30px", marginLeft: (indent ? "30px": ""), display: "inline-block"}}>
       <Autocomplete
         multiple
-        options={options}
+        options={options === undefined || options === null ? [] : options}
         style={{ minWidth: "300px", padding:"0px 20px 10px 0px", display: "inline-block"}}
         size={"small"}
         renderInput={(params) => <TextField {...params} label={userLabel}/>}
-        onChange={(evt, filters) => update(filters)}
-        value={values}
+        onChange={(evt, newFilters) => update(newFilters)}
+        value={currFilters}
         key={keyLabel}
       />
     </div>

@@ -96,12 +96,18 @@ const ProgramCardArea = (props) => {
     { label: "prerequisites", key: "pre_reqs" },
   ];
 
-  const handleFilterRows = (filters, changed_key) => {
+  const updateFilters = (filters, changed_key) => {
     let updatedFilterValues = {...filterValues};
-    updatedFilterValues[changed_key] = filters;
+    updatedFilterValues[changed_key] = [...filters];
     setFilterValues(updatedFilterValues);
-    alert(filters)
+    handleFilterRows(updatedFilterValues);
+  };
 
+  useEffect(() => {
+    handleFilterRows(filterValues);
+  }, []);
+
+  const handleFilterRows = (updatedFilterValues) => {
     const filteredData = [];
     const filteredProgramMetadata = {};
     for(let key in filterValues){
@@ -180,12 +186,16 @@ const ProgramCardArea = (props) => {
       case 0:
         return (
           <AutocompleteFilter keyLabel={"location"} userLabel={"Select locations..."}
-                              options={filterMetadata["location"]} handleFilterRows={handleFilterRows}/>
+                              options={filterMetadata["location"]}
+                              update={(filters) => updateFilters(filters, "location")}
+                              indent={true}/>
         );
       case 1:
         return (
           <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
-                              options={filterMetadata["type"]} handleFilterRows={handleFilterRows}/>
+                              options={filterMetadata["type"]} handleFilterRows={handleFilterRows}
+                              update={(filters) => updateFilters(filters, "type")}
+                              indent={true}/>
         );
       case 2:
         return (
@@ -195,14 +205,15 @@ const ProgramCardArea = (props) => {
                 Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
               {checkboxes.map(checkboxKey =>
                 <CheckboxFilter keyLabel={checkboxKey} userLabel={checkboxLabels[checkboxKey]}
-                                handleFilterRows={handleFilterRows}/>
-              )};
+                                update={(checked) => updateFilters([checked], checkboxKey)}/>
+              )}
             </div>
             <div>
             {dropdownLabelElts.map(labelElt =>
               <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
-                                  options={filterMetadata[labelElt.key]} handleFilterRows={handleFilterRows}/>
-            )};
+                                  options={filterMetadata[labelElt.key]}
+                                  update={(filters) => updateFilters(filters, labelElt)}/>
+            )}
             </div>
           </div>
         );
