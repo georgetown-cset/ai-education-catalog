@@ -61,7 +61,7 @@ const ProgramCardArea = (props) => {
   ];
   const checkboxLabels = {
     "is_free": "Free",
-    "is_underrep": "Serves underrepresented populations",
+    "is_underrep": "Serve underrepresented populations",
     "is_community_program": "Community-run"
   };
 
