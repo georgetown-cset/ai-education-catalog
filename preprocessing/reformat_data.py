@@ -32,6 +32,8 @@ def reformat_data(input_fi: str) -> list:
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
+            "is_not_virtual": "Virtual" not in locations,
+            "is_not_national": ("USA" not in locations) and (len(locations) > 0),
             "location_details": get_detailed_location(orig_locations, line.get("Detailed Location")),
             "is_underrep": bool(line.get("Underrepresented")),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
@@ -134,7 +136,7 @@ def get_special_focus(line: dict) -> list:
 def clean_locations(location: str) -> list:
     if location is None:
         return []
-    clean_locations = []
+    clean_locations = set()
     for loc in location.strip().split(","):
         if len(loc.strip()) == 2:
             loc_obj = us.states.lookup(loc.strip())
@@ -142,8 +144,8 @@ def clean_locations(location: str) -> list:
                 print("Could not convert location for "+loc)
             else:
                 loc = loc_obj.name
-        clean_locations.append(loc)
-    return clean_locations
+        clean_locations.add(loc.strip())
+    return list(clean_locations)
 
 
 def get_rows(filename: str) -> iter:

@@ -63,11 +63,15 @@ const ProgramCardArea = (props) => {
   const checkboxLabels = {
     "is_free": "Free",
     "is_underrep": "Serve underrepresented populations",
-    "is_community_program": "Community-run"
+    "is_community_program": "Community-run",
+    "is_not_virtual": "Hide virtual",
+    "is_not_national": "Hide national"
   };
 
   const dropdowns = ["name", "keywords", "organization", "type", "target", "location"];
-  const checkboxes = ["is_free", "is_underrep", "is_community_program"];
+  const locationCheckboxes = ["is_not_virtual", "is_not_national"];
+  const detailCheckboxes = ["is_free", "is_underrep", "is_community_program"];
+  const checkboxes = detailCheckboxes.concat(locationCheckboxes);
   const defaultFilterValues = {};
   for(let dropdown of dropdowns){
     defaultFilterValues[dropdown] = [];
@@ -188,10 +192,18 @@ const ProgramCardArea = (props) => {
     switch (step) {
       case 0:
         return (
-          <AutocompleteFilter keyLabel={"location"} userLabel={"Select locations..."}
-                              options={filterMetadata["location"]}
-                              update={(filters) => updateFilters(filters, "location")}
-                              indent={true} currFilters={filterValues["location"]}/>
+          <div>
+            <AutocompleteFilter keyLabel={"location"} userLabel={"Select locations..."}
+                                options={filterMetadata["location"]}
+                                update={(filters) => updateFilters(filters, "location")}
+                                indent={true} currFilters={filterValues["location"]}/>
+            {locationCheckboxes.map(checkboxKey =>
+              <CheckboxFilter keyLabel={checkboxKey}
+                              userLabel={checkboxLabels[checkboxKey]}
+                              update={(checked) => updateFilters([checked], checkboxKey)}
+                              checked={filterValues[checkboxKey][0]}/>
+            )}
+          </div>
         );
       case 1:
         return (
@@ -206,7 +218,7 @@ const ProgramCardArea = (props) => {
             <div>
               <Typography component={"body2"} style={{fontWeight: "bold"}}>
                 Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
-              {checkboxes.map(checkboxKey =>
+              {detailCheckboxes.map(checkboxKey =>
                 <CheckboxFilter keyLabel={checkboxKey} userLabel={checkboxLabels[checkboxKey]}
                                 update={(checked) => updateFilters([checked], checkboxKey)}
                                 checked={filterValues[checkboxKey][0]}/>
@@ -237,7 +249,8 @@ const ProgramCardArea = (props) => {
   function isComplete(label){
     switch(label){
       case "Select Locations":
-        return filterValues["location"].length > 0;
+        return (filterValues["location"].length > 0) || filterValues["is_not_national"][0] ||
+                filterValues["is_not_virtual"][0];
       case "Select Program Types":
         return filterValues["type"].length > 0;
       default:
