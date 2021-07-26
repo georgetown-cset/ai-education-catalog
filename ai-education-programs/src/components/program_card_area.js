@@ -208,7 +208,8 @@ const ProgramCardArea = (props) => {
                 Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
               {checkboxes.map(checkboxKey =>
                 <CheckboxFilter keyLabel={checkboxKey} userLabel={checkboxLabels[checkboxKey]}
-                                update={(checked) => updateFilters([checked], checkboxKey)}/>
+                                update={(checked) => updateFilters([checked], checkboxKey)}
+                                checked={filterValues[checkboxKey][0]}/>
               )}
             </div>
             <div>
