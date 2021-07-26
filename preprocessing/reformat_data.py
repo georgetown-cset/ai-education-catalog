@@ -177,7 +177,10 @@ def get_rows(filename: str) -> iter:
 def get_keywords(row: dict) -> list:
     text_to_search = row["name"] + " " + row["objective"]
     tokens = NLP(text_to_search.lower())
-    return [tok.text for tok in tokens if (tok.text not in STOP_WORDS) and (not tok.is_punct)]
+    lemmas = [tok.lemma_.strip().strip("\"") for tok in tokens if not tok.is_punct]
+    filtered_lemmas = [lem for lem in lemmas if (lem not in STOP_WORDS) and (not re.search(r"^\d", lem))
+                       and (len(lem) > 1)]
+    return list(set(filtered_lemmas))
 
 
 if __name__ == "__main__":

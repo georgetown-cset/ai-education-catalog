@@ -109,7 +109,6 @@ const ProgramCardArea = (props) => {
   }, []);
 
   const handleFilterRows = (updatedFilterValues) => {
-    alert(JSON.stringify(updatedFilterValues))
     const filteredData = [];
     const filteredProgramMetadata = {};
     for(let key in filterValues){
@@ -214,7 +213,7 @@ const ProgramCardArea = (props) => {
             {dropdownLabelElts.map(labelElt =>
               <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
                                   options={filterMetadata[labelElt.key]}
-                                  update={(filters) => updateFilters(filters, labelElt)}/>
+                                  update={(filters) => updateFilters(filters, labelElt.key)}/>
             )}
             </div>
           </div>
