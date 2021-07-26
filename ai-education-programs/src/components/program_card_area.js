@@ -189,14 +189,14 @@ const ProgramCardArea = (props) => {
           <AutocompleteFilter keyLabel={"location"} userLabel={"Select locations..."}
                               options={filterMetadata["location"]}
                               update={(filters) => updateFilters(filters, "location")}
-                              indent={true}/>
+                              indent={true} currFilters={filterValues["location"]}/>
         );
       case 1:
         return (
           <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
                               options={filterMetadata["type"]} handleFilterRows={handleFilterRows}
                               update={(filters) => updateFilters(filters, "type")}
-                              indent={true}/>
+                              indent={true} currFilters={"type"}/>
         );
       case 2:
         return (
@@ -213,7 +213,8 @@ const ProgramCardArea = (props) => {
             {dropdownLabelElts.map(labelElt =>
               <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
                                   options={filterMetadata[labelElt.key]}
-                                  update={(filters) => updateFilters(filters, labelElt.key)}/>
+                                  update={(filters) => updateFilters(filters, labelElt.key)}
+                                  currFilters={filterValues[labelElt.key]}/>
             )}
             </div>
           </div>
