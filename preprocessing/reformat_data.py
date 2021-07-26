@@ -2,12 +2,27 @@ import argparse
 import json
 import os
 import re
+import spacy
 import us
 
+from collections import defaultdict
 from openpyxl import load_workbook
+from spacy.lang.en.stop_words import STOP_WORDS
 
 
-def reformat_data(input_fi: str, output_dir: str) -> None:
+def mk_index(data: list) -> dict:
+    index = defaultdict(list)
+    nlp = spacy.load("en_core_web_sm")
+    for row in data:
+        text_to_search = row["name"]+" "+row["objective"]
+        tokens = nlp(text_to_search.lower())
+        for tok in tokens:
+            if (tok not in STOP_WORDS) and (not tok.is_punct):
+                index[tok.text].append(row["id"])
+    return index
+
+
+def reformat_data(input_fi: str) -> list:
     cleaned_data = []
     counter = 0
     for line in get_rows(input_fi):
@@ -53,8 +68,7 @@ def reformat_data(input_fi: str, output_dir: str) -> None:
         cleaned_data.append(clean_row)
         counter += 1
     cleaned_data.sort(key=lambda r: r["name"])
-    with open(os.path.join(output_dir, "data.js"), mode="w") as f:
-        f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+    return cleaned_data
 
 
 def get_detailed_location(general_location: str, detailed_location: str) -> str:
@@ -175,4 +189,9 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", default="../ai-education-programs/src/data")
     args = parser.parse_args()
 
-    reformat_data(args.raw_data, args.output_dir)
+    cleaned_data = reformat_data(args.raw_data)
+    with open(os.path.join(args.output_dir, "data.js"), mode="w") as f:
+        f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+    index = mk_index(cleaned_data)
+    with open(os.path.join(args.output_dir, "index.js"), mode="w") as f:
+        f.write("const index = "+json.dumps(index)+"\n\n\nexport {index};")
