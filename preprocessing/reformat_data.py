@@ -5,21 +5,11 @@ import re
 import spacy
 import us
 
-from collections import defaultdict
 from openpyxl import load_workbook
 from spacy.lang.en.stop_words import STOP_WORDS
 
 
-def mk_index(data: list) -> dict:
-    index = defaultdict(list)
-    nlp = spacy.load("en_core_web_sm")
-    for row in data:
-        text_to_search = row["name"]+" "+row["objective"]
-        tokens = nlp(text_to_search.lower())
-        for tok in tokens:
-            if (tok not in STOP_WORDS) and (not tok.is_punct):
-                index[tok.text].append(row["id"])
-    return index
+NLP = spacy.load("en_core_web_sm")
 
 
 def reformat_data(input_fi: str) -> list:
@@ -65,6 +55,7 @@ def reformat_data(input_fi: str) -> list:
             if v == "":
                 v = None
             clean_row[k] = v
+        clean_row["keywords"] = get_keywords(clean_row)
         cleaned_data.append(clean_row)
         counter += 1
     cleaned_data.sort(key=lambda r: r["name"])
@@ -183,6 +174,12 @@ def get_rows(filename: str) -> iter:
                 yield clean_row
 
 
+def get_keywords(row: dict) -> list:
+    text_to_search = row["name"] + " " + row["objective"]
+    tokens = NLP(text_to_search.lower())
+    return [tok.text for tok in tokens if (tok.text not in STOP_WORDS) and (not tok.is_punct)]
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--raw_data", default="raw_data/AI Education Catalog.xlsx")
@@ -192,6 +189,3 @@ if __name__ == "__main__":
     cleaned_data = reformat_data(args.raw_data)
     with open(os.path.join(args.output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
-    index = mk_index(cleaned_data)
-    with open(os.path.join(args.output_dir, "index.js"), mode="w") as f:
-        f.write("const index = "+json.dumps(index)+"\n\n\nexport {index};")

@@ -55,7 +55,8 @@ const ProgramCardArea = (props) => {
   const classes = useStyles();
 
   const dropdownLabelElts = [
-    {"key": "name", "label": "Search for Specific Programs"},
+    {"key": "name", "label": "Search by Program Title"},
+    {"key": "keywords", "label": "Search by Keyword"},
     {"key": "organization", "label": "Select Hosting Organizations"},
     {"key": "target", "label": "Select Target Audiences"},
   ];
@@ -65,7 +66,7 @@ const ProgramCardArea = (props) => {
     "is_community_program": "Community-run"
   };
 
-  const dropdowns = ["name", "organization", "type", "target", "location"];
+  const dropdowns = ["name", "keywords", "organization", "type", "target", "location"];
   const checkboxes = ["is_free", "is_underrep", "is_community_program"];
   const defaultFilterValues = {};
   for(let dropdown of dropdowns){
@@ -108,6 +109,7 @@ const ProgramCardArea = (props) => {
   }, []);
 
   const handleFilterRows = (updatedFilterValues) => {
+    alert(JSON.stringify(updatedFilterValues))
     const filteredData = [];
     const filteredProgramMetadata = {};
     for(let key in filterValues){
@@ -239,7 +241,7 @@ const ProgramCardArea = (props) => {
           const boolSelected = filterValues["is_free"][0] || filterValues["is_underrep"][0] ||
                                   filterValues["is_community_program"][0];
           const arySelected = filterValues["name"].length > 0 || filterValues["organization"].length > 0 ||
-                                  filterValues["target"].length > 0;
+                                  filterValues["target"].length > 0 || filterValues["keywords"].length > 0;
           return boolSelected || arySelected;
     }
   }
