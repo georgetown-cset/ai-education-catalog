@@ -171,7 +171,9 @@ const ProgramCardArea = (props) => {
 
   const resetFilter = () => {
     setFilteredPrograms(shuffledData.slice(0));
-    handleFilterRows(null, [], "name", true);
+    const origFilterVals = {...defaultFilterValues};
+    setFilterValues(origFilterVals);
+    handleFilterRows(origFilterVals);
     setActiveStep(-1);
   };
 
@@ -196,7 +198,7 @@ const ProgramCardArea = (props) => {
           <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
                               options={filterMetadata["type"]} handleFilterRows={handleFilterRows}
                               update={(filters) => updateFilters(filters, "type")}
-                              indent={true} currFilters={"type"}/>
+                              indent={true} currFilters={filterValues["type"]}/>
         );
       case 2:
         return (
