@@ -155,7 +155,24 @@ const ProgramCardArea = (props) => {
       }
     }
     for(let key in filteredProgramMetadata) {
-      filteredProgramMetadata[key] = [...new Set(filteredProgramMetadata[key])].sort();
+      filteredProgramMetadata[key] = [...new Set(filteredProgramMetadata[key])].sort((a, b) => {
+        // make "Virtual" and "USA" appear first in the location dropdown
+        const a_is_remote = (a === "Virtual") || (a === "USA");
+        const b_is_remote = (b === "Virtual") || (b === "USA");
+        if((key === "location") && (a_is_remote || b_is_remote)){
+          if(a_is_remote && b_is_remote){
+            return b > a ? 1 : -1;
+          } else if(a_is_remote){
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+        if(a === b){
+          return 0;
+        }
+        return a > b ? 1 : -1;
+      });
     }
 
     setFilteredPrograms(filteredData);
