@@ -188,6 +188,32 @@ const ProgramCardArea = (props) => {
     setActiveStep(step);
   };
 
+  function stateLocationSelected(selectedLocations){
+    // We may eventually have some non-state locations that aren't USA or Virtual, so we have to enumerate these
+    const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
+      "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+      "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri",
+      "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
+      "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+      "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
+      "District of Columbia", "Puerto Rico"];
+    for(let loc of selectedLocations){
+      if(states.includes(loc)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function checkboxValueNotSelected(checkboxKey, selectedLocations){
+    switch(checkboxKey){
+      case "is_not_virtual":
+        return !selectedLocations.includes("Virtual");
+      case "is_not_national":
+        return !selectedLocations.includes("USA");
+    }
+  }
+
   function getStepContent(step) {
     switch (step) {
       case 0:
@@ -197,11 +223,13 @@ const ProgramCardArea = (props) => {
                                 options={filterMetadata["location"]}
                                 update={(filters) => updateFilters(filters, "location")}
                                 indent={true} currFilters={filterValues["location"]}/>
-            {locationCheckboxes.map(checkboxKey =>
-              <CheckboxFilter keyLabel={checkboxKey}
-                              userLabel={checkboxLabels[checkboxKey]}
-                              update={(checked) => updateFilters([checked], checkboxKey)}
-                              checked={filterValues[checkboxKey][0]}/>
+            {stateLocationSelected(filterValues["location"]) &&
+              locationCheckboxes.map(checkboxKey =>
+                checkboxValueNotSelected(checkboxKey, filterValues["location"]) &&
+                  <CheckboxFilter keyLabel={checkboxKey}
+                                  userLabel={checkboxLabels[checkboxKey]}
+                                  update={(checked) => updateFilters([checked], checkboxKey)}
+                                  checked={filterValues[checkboxKey][0]}/>
             )}
           </div>
         );
