@@ -70,6 +70,10 @@ const ProgramCardArea = (props) => {
 
   const dropdowns = ["name", "keywords", "organization", "type", "target", "location"];
   const locationCheckboxes = ["is_not_virtual", "is_not_national"];
+  const locationCheckboxesToIndicatorValue = {
+    "is_not_virtual": "Virtual",
+    "is_not_national": "USA"
+  };
   const detailCheckboxes = ["is_free", "is_underrep", "is_community_program"];
   const checkboxes = detailCheckboxes.concat(locationCheckboxes);
   const defaultFilterValues = {};
@@ -125,10 +129,7 @@ const ProgramCardArea = (props) => {
         includeKeyFilt[key] = true;
       }
       for (let key in filterValues) {
-        if ((updatedFilterValues[key].length !== 0) &&
-          ((typeof(program[key]) === "string" && !updatedFilterValues[key].includes(program[key])) ||
-            (typeof(program[key]) === "object" && !hasOverlap(updatedFilterValues[key], program[key])) ||
-            (checkboxes.includes(key) && updatedFilterValues[key][0] && !program[key]))) {
+        if (isNotSelected(updatedFilterValues, program, key)) {
           include = false;
           for(let other_key in filteredProgramMetadata){
             if(other_key !== key) {
@@ -159,6 +160,27 @@ const ProgramCardArea = (props) => {
 
     setFilteredPrograms(filteredData);
     setFilterMetadata(filteredProgramMetadata);
+  };
+
+  const isNotSelected = (rawFilters, program, key) => {
+    if(rawFilters[key].length === 0){
+      return false;
+    }
+    const filters = {...rawFilters};
+    filters["location"] = [...rawFilters["location"]];
+    for(let cb of locationCheckboxes){
+      if(!filters[cb][0] && stateLocationSelected(filters["location"])){
+        filters["location"].push(locationCheckboxesToIndicatorValue[cb])
+      }
+    }
+    switch(typeof(program[key])){
+      case "string":
+        return !filters[key].includes(program[key]);
+      case "object":
+        return !hasOverlap(filters[key], program[key]);
+      case "boolean":
+        return filters[key][0] && !program[key]
+    }
   };
 
   const hasOverlap = (ary_a, ary_b) => {
