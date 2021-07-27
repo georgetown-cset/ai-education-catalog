@@ -12,6 +12,7 @@ const CheckboxFilter = (props) => {
           checked={checked === undefined || checked === null ? false : checked}
           onChange={() => update(!checked)}
           inputProps={{"aria-label": "primary checkbox"}}
+          color={"primary"}
         />
       }
       label={userLabel}
