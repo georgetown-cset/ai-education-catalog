@@ -289,11 +289,15 @@ const ProgramCardArea = (props) => {
     }
   }
 
+  function mkTitle(str){
+    return str.substring(0,1).toUpperCase()+str.substring(1);
+  }
+
   function prettyLabel(key, value=null){
     if(value == null){
       return checkboxLabels[key];
     }
-    return value.substring(0,1).toUpperCase()+value.substring(1);
+    return mkTitle(key)+": "+mkTitle(value);
   }
 
   function isComplete(label){
