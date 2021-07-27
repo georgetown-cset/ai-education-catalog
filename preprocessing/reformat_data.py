@@ -64,14 +64,13 @@ def reformat_data(input_fi: str) -> list:
     return cleaned_data
 
 
-def get_detailed_location(general_location: str, detailed_location: str) -> str:
+def get_detailed_location(general_locations: list, detailed_location: str) -> str:
     if not detailed_location:
         return None
-    if not general_location or not general_location.strip():
+    if len(general_locations) == 0:
         return detailed_location
     detailed_location = detailed_location.strip()
-    general_location = general_location.strip()
-    if general_location == detailed_location:
+    if detailed_location in general_locations:
         return None
     return detailed_location.strip("*").strip()
 
