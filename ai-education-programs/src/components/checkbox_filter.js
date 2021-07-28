@@ -6,7 +6,7 @@ const CheckboxFilter = (props) => {
   const {keyLabel, userLabel, checked, update} = props;
 
   return (
-    <FormControlLabel
+    <FormControlLabel style={{verticalAlign: "bottom", paddingBottom: "5px"}}
       control={
         <Checkbox
           checked={checked === undefined || checked === null ? false : checked}

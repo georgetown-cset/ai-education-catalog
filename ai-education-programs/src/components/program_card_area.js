@@ -16,6 +16,7 @@ import AutocompleteFilter from "./autocomplete_filter";
 import CheckboxFilter from "./checkbox_filter";
 import "core-js/features/url";
 import "core-js/features/url-search-params";
+import HelpModal from "./help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -292,6 +293,10 @@ const ProgramCardArea = (props) => {
                                   update={(checked) => updateFilters([checked], checkboxKey)}
                                   checked={filterValues[checkboxKey][0]}/>
             )}
+            <HelpModal title={"Location Help"} content={["Use this filter to optionally one or more program locations. " +
+            "If you select a US state, national and virtual programs will be selected by default. " +
+            "To remove these and only show programs with a physical location in your state, " +
+            "use the 'Hide virtual' and 'Hide national' checkboxes that appear."]}/>
           </div>
         );
       case 1:
