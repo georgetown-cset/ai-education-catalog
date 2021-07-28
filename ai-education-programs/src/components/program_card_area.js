@@ -111,12 +111,12 @@ const ProgramCardArea = (props) => {
     let updatedFilterValues = {...filterValues};
     updatedFilterValues[changed_key] = [...filters];
     const urlParams = new URLSearchParams(window.location.search);
-    for(let filter in updatedFilterValues) {
-      if((updatedFilterValues[filter].length > 0) && (!checkboxes.includes(filter) || updatedFilterValues[filter][0])) {
-        urlParams.set(filter, updatedFilterValues[filter].join(","));
-      }
+    if(filters.length === 0 || (checkboxes.includes(changed_key) && !filters[0])){
+      urlParams.delete(changed_key);
+    } else {
+      urlParams.set(changed_key, updatedFilterValues[changed_key].join(","));
     }
-    window.history.replaceState(null, null, urlParams.toString());
+    window.history.replaceState(null, null, window.location.pathname + '?' + urlParams.toString());
     setFilterValues(updatedFilterValues);
     handleFilterRows(updatedFilterValues);
   };
@@ -237,6 +237,7 @@ const ProgramCardArea = (props) => {
     setFilterValues(origFilterVals);
     handleFilterRows(origFilterVals);
     setActiveStep(-1);
+    window.history.replaceState(null, null, window.location.pathname);
   };
 
   const [activeStep, setActiveStep] = React.useState(-1);
