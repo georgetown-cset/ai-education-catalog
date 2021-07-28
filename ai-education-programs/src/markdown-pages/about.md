@@ -1,8 +1,8 @@
 ---
 slug: "/about"
-title: "About"
+title: "About the AI Education Catalog"
 ---
 
 Here is some information about the project.
 
-It has multiple paragraphs!
+More information about the project.
