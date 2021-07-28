@@ -1,19 +1,21 @@
 import React, {useEffect} from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from "@material-ui/core/styles";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepButton from "@material-ui/core/StepButton";
+import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import ClearIcon from '@material-ui/icons/Clear';
-import Chip from '@material-ui/core/Chip';
+import ClearIcon from "@material-ui/icons/Clear";
+import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
 import ProgramCard from "./program_card";
 import AutocompleteFilter from "./autocomplete_filter";
 import CheckboxFilter from "./checkbox_filter";
+import "core-js/features/url";
+import "core-js/features/url-search-params";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,12 +110,27 @@ const ProgramCardArea = (props) => {
   const updateFilters = (filters, changed_key) => {
     let updatedFilterValues = {...filterValues};
     updatedFilterValues[changed_key] = [...filters];
+    const urlParams = new URLSearchParams(window.location.search);
+    for(let filter in updatedFilterValues) {
+      if((updatedFilterValues[filter].length > 0) && (!checkboxes.includes(filter) || updatedFilterValues[filter][0])) {
+        urlParams.set(filter, updatedFilterValues[filter].join(","));
+      }
+    }
+    window.history.replaceState(null, null, urlParams.toString());
     setFilterValues(updatedFilterValues);
     handleFilterRows(updatedFilterValues);
   };
 
   useEffect(() => {
-    handleFilterRows(filterValues);
+    const urlParams = new URLSearchParams(window.location.search);
+    let updatedFilterValues = {...filterValues};
+    for(let filter in defaultFilterValues){
+      if(urlParams.get(filter) !== null){
+        updatedFilterValues[filter] = urlParams.get(filter).split(",");
+      }
+    }
+    setFilterValues(updatedFilterValues);
+    handleFilterRows(updatedFilterValues);
   }, []);
 
   const handleFilterRows = (updatedFilterValues) => {
@@ -197,6 +214,8 @@ const ProgramCardArea = (props) => {
         return !hasOverlap(filters[key], program[key]);
       case "boolean":
         return filters[key][0] && !program[key]
+      default:
+        return false;
     }
   };
 
@@ -250,6 +269,8 @@ const ProgramCardArea = (props) => {
         return !selectedLocations.includes("Virtual");
       case "is_not_national":
         return !selectedLocations.includes("USA");
+      default:
+        return true;
     }
   }
 
