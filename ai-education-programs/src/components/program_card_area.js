@@ -293,32 +293,37 @@ const ProgramCardArea = (props) => {
                                   update={(checked) => updateFilters([checked], checkboxKey)}
                                   checked={filterValues[checkboxKey][0]}/>
             )}
-            <HelpModal title={"Location Help"} content={["Use this filter to optionally one or more program locations. " +
-            "If you select a US state, national and virtual programs will be selected by default. " +
-            "To remove these and only show programs with a physical location in your state, " +
-            "use the 'Hide virtual' and 'Hide national' checkboxes that appear."]}/>
+            <HelpModal title={"Location Help"} content={<Typography component={"p"}>Use this filter to optionally select one or more program locations. If you select a US state, national and virtual programs will be selected by default. To remove these and only show programs with a physical location in your state, use the 'Hide virtual' and 'Hide national' checkboxes that appear.</Typography>}/>
           </div>
         );
       case 1:
         return (
-          <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
-                              options={filterMetadata["type"]} handleFilterRows={handleFilterRows}
-                              update={(filters) => updateFilters(filters, "type")}
-                              indent={true} currFilters={filterValues["type"]}/>
+          <div>
+            <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
+                                options={filterMetadata["type"]} handleFilterRows={handleFilterRows}
+                                update={(filters) => updateFilters(filters, "type")}
+                                indent={true} currFilters={filterValues["type"]}/>
+            <HelpModal title={"Program Type Help"}
+                       content={<p>Use this filter to optionally select one or more program types.</p>}/>
+          </div>
         );
       case 2:
         return (
           <div style={{marginLeft: "30px"}}>
             <div>
-              <Typography component={"body2"} style={{fontWeight: "bold"}}>
+              <div style={{display: "inline-block", verticalAlign: "top", paddingTop: "10px"}}>
+                <Typography component={"body2"} style={{fontWeight: "bold"}}>
                 Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
+              </div>
+              <div style={{display: "inline-block"}}>
               {detailCheckboxes.map(checkboxKey =>
                 <CheckboxFilter keyLabel={checkboxKey} userLabel={checkboxLabels[checkboxKey]}
                                 update={(checked) => updateFilters([checked], checkboxKey)}
                                 checked={filterValues[checkboxKey][0]}/>
               )}
+              </div>
             </div>
-            <div>
+            <div style={{display: "inline-block"}}>
             {dropdownLabelElts.map(labelElt =>
               <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
                                   options={filterMetadata[labelElt.key]}
@@ -326,6 +331,23 @@ const ProgramCardArea = (props) => {
                                   currFilters={filterValues[labelElt.key]}/>
             )}
             </div>
+            <HelpModal title={"Customize Search"} content={
+              <div>
+                <Typography component={"p"}>Use the checkboxes to select programs with the following attributes:</Typography>
+                <ul>
+                  <li>Free: Programs with no cost to attend.</li>
+                  <li>Serve underrepresented populations: Programs targeted at underrepresented populations such as women and people of color.</li>
+                  <li>Community-run: (todo)</li>
+                </ul>
+                <Typography component={"p"}>Use the dropdowns to select one or more programs by:</Typography>
+                <ul>
+                  <li>Program title: Title of a program</li>
+                  <li>Keyword: Word that appears in the program title or objective.</li>
+                  <li>Hosting organization: The type of organization that runs the program.</li>
+                  <li>Target audience: Type of participants the organizers are looking for.</li>
+                </ul>
+              </div>
+            }/>
           </div>
         );
       default:

@@ -17,11 +17,7 @@ const HelpModal = (props) => {
           {title}
         </DialogTitle>
         <DialogContent style={{paddingBottom: "20px"}}>
-          {content.map((para) =>
-            <Typography component={"p"}>
-              {para}
-            </Typography>
-          )}
+          {content}
         </DialogContent>
       </Dialog>
       <Button color="secondary" variant={"outlined"} size="small"
