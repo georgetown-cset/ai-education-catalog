@@ -22,7 +22,7 @@ const HelpModal = (props) => {
       </Dialog>
       <Button color="secondary" variant={"outlined"} size="small"
               style={{minWidth: "15px"}} onClick={()=>setOpen(!open)}>
-        Help!
+        Help
       </Button>
     </div>
   );

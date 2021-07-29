@@ -304,7 +304,7 @@ const ProgramCardArea = (props) => {
                                 update={(filters) => updateFilters(filters, "type")}
                                 indent={true} currFilters={filterValues["type"]}/>
             <HelpModal title={"Program Type Help"}
-                       content={<p>Use this filter to optionally select one or more program types.</p>}/>
+                       content={<Typography component={"p"}>Use this filter to optionally select one or more program types.</Typography>}/>
           </div>
         );
       case 2:
@@ -333,19 +333,25 @@ const ProgramCardArea = (props) => {
             </div>
             <HelpModal title={"Customize Search"} content={
               <div>
-                <Typography component={"p"}>Use the checkboxes to select programs with the following attributes:</Typography>
-                <ul>
-                  <li>Free: Programs with no cost to attend.</li>
-                  <li>Serve underrepresented populations: Programs targeted at underrepresented populations such as women and people of color.</li>
-                  <li>Community-run: (todo)</li>
-                </ul>
-                <Typography component={"p"}>Use the dropdowns to select one or more programs by:</Typography>
-                <ul>
-                  <li>Program title: Title of a program</li>
-                  <li>Keyword: Word that appears in the program title or objective.</li>
-                  <li>Hosting organization: The type of organization that runs the program.</li>
-                  <li>Target audience: Type of participants the organizers are looking for.</li>
-                </ul>
+                <Typography component={"div"}>
+                  <Typography component={"p"} style={{marginBottom: "15px"}}>
+                    Use the checkboxes to select programs with the following attributes:
+                  </Typography>
+                  <ul>
+                    <li><span style={{fontWeight: "bold"}}>Free:</span> Programs with no cost to attend.</li>
+                    <li><span style={{fontWeight: "bold"}}>Serve underrepresented populations:</span> Programs targeted at underrepresented populations such as women and people of color.</li>
+                    <li><span style={{fontWeight: "bold"}}>Community-run:</span> (todo)</li>
+                  </ul>
+                  <Typography component={"p"} style={{marginBottom: "15px"}}>
+                    Use the dropdowns to select one or more programs by:
+                  </Typography>
+                  <ul>
+                    <li><span style={{fontWeight: "bold"}}>Program title:</span> Title of a program</li>
+                    <li><span style={{fontWeight: "bold"}}>Keyword:</span> Word that appears in the program title or objective.</li>
+                    <li><span style={{fontWeight: "bold"}}>Hosting organization:</span> The type of organization that runs the program.</li>
+                    <li><span style={{fontWeight: "bold"}}>Target audience:</span> Type of participants the organizers are looking for.</li>
+                  </ul>
+                </Typography>
               </div>
             }/>
           </div>
