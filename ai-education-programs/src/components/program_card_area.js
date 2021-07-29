@@ -103,9 +103,11 @@ const ProgramCardArea = (props) => {
     { label: "cost", key: "cost" },
     { label: "location", key: "location" },
     { label: "gender", key: "gender" },
-    { label: "race/ethnicity", key: "race/ethnicity"},
+    { label: "race/ethnicity", key: "race_ethnicity"},
     { label: "participant_level", key: "level" },
     { label: "prerequisites", key: "pre_reqs" },
+    { label: "is_community_program", key: "is_community_program"},
+    { label: "duration", key: "duration"},
   ];
 
   const updateFilters = (filters, changed_key) => {
