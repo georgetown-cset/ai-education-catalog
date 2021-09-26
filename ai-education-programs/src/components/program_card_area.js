@@ -280,7 +280,7 @@ const ProgramCardArea = (props) => {
           </Button>
         </div>
       </Paper>
-      <div>
+      <div style={{textAlign: "left"}}>
       {filteredPrograms.map(program => (
         <ProgramCard key={program.id+"-"+program.name} program={program} simplify={simplify}/>
       ))}
