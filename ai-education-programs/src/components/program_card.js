@@ -71,7 +71,7 @@ const ProgramCard = (props) => {
           padding: "0px 20px", height: "40px", textAlign: "center"
         }} onClick={() => setExpand(!expand)}>
           <Typography variant={"body2"} style={{fontWeight: "bold"}}>
-            {expand ? "Hide " + program.type + " Details" : "Show " + program.type + " Details"}
+            {expand ? "Hide Details" : "Show Details"}
           </Typography>
         </CardActionArea>
         }
