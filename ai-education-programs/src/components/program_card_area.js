@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
@@ -13,7 +12,6 @@ import AutocompleteFilter from "./autocomplete_filter";
 import CheckboxFilter from "./checkbox_filter";
 import "core-js/features/url";
 import "core-js/features/url-search-params";
-import HelpModal from "./help";
 
 const useStyles = makeStyles((theme) => ({
   root: {
