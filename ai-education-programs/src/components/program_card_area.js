@@ -257,7 +257,7 @@ const ProgramCardArea = (props) => {
             <CloudDownloadIcon size="small"/>
             <CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
-              &nbsp;Download {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}
+              &nbsp;Download {filteredPrograms.length} selected program{filteredPrograms.length === 1 ? "" : "s"}
             </CSVLink>
           </Button>
         </div>
