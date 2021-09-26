@@ -3,10 +3,10 @@ import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import TextField from "@material-ui/core/TextField/TextField";
 
 const AutocompleteFilter = (props) => {
-  const {keyLabel, userLabel, options, currFilters, update, indent=false} = props;
+  const {keyLabel, userLabel, options, currFilters, update} = props;
 
   return (
-    <div style={{marginRight: "30px", marginLeft: (indent ? "30px": ""), display: "inline-block"}}>
+    <div style={{display: "inline-block"}}>
       <Autocomplete
         multiple
         options={options === undefined || options === null ? [] : options}

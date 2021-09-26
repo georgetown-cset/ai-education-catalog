@@ -227,9 +227,9 @@ const ProgramCardArea = (props) => {
   };
 
   return (
-    <div style={{backgroundColor: "#FFFFFF", textAlign: "right"}}>
-      <Paper id={"search-bar"} elevation={2} style={{paddingBottom: "10px"}}>
-        <div style={{padding: "10px 40px", fontSize: "100%"}}>
+    <div style={{backgroundColor: "#FFFFFF", textAlign: "left"}}>
+      <Paper id={"search-bar"} elevation={2} style={{padding: "0px 5% 10px 5%"}}>
+        <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {dropdownFilterInfo.map((dropdown) =>
             <Tooltip title={dropdown.tooltip}>
                 <AutocompleteFilter keyLabel={dropdown.key} userLabel={dropdown.label}
@@ -239,7 +239,7 @@ const ProgramCardArea = (props) => {
             </Tooltip>
           )}
         </div>
-        <div style={{padding: "10px 40px", fontSize: "100%"}}>
+        <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {checkboxFilterInfo.map((checkbox) =>
             <Tooltip title={checkbox.tooltip}>
               <CheckboxFilter keyLabel={checkbox.key} userLabel={checkbox.label}
@@ -248,11 +248,11 @@ const ProgramCardArea = (props) => {
             </Tooltip>
           )}
         </div>
-        <div style={{verticalAlign: "top", minWidth: "300px"}}>
-          <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}} onClick={resetFilter}>
+        <div style={{verticalAlign: "top", padding: "10px 0px"}}>
+          <Button color="primary" variant="contained" onClick={resetFilter} style={{marginRight: "20px"}}>
             <ClearIcon size={"small"}/>&nbsp;Reset
           </Button>
-          <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}}>
+          <Button color="primary" variant="contained">
             <CloudDownloadIcon size="small"/>
             <CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
