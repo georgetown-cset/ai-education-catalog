@@ -29,6 +29,7 @@ const ProgramCard = (props) => {
     return (
       <Card elevation={2} style={{margin: "20px", width: simplify ? "auto" : "520px",
           display: "inline-block", textAlign: "left", verticalAlign: "top",
+          borderRadius: 0,
           backgroundColor: programTypeColors[program.type]+",0.05)"}}>
         <ProgramCardHeader program={program} color={programTypeColors[program.type]}/>
         <div style={{height: (expand || simplify) ? "auto" : "280px"}}>
