@@ -53,10 +53,14 @@ const ProgramCardArea = (props) => {
   const classes = useStyles();
 
   const dropdownFilterInfo = [
-    {"key": "location", "label": "Select Locations", "tooltip": "Physical location of the program if applicable."},
-    {"key": "type", "label": "Select Program Type", "tooltip": ""},
-    {"key": "organization", "label": "Select Hosting Organizations"},
-    {"key": "target", "label": "Select Target Audiences"},
+    {"key": "location", "label": "Select Locations",
+      "tooltip": "Filters programs by their physical location, if applicable."},
+    {"key": "type", "label": "Select Program Type",
+      "tooltip": "Filters programs by their category."},
+    {"key": "organization", "label": "Select Hosting Organizations",
+      "tooltip": "Filters programs by their parent organization type."},
+    {"key": "target", "label": "Select Target Audiences",
+      "tooltip": "Filters programs by their intended participants"},
   ];
   const checkboxFilterInfo = [
     {"key": "is_free", "label": "Free",
@@ -231,21 +235,18 @@ const ProgramCardArea = (props) => {
       <Paper id={"search-bar"} elevation={2} style={{padding: "0px 5% 10px 5%"}}>
         <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {dropdownFilterInfo.map((dropdown) =>
-            <Tooltip title={dropdown.tooltip}>
-                <AutocompleteFilter keyLabel={dropdown.key} userLabel={dropdown.label}
-                                    options={filterMetadata[dropdown.key]}
-                                    update={(filters) => updateFilters(filters, dropdown.key)}
-                                    indent={true} currFilters={filterValues[dropdown.key]}/>
-            </Tooltip>
+            <AutocompleteFilter keyLabel={dropdown.key} userLabel={dropdown.label}
+                                options={filterMetadata[dropdown.key]}
+                                update={(filters) => updateFilters(filters, dropdown.key)}
+                                indent={true} currFilters={filterValues[dropdown.key]}
+                                tooltip={dropdown.tooltip}/>
           )}
         </div>
         <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {checkboxFilterInfo.map((checkbox) =>
-            <Tooltip title={checkbox.tooltip}>
-              <CheckboxFilter keyLabel={checkbox.key} userLabel={checkbox.label}
-                              update={(checked) => updateFilters([checked], checkbox.key)}
-                              checked={filterValues[checkbox.key][0]}/>
-            </Tooltip>
+            <CheckboxFilter keyLabel={checkbox.key} userLabel={checkbox.label}
+                            update={(checked) => updateFilters([checked], checkbox.key)}
+                            checked={filterValues[checkbox.key][0]} tooltip={checkbox.tooltip}/>
           )}
         </div>
         <div style={{verticalAlign: "top", padding: "10px 0px"}}>
