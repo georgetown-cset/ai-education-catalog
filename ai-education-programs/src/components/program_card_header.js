@@ -30,7 +30,7 @@ const ProgramCardHeader = (props) => {
     "Robotics": robotics,
     "Scholarship": scholarship,
     "Summer Camp": summer_camp
-  }
+  };
 
   function click(url){
     if(url){
@@ -41,13 +41,13 @@ const ProgramCardHeader = (props) => {
   return (
     <div>
         <CardActionArea style={{backgroundColor: color, color: "white",
-          padding: "0px 20px", height: "80px"}} onMouseEnter={()=> setHover(true)}
+          padding: "0px 20px", height: "90px"}} onMouseEnter={()=> setHover(true)}
           onMouseLeave={() => setHover(false)} onClick={() => click(program.url)}
         >
           <Typography variant={"h6"} style={{fontSize: "100%"}}>
             <span style={{color: "white", textDecoration: (hover ? "underline": "")}}>{program.name}</span>
           </Typography>
-          <Typography variant={"body2"} style={{fontSize: "75%"}}>
+          <Typography variant={"body2"} style={{fontSize: "75%", marginTop: "5px"}}>
             <img src={program_name_to_img[program.type]} alt={program.type} style={{height: "15px", marginRight: "7px"}}/> {program.type}
           </Typography>
         </CardActionArea>
