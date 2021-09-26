@@ -1,13 +1,10 @@
 import React, {useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepButton from "@material-ui/core/StepButton";
 import Typography from "@material-ui/core/Typography";
+import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ClearIcon from "@material-ui/icons/Clear";
-import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import {CSVLink} from "react-csv";
 import {data} from "../data/data";
@@ -57,34 +54,28 @@ const ProgramCardArea = (props) => {
 
   const classes = useStyles();
 
-  const dropdownLabelElts = [
-    {"key": "name", "label": "Search by Program Title"},
-    {"key": "keywords", "label": "Search by Keyword"},
+  const dropdownFilterInfo = [
+    {"key": "location", "label": "Select Locations", "tooltip": "Physical location of the program if applicable."},
+    {"key": "type", "label": "Select Program Type", "tooltip": ""},
     {"key": "organization", "label": "Select Hosting Organizations"},
     {"key": "target", "label": "Select Target Audiences"},
   ];
-  const checkboxLabels = {
-    "is_free": "Free",
-    "is_underrep": "Serve underrepresented populations",
-    "is_community_program": "Community-run",
-    "is_not_virtual": "Hide virtual",
-    "is_not_national": "Hide national"
-  };
+  const checkboxFilterInfo = [
+    {"key": "is_free", "label": "Free",
+      "tooltip": "If checked, only programs with no cost to participate will be displayed."},
+    {"key": "is_underrep", "label": "Serve underrepresented populations",
+      "tooltip": "If checked, only programs that serve underrepresented groups will be displayed"},
+    {"key": "is_community_program", "label": "Community-run",
+      "tooltip": "If checked, only community-based programs will be displayed."}
+  ];
+  const checkboxes = checkboxFilterInfo.map((cb) => cb.key);
 
-  const dropdowns = ["name", "keywords", "organization", "type", "target", "location"];
-  const locationCheckboxes = ["is_not_virtual", "is_not_national"];
-  const locationCheckboxesToIndicatorValue = {
-    "is_not_virtual": "Virtual",
-    "is_not_national": "USA"
-  };
-  const detailCheckboxes = ["is_free", "is_underrep", "is_community_program"];
-  const checkboxes = detailCheckboxes.concat(locationCheckboxes);
   const defaultFilterValues = {};
-  for(let dropdown of dropdowns){
-    defaultFilterValues[dropdown] = [];
+  for(let dropdown of dropdownFilterInfo){
+    defaultFilterValues[dropdown.key] = [];
   }
-  for(let checkbox of checkboxes){
-    defaultFilterValues[checkbox] = [false];
+  for(let checkbox of checkboxFilterInfo){
+    defaultFilterValues[checkbox.key] = [false];
   }
   const [filterValues, setFilterValues] = React.useState({...defaultFilterValues});
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
@@ -205,18 +196,13 @@ const ProgramCardArea = (props) => {
     }
     const filters = {...rawFilters};
     filters["location"] = [...rawFilters["location"]];
-    for(let cb of locationCheckboxes){
-      if(!filters[cb][0] && stateLocationSelected(filters["location"])){
-        filters["location"].push(locationCheckboxesToIndicatorValue[cb])
-      }
-    }
     switch(typeof(program[key])){
       case "string":
         return !filters[key].includes(program[key]);
       case "object":
         return !hasOverlap(filters[key], program[key]);
       case "boolean":
-        return filters[key][0] && !program[key]
+        return filters[key][0] && !program[key];
       default:
         return false;
     }
@@ -239,15 +225,7 @@ const ProgramCardArea = (props) => {
     const origFilterVals = {...defaultFilterValues};
     setFilterValues(origFilterVals);
     handleFilterRows(origFilterVals);
-    setActiveStep(-1);
     window.history.replaceState(null, null, window.location.pathname);
-  };
-
-  const [activeStep, setActiveStep] = React.useState(-1);
-  const steps = ["Select Locations", "Select Program Types", "Customize Search"];
-
-  const handleStep = (step) => () => {
-    setActiveStep(step);
   };
 
   function stateLocationSelected(selectedLocations){
@@ -267,172 +245,39 @@ const ProgramCardArea = (props) => {
     return false;
   }
 
-  function checkboxValueNotSelected(checkboxKey, selectedLocations){
-    switch(checkboxKey){
-      case "is_not_virtual":
-        return !selectedLocations.includes("Virtual");
-      case "is_not_national":
-        return !selectedLocations.includes("USA");
-      default:
-        return true;
-    }
-  }
-
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return (
-          <div>
-            <AutocompleteFilter keyLabel={"location"} userLabel={"Select locations..."}
-                                options={filterMetadata["location"]}
-                                update={(filters) => updateFilters(filters, "location")}
-                                indent={true} currFilters={filterValues["location"]}/>
-            {stateLocationSelected(filterValues["location"]) &&
-              locationCheckboxes.map(checkboxKey =>
-                checkboxValueNotSelected(checkboxKey, filterValues["location"]) &&
-                  <CheckboxFilter keyLabel={checkboxKey}
-                                  userLabel={checkboxLabels[checkboxKey]}
-                                  update={(checked) => updateFilters([checked], checkboxKey)}
-                                  checked={filterValues[checkboxKey][0]}/>
-            )}
-            <HelpModal title={"Location Help"} content={<Typography component={"p"}>Use this filter to optionally select one or more program locations. If you select a US state, national and virtual programs will be selected by default. To remove these and only show programs with a physical location in your state, use the 'Hide virtual' and 'Hide national' checkboxes that appear.</Typography>}/>
-          </div>
-        );
-      case 1:
-        return (
-          <div>
-            <AutocompleteFilter keyLabel={"type"} userLabel={"Select program types..."}
-                                options={filterMetadata["type"]} handleFilterRows={handleFilterRows}
-                                update={(filters) => updateFilters(filters, "type")}
-                                indent={true} currFilters={filterValues["type"]}/>
-            <HelpModal title={"Program Type Help"}
-                       content={<Typography component={"p"}>Use this filter to optionally select one or more program types.</Typography>}/>
-          </div>
-        );
-      case 2:
-        return (
-          <div style={{marginLeft: "30px"}}>
-            <div>
-              <div style={{display: "inline-block", verticalAlign: "top", paddingTop: "10px"}}>
-                <Typography component={"body2"} style={{fontWeight: "bold"}}>
-                Only show programs that are:&nbsp;&nbsp;&nbsp;</Typography>
-              </div>
-              <div style={{display: "inline-block"}}>
-              {detailCheckboxes.map(checkboxKey =>
-                <CheckboxFilter keyLabel={checkboxKey} userLabel={checkboxLabels[checkboxKey]}
-                                update={(checked) => updateFilters([checked], checkboxKey)}
-                                checked={filterValues[checkboxKey][0]}/>
-              )}
-              </div>
-            </div>
-            <div style={{display: "inline-block"}}>
-            {dropdownLabelElts.map(labelElt =>
-              <AutocompleteFilter keyLabel={labelElt.key} userLabel={labelElt.label}
-                                  options={filterMetadata[labelElt.key]}
-                                  update={(filters) => updateFilters(filters, labelElt.key)}
-                                  currFilters={filterValues[labelElt.key]}/>
-            )}
-            </div>
-            <HelpModal title={"Customize Search"} content={
-              <div>
-                <Typography component={"div"}>
-                  <Typography component={"p"} style={{marginBottom: "15px"}}>
-                    Use the checkboxes to select programs with the following attributes:
-                  </Typography>
-                  <ul>
-                    <li><span style={{fontWeight: "bold"}}>Free:</span> Programs with no cost to attend.</li>
-                    <li><span style={{fontWeight: "bold"}}>Serve underrepresented populations:</span> Programs targeted at underrepresented populations such as women and people of color.</li>
-                    <li><span style={{fontWeight: "bold"}}>Community-run:</span> (todo)</li>
-                  </ul>
-                  <Typography component={"p"} style={{marginBottom: "15px"}}>
-                    Use the dropdowns to select one or more programs by:
-                  </Typography>
-                  <ul>
-                    <li><span style={{fontWeight: "bold"}}>Program title:</span> Title of a program</li>
-                    <li><span style={{fontWeight: "bold"}}>Keyword:</span> Word that appears in the program title or objective.</li>
-                    <li><span style={{fontWeight: "bold"}}>Hosting organization:</span> The type of organization that runs the program.</li>
-                    <li><span style={{fontWeight: "bold"}}>Target audience:</span> Type of participants the organizers are looking for.</li>
-                  </ul>
-                </Typography>
-              </div>
-            }/>
-          </div>
-        );
-      default:
-        return 'Unknown step';
-    }
-  }
-
-  function mkTitle(str){
-    return str.substring(0,1).toUpperCase()+str.substring(1);
-  }
-
-  function prettyLabel(key, value=null){
-    if(value == null){
-      return checkboxLabels[key];
-    }
-    return mkTitle(key)+": "+mkTitle(value);
-  }
-
-  function isComplete(label){
-    switch(label){
-      case "Select Locations":
-        return (filterValues["location"].length > 0) || filterValues["is_not_national"][0] ||
-                filterValues["is_not_virtual"][0];
-      case "Select Program Types":
-        return filterValues["type"].length > 0;
-      default:
-          const boolSelected = filterValues["is_free"][0] || filterValues["is_underrep"][0] ||
-                                  filterValues["is_community_program"][0];
-          const arySelected = filterValues["name"].length > 0 || filterValues["organization"].length > 0 ||
-                                  filterValues["target"].length > 0 || filterValues["keywords"].length > 0;
-          return boolSelected || arySelected;
-    }
-  }
-
   return (
-    <div style={{backgroundColor: "#FFFFFF", textAlign: "center"}}>
+    <div style={{backgroundColor: "#FFFFFF", textAlign: "right"}}>
       <Paper id={"search-bar"} elevation={2} style={{paddingBottom: "10px"}}>
-        <div style={{padding: "10px 40px", textAlign: "center", fontSize: "100%",
-          display: "inline-block", minWidth: simplify? "200px" : "750px", width: "70%"}}>
-          <div className={classes.root} style={{textAlign: "left"}}>
-            <Stepper nonLinear activeStep={activeStep} orientation={simplify ? "vertical" : "horizontal"}>
-              {steps.map((label, index) => (
-                <Step key={label} completed={isComplete(label)}>
-                  <StepButton onClick={handleStep(index)}>
-                    {label}
-                  </StepButton>
-                </Step>
-              ))}
-            </Stepper>
-          </div>
+        <div style={{padding: "10px 40px", fontSize: "100%"}}>
+          {dropdownFilterInfo.map((dropdown) =>
+            <Tooltip title={dropdown.tooltip}>
+                <AutocompleteFilter keyLabel={dropdown.key} userLabel={dropdown.label}
+                                    options={filterMetadata[dropdown.key]}
+                                    update={(filters) => updateFilters(filters, dropdown.key)}
+                                    indent={true} currFilters={filterValues[dropdown.key]}/>
+            </Tooltip>
+          )}
         </div>
-        <div style={{display: "inline-block", verticalAlign: "top", width: "30%", minWidth: "300px"}}>
+        <div style={{padding: "10px 40px", fontSize: "100%"}}>
+          {checkboxFilterInfo.map((checkbox) =>
+            <Tooltip title={checkbox.tooltip}>
+              <CheckboxFilter keyLabel={checkbox.key} userLabel={checkbox.label}
+                              update={(checked) => updateFilters([checked], checkbox.key)}
+                              checked={filterValues[checkbox.key][0]}/>
+            </Tooltip>
+          )}
+        </div>
+        <div style={{verticalAlign: "top", minWidth: "300px"}}>
           <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}} onClick={resetFilter}>
             <ClearIcon size={"small"}/>&nbsp;Reset
           </Button>
           <Button color="primary" variant="contained" style={{margin: "30px 10px 0px 0px"}}>
-            <CloudDownloadIcon size="small"/><CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
+            <CloudDownloadIcon size="small"/>
+            <CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
-              &nbsp;Download
+              &nbsp;Download {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}
             </CSVLink>
           </Button>
-        </div>
-        <div style={{textAlign: "left", padding: activeStep > -1 ? "10px 40px 20px 40px": "0", borderBottom: activeStep > -1 ? "1px dashed blue" : ""}}>
-          {activeStep > -1 &&
-            getStepContent(activeStep)
-          }
-        </div>
-        <div style={{padding: "10px 0px 5px 0px"}}>
-          <Typography variant={"body1"} style={{fontWeight: "bold"}}>Displaying {filteredPrograms.length} program{filteredPrograms.length === 1 ? "" : "s"}</Typography>
-          <div>
-            {Object.keys(filterValues).map((key) => (
-              key.startsWith("is_") ?
-                (filterValues[key][0] && <Chip style={{"margin": "10px"}} label={prettyLabel(key)} color="primary" />)
-                :
-                (filterValues[key].map((value) => <Chip style={{"margin": "10px 5px"}} label={prettyLabel(key, value)} color="primary" />))
-            ))}
-          </div>
         </div>
       </Paper>
       <div>
