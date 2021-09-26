@@ -14,7 +14,7 @@ const ProgramMetadataTable = (props) => {
   return (
     <TableContainer component={Paper} style={{borderRadius: 0}}>
       <Table aria-label="simple table" size={"small"}
-             style={{marginBottom: 0, backgroundColor: color+",0.75)", color: "white"}}>
+             style={{marginBottom: 0, backgroundColor: color, color: "white"}}>
         <TableBody>
           {program.location.length > 0 &&
           <MetadataRow color={color} label={"Location"}

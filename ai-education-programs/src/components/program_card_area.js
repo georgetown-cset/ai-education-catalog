@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ClearIcon from "@material-ui/icons/Clear";

@@ -30,7 +30,7 @@ const ProgramCardHeader = (props) => {
 
   return (
     <div>
-        <CardActionArea style={{backgroundColor: color+",1)", color: "white",
+        <CardActionArea style={{backgroundColor: color, color: "white",
           padding: "0px 20px", height: "80px"}} onMouseEnter={()=> setHover(true)}
           onMouseLeave={() => setHover(false)} onClick={() => click(program.url)}
         >

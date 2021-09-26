@@ -8,7 +8,7 @@ const ProgramCardSidebar = (props) => {
   const {program, color} = props;
 
   return (
-    <div style={{backgroundColor: color+",0.75)", width: "140px", padding: "15px 10px", color: "white",
+    <div style={{backgroundColor: color, width: "140px", padding: "15px 10px", color: "white",
       display: "inline-block", height: "100%"}}>
       <div>
         {program.location.length > 0 &&
