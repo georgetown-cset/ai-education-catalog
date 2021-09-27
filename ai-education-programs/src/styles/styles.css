@@ -90,3 +90,7 @@ body{
 #project-description > h4{
     font-size:1.25rem;
 }
+
+#toolbar > div > a > img {
+    margin: 0;
+}
