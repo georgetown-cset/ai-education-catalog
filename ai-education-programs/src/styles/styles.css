@@ -15,6 +15,21 @@ body{
     opacity: 0.9;
 }
 
+#project-description{
+    margin: auto;
+    width: 1200px;
+    text-align: center;
+    z-index: 3;
+    color: white;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    max-width: 90%;
+    height: 500px;
+}
+
 @media (min-width: 900px) {
     .header-img{
         width: 20%;
@@ -32,6 +47,11 @@ body{
 
     #header5{
         display: none;
+    }
+
+    #project-description {
+        top: 115px;
+        bottom: auto;
     }
 }
 
@@ -55,6 +75,11 @@ body{
     #header4{
         display: none;
     }
+
+    #project-description {
+        top: 95px;
+        bottom: auto;
+    }
 }
 
 #header-color-overlay{
@@ -69,21 +94,6 @@ body{
 
 #colorbar-container{
     width: 100%;
-}
-
-#project-description{
-    margin: auto;
-    width: 1200px;
-    text-align: center;
-    z-index: 3;
-    color: white;
-    position: absolute;
-    top: 100px;
-    left: 0;
-    right: 0;
-    bottom: 100px;
-    max-width: 90%;
-    height: 500px;
 }
 
 #project-description > h4 > a{
