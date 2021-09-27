@@ -34,6 +34,20 @@ const IndexPage = () => {
     <div>
       <CatalogToolbar/>
       <div id="colorbar-container">
+        <div id="project-description">
+          <h1>AI Education Catalog</h1>
+          <h4 style={{lineHeight: "1.5rem", textAlign: "left"}}>The AI Education Catalog was created by a partnership between
+            the <Link href={"https://cset.georgetown.edu"} target="_blank" rel="noopener"
+          title="Link to CSET website, cset.georgetown.edu">Center for Security and Emerging Technology</Link> and
+            the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>. It aims to
+            raise awareness of the AI-related programs available for students and educators and to help inform AI
+            education and workforce policy. We welcome contributions or corrections through
+            our <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
+            title="Link to project github repository.">GitHub repository</Link> or
+            contact form.
+          </h4>
+          <h4><Link style={{padding: "0px 5px"}}>+ Show More</Link></h4>
+        </div>
         <div id="colorbar">
           <img alt="Decorative header image of hand reaching for books." src={header1} id={"header1"} className={"header-img"}/>
           <img alt="Decorative header image of person working on a laptop." src={header2} id={"header2"} className={"header-img"}/>
@@ -42,13 +56,6 @@ const IndexPage = () => {
           <img alt="Decorative header image of a campsite." src={header5} id={"header5"} className={"header-img"}/>
         </div>
         <div id="header-color-overlay"></div>
-        <div id="project-description">
-          <h1>AI Education Catalog</h1>
-          <h4>A joint project from the <Link href={"https://cset.georgetown.edu"} target="_blank" rel="noopener"
-          title="Link to CSET website, cset.georgetown.edu">Center for Security and Emerging Technology</Link> and
-          the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>.</h4>
-          <h4><Link style={{padding: "0px 10px"}} href={"/about"}>About</Link> | <Link style={{padding: "0px 5px"}} href={"/team"}>Team</Link> | <Link style={{padding: "0px 5px"}}>Contact Us</Link></h4>
-        </div>
       </div>
       {!isSSR && (
         <React.Suspense fallback={<div style={{textAlign: "center"}}><CircularProgress/></div>}>

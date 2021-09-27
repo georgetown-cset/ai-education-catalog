@@ -17,12 +17,12 @@ const CatalogToolbar = () => {
       </div>
       <div style={{width: "33%", display: "inline-block", verticalAlign: "top", textAlign: "center"}}>
         <a href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
-          title="Link to project github repository." style={{verticalAlign: "bottom"}}>
-          <img src={github_logo} alt="Github logo" height={"25px"}/>
+          title="Link to project github repository.">
+          <img src={github_logo} alt="Github logo" height={"25px"}  style={{verticalAlign: "bottom"}}/>
         </a>
-        <span style={{padding: "0px 10px"}}>|</span>
+        <span style={{padding: "0px 10px"}}>•</span>
         <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
-              style={{color: "rgb(20, 196, 185)", verticalAlign: "bottom"}}
+              style={{color: "rgb(20, 196, 185)", verticalAlign: "middle"}}
           title="Link to contact form">
           Contact Us
         </Link>
