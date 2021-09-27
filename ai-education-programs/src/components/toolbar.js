@@ -23,7 +23,7 @@ const CatalogToolbar = (props) => {
           <img src={github_logo} alt="Github logo" height={"25px"}  style={{verticalAlign: "bottom"}}/>
         </a>
         <span style={{padding: "0px 10px"}}>•</span>
-        <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
+        <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSftdThJPlSsm-KGkVQl1QlrjFvO3LABNyzYaERpRrL1TwMhFQ/viewform"} target="_blank" rel="noopener"
               style={{color: "rgb(20, 196, 185)", verticalAlign: "middle"}}
           title="Link to contact form">
           Contact Us

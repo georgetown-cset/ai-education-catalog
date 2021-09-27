@@ -45,8 +45,8 @@ const IndexPage = () => {
             raise awareness of the AI-related programs available for students and educators and to help inform AI
             education and workforce policy. We welcome contributions or corrections through
             our <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
-            title="Link to project github repository.">GitHub repository</Link> or
-            contact form.
+            title="Link to project github repository.">GitHub repository</Link> or <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSftdThJPlSsm-KGkVQl1QlrjFvO3LABNyzYaERpRrL1TwMhFQ/viewform"} target="_blank" rel="noopener"
+                  title="Link to contact form.">contact form</Link>.
           </h4>
           <div>
           <div>
