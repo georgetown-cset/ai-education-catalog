@@ -52,13 +52,13 @@ const ProgramCardArea = (props) => {
   const classes = useStyles();
 
   const dropdownFilterInfo = [
-    {"key": "location", "label": "Select Locations",
+    {"key": "location", "label": "Location",
       "tooltip": "Filters programs by their physical location, if applicable."},
-    {"key": "type", "label": "Select Program Type",
+    {"key": "type", "label": "Program Type",
       "tooltip": "Filters programs by their category."},
-    {"key": "organization", "label": "Select Hosting Organizations",
+    {"key": "organization", "label": "Hosting Organization",
       "tooltip": "Filters programs by their parent organization type."},
-    {"key": "target", "label": "Select Target Audiences",
+    {"key": "target", "label": "Target Audience",
       "tooltip": "Filters programs by their intended participants"},
   ];
   const checkboxFilterInfo = [
