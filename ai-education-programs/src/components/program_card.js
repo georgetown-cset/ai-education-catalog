@@ -63,7 +63,9 @@ const ProgramCard = (props) => {
               </Typography>)
             }
           </div>
-          {(expand || simplify) && <ProgramMetadataTable program={program} color={programTypeColorsLight[program.type]}/>}
+          {(expand || simplify) && <ProgramMetadataTable program={program}
+                                                         color={programTypeColorsLight[program.type]}
+                                                         borderColor={programTypeColorsDark[program.type]}/>}
         </div>
         {!simplify &&
         <CardActionArea style={{
