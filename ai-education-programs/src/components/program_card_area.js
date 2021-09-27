@@ -230,7 +230,7 @@ const ProgramCardArea = (props) => {
   };
 
   return (
-    <div style={{backgroundColor: "#FFFFFF", textAlign: "left"}}>
+    <div style={{backgroundColor: "#F9F9F9", textAlign: "left"}}>
       <Paper id={"search-bar"} elevation={2} style={{padding: "0px 5% 10px 5%"}}>
         <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {dropdownFilterInfo.map((dropdown) =>
