@@ -1,5 +1,6 @@
 import React, {useEffect} from "react"
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 
 import "../styles/styles.css";
@@ -23,6 +24,7 @@ const IndexPage = () => {
   }, []);
 
   const [simplify, setSimplify] = React.useState(true);
+  const [showMore, setShowMore] = React.useState(false);
   const handleWindowResize = () => {
     setSimplify(window.innerWidth < 750)
   };
@@ -32,7 +34,7 @@ const IndexPage = () => {
 
   return (
     <div>
-      <CatalogToolbar/>
+      <CatalogToolbar simplify={simplify}/>
       <div id="colorbar-container">
         <div id="project-description">
           <h1>AI Education Catalog</h1>
@@ -46,7 +48,12 @@ const IndexPage = () => {
             title="Link to project github repository.">GitHub repository</Link> or
             contact form.
           </h4>
-          <h4><Link style={{padding: "0px 5px"}}>+ Show More</Link></h4>
+          <div>
+          <div>
+            <Button style={{padding: "0px 5px", display: showMore ? "none": "block", color: "rgb(20, 196, 185)"}} onClick={() => setShowMore(true)}>+ Show Details</Button>
+            <Button style={{padding: "0px 5px", display: showMore ? "block": "none", color: "rgb(20, 196, 185)"}} onClick={() => setShowMore(false)}>- Hide Details</Button>
+          </div>
+          </div>
         </div>
         <div id="colorbar">
           <img alt="Decorative header image of hand reaching for books." src={header1} id={"header1"} className={"header-img"}/>
@@ -56,6 +63,34 @@ const IndexPage = () => {
           <img alt="Decorative header image of a campsite." src={header5} id={"header5"} className={"header-img"}/>
         </div>
         <div id="header-color-overlay"></div>
+      </div>
+      <div style={{backgroundColor: "rgb(21, 32, 74)"}}>
+      <div id="more-info" style={{display: showMore ? "block": "none"}}>
+        <p>
+          Catalog entries are listed in one of the following categories: school programs, competitions, conferences,
+          curriculum, federal initiatives, scholarships, and summer camps. Users can search by location, cost, and
+          target audience (note that available search filters reflect what is available in the currently selected
+          programs). We also identify programs that serve underrepresented populations and are community oriented.
+        </p>
+        <p>
+          We hope that the catalog is used to increase AI education across the United States. We believe a thriving
+          future U.S. workforce includes cultivating globally competitive talent on the leading edge of AI design,
+          development, and deployment; training and equipping all Americans to operate responsible and safe AI; and
+          promoting AI workforce diversity through equitable access and opportunity to such resources.
+        </p>
+        <p>
+          Contributors to the AI Education Catalog
+          include <Link href={"https://cset.georgetown.edu/staff/claire-perkins/"} target="_blank" rel="noopener">Claire Perkins</Link>
+          , <Link href={"https://cset.georgetown.edu/staff/diana-gehlhaus/"} target="_blank" rel="noopener">Diana Gehlhaus</Link>
+          , <Link href={"https://cset.georgetown.edu/staff/kayla-goode/"} target="_blank" rel="noopener">Kayla Goode</Link>
+          , and <Link href={"https://cset.georgetown.edu/staff/jennifer-melot/"} target="_blank" rel="noopener">Jennifer Melot</Link> at CSET,
+          and <Link href={"https://aiedu.org/team-ehrik-aldana"} target="_blank" rel="noopener">Ehrik Aldana</Link>
+          , <Link href={"https://aiedu.org/team-grace-doerfler"} target="_blank" rel="noopener">Grace Doerfler</Link>
+          , and <Link href={"https://aiedu.org/about-us"} target="_blank" rel="noopener">Gayani Gamage</Link> at the AI Education Project. The
+          contributors thank [AI Edu teacher reviewers], Igor Mikolic-Torreira, and Catherine Aiken for their advice
+          and feedback, and Chenxi Liu for assistance with program metadata collection.
+        </p>
+      </div>
       </div>
       {!isSSR && (
         <React.Suspense fallback={<div style={{textAlign: "center"}}><CircularProgress/></div>}>

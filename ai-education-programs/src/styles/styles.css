@@ -59,7 +59,7 @@ body{
 
 #header-color-overlay{
     position:absolute;
-    top:70px;
+    top:75px;
     background: rgba(15, 32, 79, 0.6);
     overflow: hidden;
     height: 500px;
@@ -78,11 +78,12 @@ body{
     z-index: 3;
     color: white;
     position: absolute;
-    top: 125px;
+    top: 100px;
     left: 0;
     right: 0;
-    bottom: 125px;
+    bottom: 100px;
     max-width: 90%;
+    height: 500px;
 }
 
 #project-description > h4 > a{
@@ -99,4 +100,15 @@ body{
 
 #toolbar > div > a > img {
     margin: 0;
+}
+
+#more-info{
+    margin: auto;
+    padding: 20px 0px;
+    max-width: 1200px;
+    color: white;
+}
+
+#more-info > p > a {
+    color: rgb(20, 196, 185);
 }
