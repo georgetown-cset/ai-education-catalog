@@ -1,5 +1,4 @@
 body{
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     background-color: #F9F9F9;
     margin: 0;
     padding: 0;
@@ -59,7 +58,7 @@ body{
 
 #header-color-overlay{
     position:absolute;
-    top:71px;
+    top:70px;
     background: rgba(15, 32, 79, 0.6);
     overflow: hidden;
     height: 400px;

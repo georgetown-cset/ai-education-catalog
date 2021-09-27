@@ -45,7 +45,7 @@ const IndexPage = () => {
         <div id="project-description">
           <h1>AI Education Catalog</h1>
           <h4>A joint project from the <Link>Center for Security and Emerging Technology</Link> and the <Link>AI Education Project</Link>.</h4>
-          <h4><Link style={{padding: "0px 10px"}} href={"/about"}>About</Link> | <Link style={{padding: "0px 5px"}} href={"/team"}>Team</Link> • <Link style={{padding: "0px 5px"}}>Contact Us</Link></h4>
+          <h4><Link style={{padding: "0px 10px"}} href={"/about"}>About</Link> | <Link style={{padding: "0px 5px"}} href={"/team"}>Team</Link> | <Link style={{padding: "0px 5px"}}>Contact Us</Link></h4>
         </div>
       </div>
       {!isSSR && (
