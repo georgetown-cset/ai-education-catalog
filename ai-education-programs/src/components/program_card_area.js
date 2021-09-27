@@ -249,10 +249,10 @@ const ProgramCardArea = (props) => {
           )}
         </div>
         <div style={{verticalAlign: "top", padding: "10px 0px"}}>
-          <Button color="primary" variant="contained" onClick={resetFilter} style={{marginRight: "20px"}}>
+          <Button color="primary" variant="contained" onClick={resetFilter} style={{marginRight: "20px", backgroundColor: "rgb(21, 32, 74)", borderRadius: "25px"}}>
             <ClearIcon size={"small"}/>&nbsp;Reset
           </Button>
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" style={{backgroundColor: "rgb(21, 32, 74)", borderRadius: "25px"}}>
             <CloudDownloadIcon size="small"/>
             <CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
