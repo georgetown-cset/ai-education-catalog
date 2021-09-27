@@ -45,6 +45,10 @@ body{
         display: none;
     }
 
+    #header3{
+        width: 34%;
+    }
+
     #header5{
         display: none;
     }
@@ -56,7 +60,7 @@ body{
 }
 
 @media (max-width: 500px) {
-    .header-img{
+    #header3{
         width: 100%;
     }
 
