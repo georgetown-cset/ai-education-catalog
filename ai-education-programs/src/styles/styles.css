@@ -4,3 +4,55 @@ body{
     margin: 0;
     padding: 0;
 }
+
+.header-img-container{
+    display: inline-block;
+}
+
+.header-img{
+    height: 450px;
+    object-fit: cover;
+    margin: 0;
+}
+
+@media (min-width: 900px) {
+    .header-img{
+        width: 20%;
+    }
+}
+
+@media (max-width: 900px) {
+    .header-img{
+        width: 33%;
+    }
+
+    #header1{
+        display: none;
+    }
+
+    #header5{
+        display: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .header-img{
+        width: 100%;
+    }
+
+    #header1{
+        display: none;
+    }
+
+    #header5{
+        display: none;
+    }
+
+    #header2{
+        display: none;
+    }
+
+    #header4{
+        display: none;
+    }
+}
