@@ -44,10 +44,10 @@ const ProgramCardHeader = (props) => {
           padding: "0px 20px", height: "90px"}} onMouseEnter={()=> setHover(true)}
           onMouseLeave={() => setHover(false)} onClick={() => click(program.url)}
         >
-          <Typography variant={"h6"} style={{fontSize: "100%"}}>
+          <Typography variant={"h6"} style={{fontSize: "1.1rem"}}>
             <span style={{color: "white", textDecoration: (hover ? "underline": "")}}>{program.name}</span>
           </Typography>
-          <Typography variant={"body2"} style={{fontSize: "75%", marginTop: "5px"}}>
+          <Typography variant={"body2"} style={{fontSize: "0.8rem", marginTop: "5px"}}>
             <img src={program_name_to_img[program.type]} alt={program.type} style={{height: "15px", marginRight: "7px"}}/> {program.type}
           </Typography>
         </CardActionArea>

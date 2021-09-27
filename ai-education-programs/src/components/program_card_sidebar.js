@@ -32,9 +32,9 @@ const SidebarElement = (props) => {
 
   return (
     <div style={{marginBottom: "25px", paddingLeft: "5px"}}>
-      <Typography variant={"body2"} style={{fontSize: "60%", marginBottom: "5px"}}>
-        <Icon style={{fontSize: "120%", verticalAlign: "top"}}/> {label}</Typography>
-      <Typography variant={"body2"} style={{fontWeight: 600, fontSize: "75%"}}>
+      <Typography variant={"body2"} style={{fontSize: "0.7rem", marginBottom: "5px"}}>
+        <Icon style={{fontSize: "1rem", verticalAlign: "top"}}/> {label}</Typography>
+      <Typography variant={"body2"} style={{fontWeight: 600, fontSize: "0.8rem"}}>
         {value}
       </Typography>
     </div>

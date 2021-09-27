@@ -55,10 +55,10 @@ const ProgramCard = (props) => {
           <div style={{padding: "12px 20px 10px 20px", marginTop: "10px", width: (expand || simplify)? "auto": "380px", display: "inline-block",
           verticalAlign: "top", height: "100%"}}>
             {program.objective !== null && ((expand || simplify) ?
-              <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
+              <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "0.95rem"}}>
                 {program.objective} {program.objective.length !== program.short_objective.length}
               </Typography> :
-              <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "85%"}}>
+              <Typography variant={"body2"} style={{marginBottom: "20px", color: "black", fontSize: "0.95rem"}}>
                 {program.short_objective} {program.objective.length !== program.short_objective.length}
               </Typography>)
             }
