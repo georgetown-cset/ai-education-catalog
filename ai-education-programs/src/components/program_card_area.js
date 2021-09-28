@@ -234,7 +234,7 @@ const ProgramCardArea = (props) => {
       <Paper id={"search-bar"} elevation={2} style={{padding: "0px 5% 10px 5%"}}>
         <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {dropdownFilterInfo.map((dropdown) =>
-            <AutocompleteFilter keyLabel={dropdown.key} userLabel={dropdown.label}
+            <AutocompleteFilter keyLabel={dropdown.key} key={dropdown.key} userLabel={dropdown.label}
                                 options={filterMetadata[dropdown.key]}
                                 update={(filters) => updateFilters(filters, dropdown.key)}
                                 indent={true} currFilters={filterValues[dropdown.key]}
@@ -243,7 +243,7 @@ const ProgramCardArea = (props) => {
         </div>
         <div style={{padding: "10px 0px", fontSize: "100%"}}>
           {checkboxFilterInfo.map((checkbox) =>
-            <CheckboxFilter keyLabel={checkbox.key} userLabel={checkbox.label}
+            <CheckboxFilter keyLabel={checkbox.key} key={checkbox.key} userLabel={checkbox.label}
                             update={(checked) => updateFilters([checked], checkbox.key)}
                             checked={filterValues[checkbox.key][0]} tooltip={checkbox.tooltip}/>
           )}
