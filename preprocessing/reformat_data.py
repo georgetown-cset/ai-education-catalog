@@ -1,14 +1,13 @@
+"""
+Reformat AI Education Catalog spreadsheet into javascript object.
+"""
 import argparse
 import json
 import os
 import re
-import spacy
 import us
 
 from openpyxl import load_workbook
-
-
-NLP = spacy.load("en_core_web_sm")
 
 
 def reformat_data(input_fi: str) -> list:
