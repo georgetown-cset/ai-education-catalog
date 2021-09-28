@@ -6,7 +6,6 @@ import spacy
 import us
 
 from openpyxl import load_workbook
-from spacy.lang.en.stop_words import STOP_WORDS
 
 
 NLP = spacy.load("en_core_web_sm")
@@ -17,6 +16,8 @@ def reformat_data(input_fi: str) -> list:
     counter = 0
     for line in get_rows(input_fi):
         orig_locations = line.get("Location")
+        if orig_locations:
+            orig_locations = orig_locations.replace("USA", "National")
         locations = clean_locations(orig_locations)
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
@@ -33,7 +34,7 @@ def reformat_data(input_fi: str) -> list:
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
             "is_not_virtual": "Virtual" not in locations,
-            "is_not_national": ("USA" not in locations) and (len(locations) > 0),
+            "is_not_national": ("National" not in locations) and (len(locations) > 0),
             "location_details": get_detailed_location(orig_locations, line.get("Detailed Location")),
             "is_underrep": bool(line.get("Underrepresented")),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
@@ -57,7 +58,6 @@ def reformat_data(input_fi: str) -> list:
             if v == "":
                 v = None
             clean_row[k] = v
-        clean_row["keywords"] = get_keywords(clean_row)
         cleaned_data.append(clean_row)
         counter += 1
     cleaned_data.sort(key=lambda r: r["name"])
@@ -173,15 +173,6 @@ def get_rows(filename: str) -> iter:
                     continue
                 clean_row["URL"] = row[0].hyperlink.target
                 yield clean_row
-
-
-def get_keywords(row: dict) -> list:
-    text_to_search = row["name"] + " " + row["objective"]
-    tokens = NLP(text_to_search.lower())
-    lemmas = [tok.lemma_.strip().strip("\"") for tok in tokens if not tok.is_punct]
-    filtered_lemmas = [lem for lem in lemmas if (lem not in STOP_WORDS) and (not re.search(r"^\d", lem))
-                       and (len(lem) > 1)]
-    return list(set(filtered_lemmas))
 
 
 if __name__ == "__main__":
