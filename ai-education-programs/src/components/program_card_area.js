@@ -12,18 +12,6 @@ import CheckboxFilter from "./checkbox_filter";
 import "core-js/features/url";
 import "core-js/features/url-search-params";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  button: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 // per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 function getRandomInt(min, max) {
@@ -48,8 +36,6 @@ shuffle(shuffledData);
 
 const ProgramCardArea = (props) => {
   const {simplify} = props;
-
-  const classes = useStyles();
 
   const dropdownFilterInfo = [
     {"key": "location", "label": "Location",
