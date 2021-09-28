@@ -722,7 +722,7 @@ pre tt:after {
 
 #more-info{
     margin: auto;
-    padding: 40px 0px 20px 0px;
+    padding: 40px 10px 20px 10px;
     max-width: 1200px;
     color: white;
 }

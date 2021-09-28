@@ -55,19 +55,20 @@ const IndexPage = () => {
           </div>
         </div>
         <div id="colorbar">
-          <img alt="Decorative header image of hand reaching for books." src={header1} id={"header1"} className={"header-img"}/>
-          <img alt="Decorative header image of person working on a laptop." src={header2} id={"header2"} className={"header-img"}/>
-          <img alt="Decorative header image of person coding." src={header3} id={"header3"} className={"header-img"}/>
-          <img alt="Decorative header image of a truck that might be used in a robotics coding exercise." src={header4} id={"header4"} className={"header-img"}/>
-          <img alt="Decorative header image of a campsite." src={header5} id={"header5"} className={"header-img"}/>
+          <img alt="Hand reaching for books." src={header1} id={"header1"} className={"header-img"}/>
+          <img alt="Person working on a laptop." src={header2} id={"header2"} className={"header-img"}/>
+          <img alt="Person coding." src={header3} id={"header3"} className={"header-img"}/>
+          <img alt="Truck that might be used in a robotics coding exercise." src={header4} id={"header4"} className={"header-img"}/>
+          <img alt="Campsite." src={header5} id={"header5"} className={"header-img"}/>
         </div>
         <div id="header-color-overlay"></div>
       </div>
       <div style={{backgroundColor: "rgb(21, 32, 74)"}}>
       <div id="more-info" style={{display: showMore ? "block": "none"}}>
         <p>
-          Catalog entries are listed in one of the following categories: school programs, competitions, conferences,
-          curriculum, federal initiatives, scholarships, and summer camps. Users can search by location, cost, and
+          Catalog entries are listed in one of the following categories: afterschool programs, apprenticeships,
+          challenges, conferences, curriculums, fellowships, hackathons, internships, robotics, scholarships,
+          and summer camps. Users can search by location, cost, and
           target audience (note that available search filters reflect what is available in the currently selected
           programs). We also identify programs that serve underrepresented populations and are community oriented.
         </p>

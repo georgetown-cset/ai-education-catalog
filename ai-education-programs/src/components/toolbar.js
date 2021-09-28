@@ -18,7 +18,7 @@ const CatalogToolbar = (props) => {
         </a>
       </div>
       <div style={{width: simplify? "100%" : "33%", display: "inline-block", verticalAlign: "top", textAlign: "center", height: "35px"}}>
-        <a href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
+        <a href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noreferrer"
           title="Link to project github repository.">
           <img src={github_logo} alt="Github logo" height={"25px"}  style={{verticalAlign: "bottom"}}/>
         </a>
@@ -30,7 +30,7 @@ const CatalogToolbar = (props) => {
         </Link>
       </div>
       <div style={{width: "33%", display: simplify ? "none": "inline-block", textAlign: "right", verticalAlign: "middle"}}>
-        <a href={"https://aiedu.org/"} target="_blank" rel="noopener"
+        <a href={"https://aiedu.org/"} target="_blank" rel="noreferrer"
           title="Link to AI Education Project website, aiedu.org">
           <img src={aiedu_logo} style={{height: "35px", margin: "0"}} alt="AI Edu Logo"/>
         </a>
