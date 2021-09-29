@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "ai-education-catalog",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Catalog of AI Education programs",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Jennifer Melot <jm3312@georgetown.edu>",
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
