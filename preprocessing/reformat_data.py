@@ -74,13 +74,15 @@ def get_detailed_location(general_locations: list, detailed_location: str) -> st
     Takes general locations and detailed location and returns a location string that is as detailed
     as possible but does not contain redundant information
     :param general_locations: List of high-level locations (like Oklahoma, Texas, Virtual)
-    :param detailed_location: A detailed location (like "Oklahoma City, Oklahoma")
+    :param detailed_location: A detailed location (like "Oklahoma City, Oklahoma") or None if the
+        detailed location is completely redundant
     :return: normalized detailed location
     """
     if not detailed_location:
         return None
+    clean_detailed_location = detailed_location.strip().strip("*").strip()
     if len(general_locations) == 0:
-        return detailed_location
+        return clean_detailed_location
     detailed_location = detailed_location.strip()
     if detailed_location in general_locations:
         return None
@@ -105,7 +107,7 @@ def clean_cost(cost: str) -> str:
         if re.search(r"^\d", cost):
             return "$"+cost
         return cost
-    elif cost == "Request a Quote":
+    elif cost.lower() == "request a quote":
         return "Cost Not Specified"
     return cost
 
