@@ -19,6 +19,7 @@ def reformat_data(input_fi: str) -> list:
     :return: list of cleaned rows
     """
     cleaned_data = []
+    # jd: could this be replaced with enumerate()? I don't see e.g. row-skipping logic
     counter = 0
     for line in get_rows(input_fi):
         orig_locations = line.get("Location")
@@ -33,18 +34,23 @@ def reformat_data(input_fi: str) -> list:
             "name": line["Program"],
             "url": line["URL"],
             # Fix spelling issues
+            # jd: Could these be corrected in the sheet to simplify logic here / make assumptions more explicit?
             "type": "Curriculum" if line["Type"].startswith("Curri") else line["Type"],
             "organization": line.get("Organization Type"),
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
             "location": locations,
+            # jd: Is casing guaranteed?
             "is_not_virtual": "Virtual" not in locations,
             "is_not_national": ("National" not in locations) and (len(locations) > 0),
             "location_details": get_detailed_location(orig_locations, line.get("Detailed Location")),
-            "is_underrep": bool(line.get("Underrepresented")),
+            # jd: Could it be a problem that " " is truthy? If so maybe:
+            "is_underrep": bool(line.get("Underrepresented", "").strip()),
             "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
             "race_ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
-            "is_community_program": bool(line.get("Community")),
+            # jd: As above
+            "is_community_program": bool(line.get("Community", "").strip()),
+            # jd: is None OK here but not for level below?
             "objective": line.get("Objective"),
             "short_objective": short_obj,
             "level": line.get("Level", "").strip(),
@@ -80,6 +86,7 @@ def get_detailed_location(general_locations: list, detailed_location: str) -> st
     """
     if not detailed_location:
         return None
+    # jd: Why '*'?
     clean_detailed_location = detailed_location.strip().strip("*").strip()
     if len(general_locations) == 0:
         return clean_detailed_location
@@ -103,6 +110,7 @@ def clean_cost(cost: str) -> str:
         try:
             cost = str(int(float(str(cost).strip("$"))))
         except:
+            # jd: I initially assumed this meant we discarded the unexpected input, but we just pass it through. Maybe
             print(f"Could not parse cost {cost}")
         if re.search(r"^\d", cost):
             return "$"+cost
@@ -136,6 +144,7 @@ def get_targets(raw_targets: str) -> list:
     :param raw_targets: list of program target participants
     :return: list of cleaned target participants
     """
+    # jd: fix in input?
     targets = [t.strip().title() for t in raw_targets.replace(".", ",").split(",")]
     clean_targets = []
     for t in targets:
@@ -148,6 +157,7 @@ def get_targets(raw_targets: str) -> list:
     return clean_targets
 
 
+# jd: not used?
 def get_special_focus(line: dict) -> list:
     """
     Extract and clean content of special focus columns
@@ -167,11 +177,12 @@ def clean_locations(location: str) -> list:
     :param location: string represending location
     :return: cleaned/expanded location
     """
-    if not location:
+    if location is None or not location.strip():
         return []
     clean_locations = set()
     for loc in location.strip().split(","):
         if len(loc.strip()) == 2:
+            # Looks like a state postal abbreviation
             loc_obj = us.states.lookup(loc.strip())
             if loc_obj is None:
                 print("Could not convert location for "+loc)
@@ -205,11 +216,15 @@ def get_rows(filename: str) -> iter:
         for row in sheet.iter_rows(min_row=num_commment_rows+1):
             if col_names is None:
                 col_names = [c.value.strip() for c in row if c.value is not None]
+                # If the comment_rows offset is correct the first column name should be 'Program'
+                assert col_names[0] == 'Program'
             else:
+                # jd: notice we create a 'clean_row' twice, here and when processing it further above
                 clean_row = {key: "" if row[idx].value is None else str(row[idx].value)
                              for idx, key in enumerate(col_names)}
                 if not clean_row["Program"]:
                     continue
+                # jd: Do we want to validate URLs as part of preprocessing? Could hit them here and confirm we get 200s
                 clean_row["URL"] = row[0].hyperlink.target
                 yield clean_row
 
@@ -225,4 +240,4 @@ if __name__ == "__main__":
 
     cleaned_data = reformat_data(args.raw_data)
     with open(os.path.join(args.output_dir, "data.js"), mode="w") as f:
-        f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
+        f.write("const data = "+json.dumps(cleaned_data, indent=2)+"\n\n\nexport {data};")

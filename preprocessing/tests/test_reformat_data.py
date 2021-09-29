@@ -20,6 +20,10 @@ class TestReformatData(unittest.TestCase):
     def test_get_detailed_location_has_no_general_locations(self):
         self.assertEqual("Oklahoma City, OK", get_detailed_location([], "*Oklahoma City, OK"))
 
+    def test_get_detailed_location_(self):
+        # jd: expected?
+        self.assertEqual("6 locations + virtual", get_detailed_location(["Virtual"], "6 locations + virtual"))
+
     def test_clean_cost_dollar(self):
         self.assertEqual("$100", clean_cost("$100"))
 
@@ -28,6 +32,12 @@ class TestReformatData(unittest.TestCase):
 
     def test_clean_cost_quote(self):
         self.assertEqual("Cost Not Specified", clean_cost("Request a Quote"))
+
+    def test_clean_cost_range(self):
+        self.assertEqual("$95-$125", clean_cost("$95-$125"))
+        self.assertEqual("$50-$75", clean_cost("$50-75"))
+        self.assertEqual("Cost Not Specified", clean_cost(" "))
+        self.assertEqual("Cost Not Specified", clean_cost(None))
 
     def test_get_short_objective_short(self):
         self.assertEqual("This is short", get_short_objective("This is short"))
@@ -53,6 +63,11 @@ class TestReformatData(unittest.TestCase):
                 "lectus. Pellentesque...")
         self.assertEqual(expected_output, get_short_objective(input))
 
+    def test_get_short_objective_with_whitespace(self):
+        input = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." + " " * 470
+        expected_output = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        self.assertEqual(expected_output, get_short_objective(input))
+
     def test_get_targets(self):
         self.assertEqual(
             ["Elementary school students", "Middle school students",
@@ -68,6 +83,12 @@ class TestReformatData(unittest.TestCase):
 
     def test_clean_locations_nonstate(self):
         self.assertEqual(sorted(["National", "Virtual"]), sorted(clean_locations("Virtual, National")))
+        self.assertEqual(sorted(["Puerto Rico", "Guam"]), sorted(clean_locations("PR, GU")))
+
+    def test_clean_location_whitespace(self):
+        self.assertEqual(clean_locations(' '), [])
+        self.assertEqual(clean_locations(' NY '), ['New York'])
+        self.assertEqual(clean_locations(' New York '), ['New York'])
 
     def test_get_special_focus(self):
         self.assertEqual(["Community", "Female", "Non-Binary"],
