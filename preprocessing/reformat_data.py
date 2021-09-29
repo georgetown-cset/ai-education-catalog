@@ -11,6 +11,13 @@ from openpyxl import load_workbook
 
 
 def reformat_data(input_fi: str) -> list:
+    """
+    Reformat xlsx catalog download from
+    https://docs.google.com/spreadsheets/d/1y-Ez9NY1nhSyewMOqbosGueSqieiFinj/edit#gid=2077629231
+    into list of cleaned rows
+    :param input_fi: path to the xlsx download
+    :return: list of cleaned rows
+    """
     cleaned_data = []
     counter = 0
     for line in get_rows(input_fi):
@@ -21,12 +28,11 @@ def reformat_data(input_fi: str) -> list:
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
         short_obj = get_short_objective(line.get("Objective"))
-        level = get_level(line.get("Level"))
         row = {
             "id": counter,
             "name": line["Program"],
             "url": line["URL"],
-            # TODO: temporary hack to fix spelling issues
+            # Fix spelling issues
             "type": "Curriculum" if line["Type"].startswith("Curri") else line["Type"],
             "organization": line.get("Organization Type"),
             "target": targets,
@@ -41,7 +47,7 @@ def reformat_data(input_fi: str) -> list:
             "is_community_program": bool(line.get("Community")),
             "objective": line.get("Objective"),
             "short_objective": short_obj,
-            "level": level,
+            "level": line.get("Level", "").strip(),
             "cost": clean_cost(line.get("Cost")),
             "pre_reqs": pre_reqs,
             "duration": line.get("Duration")
@@ -52,10 +58,10 @@ def reformat_data(input_fi: str) -> list:
                 v = v.strip()
                 if k not in {"name", "objective", "short_objective", "level", "url"}:
                     v = v.title()
+                if not v:
+                    v = None
             elif type(v) == list:
                 v = [elt.strip() for elt in v if len(elt.strip()) > 0]
-            if v == "":
-                v = None
             clean_row[k] = v
         cleaned_data.append(clean_row)
         counter += 1
@@ -64,6 +70,13 @@ def reformat_data(input_fi: str) -> list:
 
 
 def get_detailed_location(general_locations: list, detailed_location: str) -> str:
+    """
+    Takes general locations and detailed location and returns a location string that is as detailed
+    as possible but does not contain redundant information
+    :param general_locations: List of high-level locations (like Oklahoma, Texas, Virtual)
+    :param detailed_location: A detailed location (like "Oklahoma City, Oklahoma")
+    :return: normalized detailed location
+    """
     if not detailed_location:
         return None
     if len(general_locations) == 0:
@@ -75,6 +88,12 @@ def get_detailed_location(general_locations: list, detailed_location: str) -> st
 
 
 def clean_cost(cost: str) -> str:
+    """
+    Cleans program cost, reformatting to a dollar sign followed by numbers if possible,
+    and normalizing various unspecified variants to "Cost Not Specified"
+    :param cost: string representing cost of the program
+    :return: normalized cost string
+    """
     if not cost:
         return "Cost Not Specified"
     cost = cost.strip()
@@ -82,7 +101,7 @@ def clean_cost(cost: str) -> str:
         try:
             cost = str(int(float(str(cost).strip("$"))))
         except:
-            pass
+            print(f"Could not parse cost {cost}")
         if re.search(r"^\d", cost):
             return "$"+cost
         return cost
@@ -91,13 +110,12 @@ def clean_cost(cost: str) -> str:
     return cost
 
 
-def get_level(level: str) -> str:
-    if not level:
-        return None
-    return level.strip()
-
-
 def get_short_objective(objective: str) -> str:
+    """
+    Truncates objective to approximately 470 characters
+    :param objective: Program objective description
+    :return: Shortened program objective
+    """
     soft_char_limit = 470
     if objective is None or len(objective) <= soft_char_limit:
         return objective
@@ -107,10 +125,15 @@ def get_short_objective(objective: str) -> str:
         if len(short_objective) >= soft_char_limit:
             break
         short_objective += word + " "
-    return short_objective+"..."
+    return short_objective.strip()+"..."
 
 
 def get_targets(raw_targets: str) -> list:
+    """
+    Cleans list of program target participants
+    :param raw_targets: list of program target participants
+    :return: list of cleaned target participants
+    """
     targets = [t.strip().title() for t in raw_targets.replace(".", ",").split(",")]
     clean_targets = []
     for t in targets:
@@ -124,6 +147,11 @@ def get_targets(raw_targets: str) -> list:
 
 
 def get_special_focus(line: dict) -> list:
+    """
+    Extract and clean content of special focus columns
+    :param line: row of ai edu catalog spreadsheet
+    :return: list of special focus values
+    """
     foci = []
     for key in ["Underrepresented", "Community", "Gender"]:
         if key in line and line[key] and len(line[key].strip()) > 0:
@@ -132,7 +160,12 @@ def get_special_focus(line: dict) -> list:
 
 
 def clean_locations(location: str) -> list:
-    if location is None:
+    """
+    Cleans locations, including turning two-character state names into full names.
+    :param location: string represending location
+    :return: cleaned/expanded location
+    """
+    if not location:
         return []
     clean_locations = set()
     for loc in location.strip().split(","):
@@ -147,6 +180,11 @@ def clean_locations(location: str) -> list:
 
 
 def get_rows(filename: str) -> iter:
+    """
+    Reads xlsx file and returns generator of cleaned rows
+    :param filename: xlsx filename
+    :return: Generator of cleaned rows
+    """
     name_to_comment_rows = {
         "After School Programs": 4,
         "Conferences Challenges": 2,
@@ -179,6 +217,9 @@ if __name__ == "__main__":
     parser.add_argument("--raw_data", default="raw_data/AI Education Catalog.xlsx")
     parser.add_argument("--output_dir", default="../ai-education-programs/src/data")
     args = parser.parse_args()
+
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
 
     cleaned_data = reformat_data(args.raw_data)
     with open(os.path.join(args.output_dir, "data.js"), mode="w") as f:
