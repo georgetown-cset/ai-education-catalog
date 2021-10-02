@@ -104,8 +104,15 @@ def clean_cost(cost: str) -> str:
     if not cost:
         return "Cost Not Specified"
     cost = cost.strip()
-    if re.search(r"^\d", cost):
-        return "$"+cost
+    if re.search(r"\d", cost):
+        try:
+            cost = str(int(float(cost.strip("$").strip())))
+        except:
+            # not an issue if the above works out, it's just an attempt to normalize strings like
+            # $100.00 into $100
+            pass
+        if re.search(r"^\d", cost):
+            return f"${cost}"
     elif cost.lower() in {"request a quote", "not specified"}:
         return "Cost Not Specified"
     return cost
