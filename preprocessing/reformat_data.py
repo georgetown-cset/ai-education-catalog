@@ -38,7 +38,7 @@ def reformat_data(input_fi: str) -> list:
             "id": counter,
             "name": line["Program"],
             "url": line["URL"],
-            "type": line["Type"].title(),
+            "type": "Curriculum" if line["Type"].title().startswith("Curri") else line["Type"].title(),
             "organization": line.get("Organization Type"),
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
@@ -117,7 +117,7 @@ def get_short_objective(objective: str) -> str:
     :param objective: Program objective description
     :return: Shortened program objective
     """
-    soft_char_limit = 470
+    soft_char_limit = 440
     if objective is None or len(objective) <= soft_char_limit:
         return objective
     words = objective.split()
@@ -205,7 +205,7 @@ def get_rows(filename: str) -> iter:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--raw_data", default="raw_data/AI Education Catalog.xlsx")
-    parser.add_argument("--output_dir", default="../ai-education-programs/src/data")
+    parser.add_argument("--output_dir", default="../ai-education-catalog/src/data")
     args = parser.parse_args()
 
     if not os.path.exists(args.output_dir):
