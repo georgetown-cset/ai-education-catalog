@@ -49,8 +49,7 @@ class TestReformatData(unittest.TestCase):
                 "efficitur. Nulla consectetur facilisis risus et fermentum. Pellentesque "
                 "lobortis accumsan eros, eget ultrices sem accumsan eu. Aliquam eros odio, "
                 "pulvinar vitae elementum sed, aliquet sed sem. Aenean dolor sem, ultricies sit "
-                "amet purus ac, mollis interdum enim. Phasellus eget euismod magna, id lobortis "
-                "lectus. Pellentesque...")
+                "amet purus ac, mollis interdum enim. Phasellus eget euismod magna,...")
         self.assertEqual(expected_output, get_short_objective(input))
 
     def test_get_targets(self):
