@@ -50,7 +50,7 @@ const ProgramCardArea = (props) => {
     {"key": "is_free", "label": "Free",
       "tooltip": "If checked, only programs with no cost to participate will be displayed."},
     {"key": "is_underrep", "label": "Serve underrepresented populations",
-      "tooltip": "If checked, only programs that serve underrepresented groups will be displayed"},
+      "tooltip": "If checked, only programs that serve underrepresented groups in STEM fields will be displayed"},
     {"key": "is_community_program", "label": "Community-run",
       "tooltip": "If checked, only community-based programs will be displayed."}
   ];

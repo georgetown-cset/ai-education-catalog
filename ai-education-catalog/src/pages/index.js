@@ -71,8 +71,8 @@ const IndexPage = () => {
           and summer camps. Users can search by location, program type, hosting organization, and
           target audience (note that available search filters reflect what is available in the currently selected
           programs). Some listed programs may have multiple kinds of offerings; where this happens, we have chosen the
-          most prominent offering to label the program. We also identify programs that are free, serve underrepresented
-          populations, or are community oriented.
+          most prominent offering to label the program. We also identify programs that are free, serve populations
+          underrepresented in STEM fields, or are community oriented.
         </p>
         <p>
           We hope that the catalog is used to increase AI education across the United States. We believe a thriving
