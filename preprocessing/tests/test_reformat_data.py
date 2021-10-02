@@ -1,7 +1,7 @@
 import unittest
 
 from reformat_data import get_detailed_location, clean_cost, get_short_objective, get_targets, \
-    clean_locations, get_special_focus
+    clean_locations
 
 
 class TestReformatData(unittest.TestCase):
@@ -69,7 +69,3 @@ class TestReformatData(unittest.TestCase):
     def test_clean_locations_nonstate(self):
         self.assertEqual(sorted(["National", "Virtual"]), sorted(clean_locations("Virtual, National")))
 
-    def test_get_special_focus(self):
-        self.assertEqual(["Community", "Female", "Non-Binary"],
-                         get_special_focus({"id": 123, "Underrepresented": "",
-                                            "Community": "Community", "Gender": "female, non-binary"}))
