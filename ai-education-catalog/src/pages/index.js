@@ -2,6 +2,7 @@ import React, {useEffect} from "react"
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
 
 import "../styles/styles.css";
 import header1 from "../images/header1.png";
@@ -37,7 +38,7 @@ const IndexPage = () => {
       <div id="colorbar-container">
         <div id="project-description">
           <h1>AI Education Catalog</h1>
-          <h4 style={{lineHeight: "1.5rem", textAlign: "left"}}>The AI Education Catalog was created by a partnership between
+          <Typography variant={"h4"} style={{textAlign: "left", marginBottom: "20px"}}>The AI Education Catalog was created by a partnership between
             the <Link href={"https://cset.georgetown.edu"} target="_blank" rel="noopener"
           title="Link to CSET website, cset.georgetown.edu">Center for Security and Emerging Technology</Link> and
             the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>. It aims to
@@ -46,7 +47,7 @@ const IndexPage = () => {
             our <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
             title="Link to project github repository.">GitHub repository</Link> or <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSftdThJPlSsm-KGkVQl1QlrjFvO3LABNyzYaERpRrL1TwMhFQ/viewform"} target="_blank" rel="noopener"
                   title="Link to contact form.">contact form</Link>.
-          </h4>
+          </Typography>
           <div>
           <div>
             <Button style={{padding: "0px 5px", display: showMore ? "none": "block", color: "rgb(20, 196, 185)"}} onClick={() => setShowMore(true)}>+ Show Details</Button>
@@ -65,7 +66,7 @@ const IndexPage = () => {
       </div>
       <div style={{backgroundColor: "rgb(21, 32, 74)"}}>
       <div id="more-info" style={{display: showMore ? "block": "none"}}>
-        <p>
+        <Typography variant={"body1"} style={{marginBottom: "25px"}}>
           Catalog entries are listed in one of the following categories: after-school programs, apprenticeships,
           challenges, conferences, curriculums, fellowships, hackathons, internships, robotics, scholarships,
           and summer camps. Users can search by location, program type, hosting organization, and
@@ -73,14 +74,14 @@ const IndexPage = () => {
           programs). Some listed programs may have multiple kinds of offerings; where this happens, we have chosen the
           most prominent offering to label the program. We also identify programs that are free, serve populations
           underrepresented in STEM fields, or are community oriented.
-        </p>
-        <p>
+        </Typography>
+        <Typography variant={"body1"} style={{marginBottom: "50px"}}>
           We hope that the catalog is used to increase AI education across the United States. We believe a thriving
           future U.S. workforce includes cultivating globally competitive talent on the leading edge of AI design,
           development, and deployment; training and equipping all Americans to operate responsible and safe AI; and
           promoting AI workforce diversity through equitable access and opportunity to such resources.
-        </p>
-        <p>
+        </Typography>
+        <Typography variant={"body2"} style={{marginBottom: "25px"}}>
           Contributors to the AI Education Catalog
           include <Link href={"https://cset.georgetown.edu/staff/claire-perkins/"} target="_blank" rel="noopener">Claire Perkins</Link>
           , <Link href={"https://cset.georgetown.edu/staff/diana-gehlhaus/"} target="_blank" rel="noopener">Diana Gehlhaus</Link>
@@ -91,7 +92,7 @@ const IndexPage = () => {
           , and <Link href={"https://aiedu.org/about-us"} target="_blank" rel="noopener">Gayani Gamage</Link> at the AI Education Project. The
           contributors thank [AI Edu teacher reviewers], Igor Mikolic-Torreira, and Catherine Aiken for their advice
           and feedback, and Chenxi Liu for assistance with program metadata collection.
-        </p>
+        </Typography>
       </div>
       </div>
       {!isSSR && (
