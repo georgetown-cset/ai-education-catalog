@@ -12,7 +12,7 @@ const ProgramCard = (props) => {
     const [expand, setExpand] = React.useState(false);
 
     const programTypeColorsDark = {
-      "Afterschool Program": "rgba(189, 22, 172)",
+      "After-School Program": "rgba(189, 22, 172)",
       "Apprenticeship": "rgba(0, 124, 122)",
       "Challenge": "rgba(66, 13, 157)",
       "Conference": "rgba(222, 111, 24)",
@@ -27,7 +27,7 @@ const ProgramCard = (props) => {
     };
 
     const programTypeColorsLight = {
-      "Afterschool Program": "rgba(200, 59, 186)",
+      "After-School Program": "rgba(200, 59, 186)",
       "Apprenticeship": "rgba(0, 174, 171)",
       "Challenge": "rgba(102, 77, 217)",
       "Conference": "rgba(232, 135, 60)",

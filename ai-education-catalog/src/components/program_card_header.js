@@ -19,7 +19,7 @@ const ProgramCardHeader = (props) => {
   const [hover, setHover] = React.useState(false);
 
   const program_name_to_img = {
-    "Afterschool Program": after_school_program,
+    "After-School Program": after_school_program,
     "Apprenticeship": apprenticeship,
     "Challenge": challenge,
     "Conference": conference,

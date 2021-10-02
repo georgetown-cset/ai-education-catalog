@@ -38,7 +38,7 @@ def reformat_data(input_fi: str) -> list:
             "id": counter,
             "name": line["Program"],
             "url": line["URL"],
-            "type": "Curriculum" if line["Type"].title().startswith("Curri") else line["Type"].title(),
+            "type": "Curriculum" if line["Type"].title().startswith("Curri") else line["Type"].title().replace("Afterschool", "After-School"),
             "organization": line.get("Organization Type"),
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
