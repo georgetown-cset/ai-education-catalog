@@ -7,7 +7,7 @@ const AutocompleteFilter = (props) => {
   const {keyLabel, userLabel, options, currFilters, update, tooltip} = props;
 
   return (
-    <Tooltip title={tooltip} arrow placement={"top"}>
+    <Tooltip title={<span style={{fontSize: "15px"}}>{tooltip}</span>} enterDelay={600} arrow placement={"top"}>
       <div style={{display: "inline-block"}}>
         <Autocomplete
           multiple

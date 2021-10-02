@@ -7,7 +7,7 @@ const CheckboxFilter = (props) => {
   const {keyLabel, userLabel, checked, update, tooltip} = props;
 
   return (
-    <Tooltip title={tooltip} arrow placement={"top"}>
+    <Tooltip title={<span style={{fontSize: "15px"}}>{tooltip}</span>} enterDelay={600} arrow placement={"top"}>
       <FormControlLabel style={{verticalAlign: "bottom", paddingBottom: "5px", marginRight: "20px"}}
         control={
           <Checkbox
