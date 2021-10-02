@@ -25,7 +25,7 @@ const IndexPage = () => {
   const [simplify, setSimplify] = React.useState(true);
   const [showMore, setShowMore] = React.useState(false);
   const handleWindowResize = () => {
-    setSimplify(window.innerWidth < 750)
+    setSimplify(window.innerWidth < 550)
   };
 
   // thank you https://stackoverflow.com/a/63066975
@@ -66,11 +66,13 @@ const IndexPage = () => {
       <div style={{backgroundColor: "rgb(21, 32, 74)"}}>
       <div id="more-info" style={{display: showMore ? "block": "none"}}>
         <p>
-          Catalog entries are listed in one of the following categories: afterschool programs, apprenticeships,
+          Catalog entries are listed in one of the following categories: after-school programs, apprenticeships,
           challenges, conferences, curriculums, fellowships, hackathons, internships, robotics, scholarships,
-          and summer camps. Users can search by location, cost, and
+          and summer camps. Users can search by location, program type, hosting organization, and
           target audience (note that available search filters reflect what is available in the currently selected
-          programs). We also identify programs that serve underrepresented populations and are community oriented.
+          programs). Some listed programs may have multiple kinds of offerings; where this happens, we have chosen the
+          most prominent offering to label the program. We also identify programs that are free, serve underrepresented
+          populations, or are community oriented.
         </p>
         <p>
           We hope that the catalog is used to increase AI education across the United States. We believe a thriving

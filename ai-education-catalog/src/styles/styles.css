@@ -662,7 +662,7 @@ pre tt:after {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
     #header3{
         width: 100%;
     }

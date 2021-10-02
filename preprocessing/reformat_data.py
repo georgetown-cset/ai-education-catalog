@@ -19,8 +19,7 @@ def reformat_data(input_fi: str) -> list:
     :return: list of cleaned rows
     """
     cleaned_data = []
-    counter = 0
-    for line in get_rows(input_fi):
+    for counter, line in enumerate(get_rows(input_fi)):
         orig_locations = line.get("Location")
         if orig_locations:
             orig_locations = orig_locations.replace("USA", "National")
@@ -107,7 +106,7 @@ def clean_cost(cost: str) -> str:
         if re.search(r"^\d", cost):
             return "$"+cost
         return cost
-    elif cost.lower() == "request a quote":
+    elif (cost.lower() == "request a quote") or (cost.lower() == "not specified"):
         return "Cost Not Specified"
     return cost
 
@@ -206,7 +205,7 @@ def get_rows(filename: str) -> iter:
             if col_names is None:
                 col_names = [c.value.strip() for c in row if c.value is not None]
             else:
-                clean_row = {key: "" if row[idx].value is None else str(row[idx].value)
+                clean_row = {key: "" if row[idx].value is None else str(row[idx].value).strip()
                              for idx, key in enumerate(col_names)}
                 if not clean_row["Program"]:
                     continue
