@@ -66,7 +66,7 @@ const IndexPage = () => {
       </div>
       <div style={{backgroundColor: "rgb(21, 32, 74)"}}>
       <div id="more-info" style={{display: showMore ? "block": "none"}}>
-        <Typography variant={"body1"} style={{marginBottom: "25px"}}>
+        <Typography variant={"body1"} style={{marginBottom: "20px"}}>
           Catalog entries are listed in one of the following categories: after-school programs, apprenticeships,
           challenges, conferences, curriculums, fellowships, hackathons, internships, robotics, scholarships,
           and summer camps. Users can search by location, program type, hosting organization, and
@@ -75,13 +75,13 @@ const IndexPage = () => {
           most prominent offering to label the program. We also identify programs that are free, serve populations
           underrepresented in STEM fields, or are community oriented.
         </Typography>
-        <Typography variant={"body1"} style={{marginBottom: "50px"}}>
+        <Typography variant={"body1"} style={{marginBottom: "40px"}}>
           We hope that the catalog is used to increase AI education across the United States. We believe a thriving
           future U.S. workforce includes cultivating globally competitive talent on the leading edge of AI design,
           development, and deployment; training and equipping all Americans to operate responsible and safe AI; and
           promoting AI workforce diversity through equitable access and opportunity to such resources.
         </Typography>
-        <Typography variant={"body2"} style={{marginBottom: "25px"}}>
+        <Typography variant={"body2"} style={{marginBottom: "20px"}}>
           Contributors to the AI Education Catalog
           include <Link href={"https://cset.georgetown.edu/staff/claire-perkins/"} target="_blank" rel="noopener">Claire Perkins</Link>
           , <Link href={"https://cset.georgetown.edu/staff/diana-gehlhaus/"} target="_blank" rel="noopener">Diana Gehlhaus</Link>
