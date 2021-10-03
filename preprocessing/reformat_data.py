@@ -13,6 +13,8 @@ from openpyxl import load_workbook
 EXPECTED_TYPES = {"After-School Program", "Apprenticeship", "Challenge", "Conference", "Curriculum", "Fellowship",
                       "Hackathon", "Internship", "Robotics", "Scholarship", "Summer Camp"}
 EXPECTED_ORGANIZATIONS = {"Government", "Non-Profit", "Private", "Public", "University"}
+EXPECTED_TARGET_AUDIENCE = {"Anyone", "Educators", "Elementary school students", "Middle school students",
+                            "High school students", "Postsecondary students", "Professionals"}
 REQUIRED_KEYS = ["name", "url", "type", "organization", "location", "type", "target"]
 
 
@@ -178,13 +180,16 @@ def get_targets(raw_targets: str) -> list:
     """
     targets = [t.strip().title() for t in raw_targets.replace(".", ",").split(",")]
     clean_targets = []
-    for t in targets:
-        if t in {"Elementary", "Middle", "High"}:
-            clean_targets.append(t+" school students")
-        elif t == "Postsecondary":
-            clean_targets.append(t+" students")
-        else:
-            clean_targets.append(t)
+    for target in targets:
+        if not target:
+            continue
+        clean_target = target
+        if target in {"Elementary", "Middle", "High"}:
+            clean_target = target+" school students"
+        elif target == "Postsecondary":
+            clean_target = target+" students"
+        assert clean_target in EXPECTED_TARGET_AUDIENCE, clean_target
+        clean_targets.append(clean_target)
     return clean_targets
 
 
