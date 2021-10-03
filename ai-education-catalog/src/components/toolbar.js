@@ -17,7 +17,7 @@ const CatalogToolbar = (props) => {
           <img src={cset_logo} style={{height: "30px", margin: "0", verticalAlign: "middle"}} alt="CSET Logo"/>
         </a>
       </div>
-      <div style={{width: simplify? "100%" : "33%", display: "inline-block", verticalAlign: "top", textAlign: "center", height: "35px"}}>
+      <div style={{width: simplify? "100%" : "33%", display: "inline-block", verticalAlign: "middle", textAlign: "center", height: "35px"}}>
         <a href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noreferrer"
           title="Link to project github repository.">
           <img src={github_logo} alt="Github logo" height={"25px"}  style={{verticalAlign: "bottom"}}/>
