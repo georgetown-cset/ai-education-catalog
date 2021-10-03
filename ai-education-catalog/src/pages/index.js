@@ -38,7 +38,8 @@ const IndexPage = () => {
       <div id="colorbar-container">
         <div id="project-description">
           <h1>AI Education Catalog</h1>
-          <Typography variant={"h4"} style={{textAlign: "left", marginBottom: "20px"}}>The AI Education Catalog was created by a partnership between
+          <Typography variant={"h4"} style={{textAlign: "left", marginBottom: "20px"}}>The AI Education Catalog was
+            created by a partnership between
             the <Link href={"https://cset.georgetown.edu"} target="_blank" rel="noopener"
           title="Link to CSET website, cset.georgetown.edu">Center for Security and Emerging Technology</Link> and
             the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>. It aims to
@@ -50,8 +51,10 @@ const IndexPage = () => {
           </Typography>
           <div>
           <div>
-            <Button style={{padding: "0px 5px", display: showMore ? "none": "block", color: "rgb(20, 196, 185)"}} onClick={() => setShowMore(true)}>+ Show Details</Button>
-            <Button style={{padding: "0px 5px", display: showMore ? "block": "none", color: "rgb(20, 196, 185)"}} onClick={() => setShowMore(false)}>- Hide Details</Button>
+            <Button style={{padding: "0px 5px", display: showMore ? "none": "block", color: "rgb(20, 196, 185)"}}
+                    onClick={() => setShowMore(true)}>+ Show Details</Button>
+            <Button style={{padding: "0px 5px", display: showMore ? "block": "none", color: "rgb(20, 196, 185)"}}
+                    onClick={() => setShowMore(false)}>- Hide Details</Button>
           </div>
           </div>
         </div>

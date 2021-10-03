@@ -48,7 +48,8 @@ const ProgramCardHeader = (props) => {
             <span style={{color: "white", textDecoration: (hover ? "underline": "")}}>{program.name}</span>
           </Typography>
           <Typography variant={"body2"} style={{fontSize: "0.85rem", marginTop: "5px"}}>
-            <img src={program_name_to_img[program.type]} alt={program.type} style={{height: "15px", marginRight: "7px"}}/> {program.type}
+            <img src={program_name_to_img[program.type]} alt={program.type} style={{height: "15px",
+              marginRight: "7px"}}/> {program.type}
           </Typography>
         </CardActionArea>
     </div>
