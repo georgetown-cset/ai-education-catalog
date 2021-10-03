@@ -26,6 +26,9 @@ class TestReformatData(unittest.TestCase):
     def test_clean_cost_numeric(self):
         self.assertEqual("$100", clean_cost(" 100"))
 
+    def test_clean_cost_float(self):
+        self.assertEqual("$100", clean_cost(" 100.00 "))
+
     def test_clean_cost_quote(self):
         self.assertEqual("Cost Not Specified", clean_cost("Request a Quote"))
 
