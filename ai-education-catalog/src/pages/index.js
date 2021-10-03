@@ -90,7 +90,7 @@ const IndexPage = () => {
           and <Link href={"https://aiedu.org/team-ehrik-aldana"} target="_blank" rel="noopener">Ehrik Aldana</Link>
           , <Link href={"https://aiedu.org/team-grace-doerfler"} target="_blank" rel="noopener">Grace Doerfler</Link>
           , and <Link href={"https://aiedu.org/about-us"} target="_blank" rel="noopener">Gayani Gamage</Link> at the AI Education Project. The
-          contributors thank [AI Edu teacher reviewers], James Dunham, Rebecca Gelles, Igor Mikolic-Torreira,
+          contributors thank James Dunham, Rebecca Gelles, Igor Mikolic-Torreira,
           and Catherine Aiken for their advice and feedback, and Chenxi Liu for assistance with program metadata collection.
         </Typography>
       </div>
