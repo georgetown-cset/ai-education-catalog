@@ -67,6 +67,7 @@ const ProgramCardArea = (props) => {
   const [filterMetadata, setFilterMetadata] = React.useState({...defaultFilterValues});
   // randomly shuffle, but keep ordering consistent until user refreshes the page
   const [filteredPrograms, setFilteredPrograms] = React.useState(shuffledData.slice(0));
+  const [filteredCSVPrograms, setFilteredCSVPrograms] = React.useState(filteredPrograms);
 
   // setup CSV
   const exportFilename = "ai-education-programs.csv";
@@ -173,7 +174,18 @@ const ProgramCardArea = (props) => {
     }
 
     setFilteredPrograms(filteredData);
+    setFilteredCSVPrograms(mkPrettyPrograms(filteredData));
     setFilterMetadata(filteredProgramMetadata);
+  };
+
+  const mkPrettyPrograms = (filteredData) => {
+    return filteredData.map((row) => {
+      const clean_row = {};
+      for(let key of Object.keys(row)) {
+        clean_row[key] = row[key] === null ? null : row[key].toString().replaceAll(/"/g, "'");
+      }
+      return clean_row;
+    });
   };
 
   const isNotSelected = (rawFilters, program, key) => {
@@ -208,6 +220,7 @@ const ProgramCardArea = (props) => {
 
   const resetFilter = () => {
     setFilteredPrograms(shuffledData.slice(0));
+    setFilteredCSVPrograms(mkPrettyPrograms(shuffledData.slice(0)));
     const origFilterVals = {...defaultFilterValues};
     setFilterValues(origFilterVals);
     handleFilterRows(origFilterVals);
@@ -241,7 +254,7 @@ const ProgramCardArea = (props) => {
           <Button color="primary" variant="contained" style={{backgroundColor: "rgb(21, 32, 74)",
             marginBottom: "10px", borderRadius: "25px"}}>
             <CloudDownloadIcon size="small"/>
-            <CSVLink data={filteredPrograms} filename={exportFilename} headers={headers}
+            <CSVLink data={filteredCSVPrograms} filename={exportFilename} headers={headers}
                      style={{verticalAlign: "center", color: "inherit", textDecoration: "none"}}>
               &nbsp;Download {filteredPrograms.length} selected program{filteredPrograms.length === 1 ? "" : "s"}
             </CSVLink>
