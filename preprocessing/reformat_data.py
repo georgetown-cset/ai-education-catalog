@@ -39,6 +39,8 @@ def reformat_data(input_fi: str) -> list:
         short_obj = get_short_objective(line.get("Objective"))
         if line["Type"].title() not in EXPECTED_TYPES:
             print(f"Unexpected program type for {line}")
+        if line.get("Level") and "00:00" in line.get("Level"):
+            raise ValueError(f"Level has timestamp type in {line}")
         row = {
             "id": counter,
             "name": line["Program"],
