@@ -68,7 +68,7 @@ def reformat_data(input_fi: str) -> list:
         for k, v in row.items():
             if type(v) == str:
                 v = v.strip()
-                if k not in {"name", "objective", "short_objective", "level", "url"}:
+                if k not in {"name", "objective", "short_objective", "level", "url", "location_details"}:
                     v = v.title()
                 if not v:
                     v = None
@@ -97,12 +97,13 @@ def get_detailed_location(general_locations: list, detailed_location: str) -> st
     if not detailed_location:
         return None
     clean_detailed_location = detailed_location.strip().strip("*").strip()
-    if len(general_locations) == 0:
-        return clean_detailed_location
-    detailed_location = detailed_location.strip()
+    if re.search(r"^[a-z]", detailed_location):
+        # only titlecase if we think it's lowercase because some detailed locations start
+        # with acronyms (MIT, NYU...)
+        clean_detailed_location = clean_detailed_location.title()
     if detailed_location in general_locations:
         return None
-    return detailed_location.strip("*").strip()
+    return clean_detailed_location
 
 
 def clean_cost(cost: str) -> str:
