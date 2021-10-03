@@ -10,8 +10,9 @@ import us
 from openpyxl import load_workbook
 
 
-EXPECTED_TYPES = {"Afterschool Program", "Apprenticeship", "Challenge", "Conference", "Curriculum", "Fellowship",
+EXPECTED_TYPES = {"After-School Program", "Apprenticeship", "Challenge", "Conference", "Curriculum", "Fellowship",
                       "Hackathon", "Internship", "Robotics", "Scholarship", "Summer Camp"}
+REQUIRED_KEYS = ["name", "url", "type", "organization", "location", "type", "target"]
 
 
 def reformat_data(input_fi: str) -> list:
@@ -38,7 +39,7 @@ def reformat_data(input_fi: str) -> list:
             "id": counter,
             "name": line["Program"],
             "url": line["URL"],
-            "type": "Curriculum" if line["Type"].title().startswith("Curri") else line["Type"].title().replace("Afterschool", "After-School"),
+            "type": line["Type"],
             "organization": line.get("Organization Type"),
             "target": targets,
             "is_free": line.get("Cost", "").strip().lower() == "free",
@@ -68,6 +69,9 @@ def reformat_data(input_fi: str) -> list:
             elif type(v) == list:
                 v = [elt.strip() for elt in v if len(elt.strip()) > 0]
             clean_row[k] = v
+        for key in REQUIRED_KEYS:
+            if not clean_row[key]:
+                print(f"Empty value for {key} in {clean_row}")
         cleaned_data.append(clean_row)
         counter += 1
     cleaned_data.sort(key=lambda r: r["name"])
