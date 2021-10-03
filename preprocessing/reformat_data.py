@@ -24,12 +24,16 @@ def reformat_data(input_fi: str) -> list:
     :return: list of cleaned rows
     """
     cleaned_data = []
+    missing_location = []
     # get_rows returns an iterator of dicts that have had their keys and values stripped
     for counter, line in enumerate(get_rows(input_fi)):
         orig_locations = line.get("Location")
         if orig_locations:
             orig_locations = orig_locations.replace("USA", "National")
         locations = clean_locations(orig_locations)
+        if not locations:
+            missing_location.append(line["Program"]+"-"+line["Type"])
+            locations = ["National"]
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
         short_obj = get_short_objective(line.get("Objective"))
@@ -75,6 +79,7 @@ def reformat_data(input_fi: str) -> list:
         cleaned_data.append(clean_row)
         counter += 1
     cleaned_data.sort(key=lambda r: r["name"])
+    print(f"Missing location for {missing_location}, replaced with 'National'")
     return cleaned_data
 
 
