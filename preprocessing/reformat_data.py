@@ -12,6 +12,7 @@ from openpyxl import load_workbook
 
 EXPECTED_TYPES = {"After-School Program", "Apprenticeship", "Challenge", "Conference", "Curriculum", "Fellowship",
                       "Hackathon", "Internship", "Robotics", "Scholarship", "Summer Camp"}
+EXPECTED_ORGANIZATIONS = {"Government", "Non-Profit", "Private", "Public", "University"}
 REQUIRED_KEYS = ["name", "url", "type", "organization", "location", "type", "target"]
 
 
@@ -37,10 +38,7 @@ def reformat_data(input_fi: str) -> list:
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
         short_obj = get_short_objective(line.get("Objective"))
-        if line["Type"].title() not in EXPECTED_TYPES:
-            print(f"Unexpected program type for {line}")
-        if line.get("Level") and "00:00" in line.get("Level"):
-            raise ValueError(f"Level has timestamp type in {line}")
+        pre_check_row(line)
         row = {
             "id": counter,
             "name": line["Program"],
@@ -64,25 +62,49 @@ def reformat_data(input_fi: str) -> list:
             "pre_reqs": pre_reqs,
             "duration": line.get("Duration")
         }
-        clean_row = {}
-        for k, v in row.items():
-            if type(v) == str:
-                v = v.strip()
-                if k not in {"name", "objective", "short_objective", "level", "url", "location_details"}:
-                    v = v.title()
-                if not v:
-                    v = None
-            elif type(v) == list:
-                v = [elt.strip() for elt in v if len(elt.strip()) > 0]
-            clean_row[k] = v
-        for key in REQUIRED_KEYS:
-            if not clean_row[key]:
-                print(f"Empty value for {key} in {clean_row}")
+        clean_row = postprocess_row(row)
         cleaned_data.append(clean_row)
-        counter += 1
     cleaned_data.sort(key=lambda r: r["name"])
     print(f"Missing location for {missing_location}, replaced with 'National'")
     return cleaned_data
+
+
+def pre_check_row(line: dict) -> None:
+    """
+    Runs data checks and prints or raises error depending on severity
+    :param line: Line of data
+    :return: None
+    """
+    row_id = f"'{line['Program']}' in {line['Type']}"
+    if line["Type"].title() not in EXPECTED_TYPES:
+        print(f"Unexpected program type for {row_id}")
+    if line.get("Level") and "00:00" in line.get("Level"):
+        raise ValueError(f"Level has timestamp type in {row_id}")
+    if line.get("Organization Type") not in EXPECTED_ORGANIZATIONS:
+        print(f"Unexpected organization type for {row_id}.")
+
+
+def postprocess_row(row: dict) -> dict:
+    """
+    Does shared post-processing of data values and final checks
+    :param row: row of data
+    :return: cleaned row
+    """
+    clean_row = {}
+    for k, v in row.items():
+        if type(v) == str:
+            v = v.strip()
+            if k not in {"name", "objective", "short_objective", "level", "url", "location_details"}:
+                v = v.title()
+            if not v:
+                v = None
+        elif type(v) == list:
+            v = [elt.strip() for elt in v if len(elt.strip()) > 0]
+        clean_row[k] = v
+    for key in REQUIRED_KEYS:
+        if not clean_row[key]:
+            print(f"Empty value for {key} in '{row['name']}' in {row['type']}")
+    return clean_row
 
 
 def get_detailed_location(general_locations: list, detailed_location: str) -> str:
