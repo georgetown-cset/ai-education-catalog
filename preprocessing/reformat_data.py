@@ -213,7 +213,7 @@ def get_rows(filename: str) -> iter:
                 col_names = [c.value.strip() for c in row if c.value is not None]
                 assert col_names[0] == "Program", f"Expected first column to be 'Program' in {sheet.title}"
             else:
-                stripped_row = {key: "" if row[idx].value is None else str(row[idx].value).strip()
+                stripped_row = {key: "" if row[idx].value is None else str(row[idx].value).strip().strip(",").strip()
                              for idx, key in enumerate(col_names)}
                 if not stripped_row["Program"]:
                     continue
