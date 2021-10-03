@@ -55,8 +55,8 @@ class TestReformatData(unittest.TestCase):
     def test_get_targets(self):
         self.assertEqual(
             ["Elementary school students", "Middle school students",
-             "High school students", "Postsecondary students", "Other"],
-            get_targets("Elementary, Middle, High, Postsecondary, Other"))
+             "High school students", "Postsecondary students", "Anyone"],
+            get_targets("Elementary, Middle, High, Postsecondary, Anyone"))
 
     def test_clean_locations_state_and_nonstate_list(self):
         self.assertEqual(sorted(["Kansas", "National", "Oklahoma", "Mississippi"]),
