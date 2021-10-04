@@ -16,6 +16,12 @@ module.exports = {
       },
     },
     {
+      resolve: 'gatsby-plugin-google-gtag',
+      options: {
+        trackingIds: ['UA-148144643-1'],
+      },
+    },
+    {
       resolve: 'gatsby-plugin-manifest',
       options: {
         start_url: '/',
