@@ -42,8 +42,8 @@ const IndexPage = () => {
             created by a partnership between
             the <Link href={"https://cset.georgetown.edu"} target="_blank" rel="noopener"
           title="Link to CSET website, cset.georgetown.edu">Center for Security and Emerging Technology</Link> and
-            the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>. It aims to
-            raise awareness of the AI-related programs available for students and educators and to help inform AI
+            the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>. It aims
+            to raise awareness of the AI-related programs available to students and educators and to help inform AI
             education and workforce policy. We welcome contributions or corrections through
             our <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
             title="Link to project github repository.">GitHub repository</Link> or <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSftdThJPlSsm-KGkVQl1QlrjFvO3LABNyzYaERpRrL1TwMhFQ/viewform"} target="_blank" rel="noopener"
@@ -70,19 +70,23 @@ const IndexPage = () => {
       <div style={{backgroundColor: "rgb(21, 32, 74)"}}>
       <div id="more-info" style={{display: showMore ? "block": "none"}}>
         <Typography variant={"body1"} style={{marginBottom: "20px"}}>
-          Catalog entries are listed in one of the following categories: after-school programs, apprenticeships,
-          challenges, conferences, curriculums, fellowships, hackathons, internships, robotics, scholarships,
-          and summer camps. Users can search by location, program type, hosting organization, and
-          target audience (note that available search filters reflect what is available in the currently selected
-          programs). Some listed programs may have multiple kinds of offerings; where this happens, we have chosen the
-          most prominent offering to label the program. We also identify programs that are free, target populations
+          Catalog entries are listed in one of the following categories: after-school
+          programs, apprenticeships, challenges, conferences, curricula, fellowships,
+          hackathons, internships, robotics, scholarships, and summer camps. Users can
+          search by location, program type, hosting organization, and target audience
+          (note that available search filters reflect what is available in the currently
+          selected programs). Some listed programs may have multiple kinds of offerings;
+          where this happens, we have chosen the most prominent offering to label the
+          program. We also identify programs that are free, target populations
           underrepresented in STEM fields, or are community oriented.
         </Typography>
         <Typography variant={"body1"} style={{marginBottom: "40px"}}>
-          We hope that the catalog is used to increase AI education across the United States. We believe a thriving
-          future U.S. workforce includes cultivating globally competitive talent on the leading edge of AI design,
-          development, and deployment; training and equipping all Americans to operate responsible and safe AI; and
-          promoting AI workforce diversity through equitable access and opportunity to such resources.
+          We hope that the catalog is used to increase AI education across the United
+          States. We believe a thriving future U.S. workforce includes cultivating
+          globally competitive talent on the leading edge of AI design, development, and
+          deployment; training and equipping all Americans to operate responsible and
+          safe AI; and promoting AI workforce diversity through equitable access and
+          opportunity to such resources.
         </Typography>
         <Typography variant={"body2"} style={{marginBottom: "20px"}}>
           Contributors to the AI Education Catalog
@@ -92,9 +96,10 @@ const IndexPage = () => {
           , and <Link href={"https://cset.georgetown.edu/staff/jennifer-melot/"} target="_blank" rel="noopener">Jennifer Melot</Link> at CSET,
           and <Link href={"https://aiedu.org/team-ehrik-aldana"} target="_blank" rel="noopener">Ehrik Aldana</Link>
           , <Link href={"https://aiedu.org/team-grace-doerfler"} target="_blank" rel="noopener">Grace Doerfler</Link>
-          , and <Link href={"https://aiedu.org/about-us"} target="_blank" rel="noopener">Gayani Gamage</Link> at the AI Education Project. The
-          contributors thank James Dunham, Rebecca Gelles, Igor Mikolic-Torreira,
-          and Catherine Aiken for their advice and feedback, and Chenxi Liu for assistance with program metadata collection.
+          , and <Link href={"https://aiedu.org/about-us"} target="_blank" rel="noopener">Gayani Gamage</Link> at the
+          AI Education Project. The contributors thank James Dunham, Rebecca Gelles, Igor Mikolic-Torreira,
+          Catherine Aiken, and Lynne Weil for their advice and feedback, and Chenxi Liu for assistance with
+          program metadata collection.
         </Typography>
       </div>
       </div>
