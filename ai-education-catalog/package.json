@@ -28,7 +28,14 @@
     "use-query-params": "^1.2.3"
   },
   "devDependencies": {
-    "prettier": "2.2.1"
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.2",
+    "babel-jest": "^27.2.4",
+    "babel-preset-gatsby": "^1.14.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.2.4",
+    "prettier": "2.2.1",
+    "react-test-renderer": "^17.0.2"
   },
   "keywords": [
     "gatsby"
@@ -41,7 +48,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
