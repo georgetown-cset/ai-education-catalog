@@ -44,8 +44,8 @@ const IndexPage = ({data}) => {
             the <Link href={"https://cset.georgetown.edu"} target="_blank" rel="noopener"
           title="Link to CSET website, cset.georgetown.edu">Center for Security and Emerging Technology</Link> and
             the <Link href={"https://aiedu.org/"} target="_blank" rel="noopener">AI Education Project</Link>. It aims
-            to raise awareness of the AI-related programs available to students and educators and to help inform AI
-            education and workforce policy. We welcome contributions or corrections through
+            to raise awareness of the AI-related programs available to students and educators in the United States
+            and to help inform AI education and workforce policy. We welcome contributions or corrections through
             our <Link href={"https://github.com/georgetown-cset/ai-education-catalog"} target="_blank" rel="noopener"
             title="Link to project github repository.">GitHub repository</Link> or <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSftdThJPlSsm-KGkVQl1QlrjFvO3LABNyzYaERpRrL1TwMhFQ/viewform"} target="_blank" rel="noopener"
                   title="Link to contact form.">contact form</Link>.
