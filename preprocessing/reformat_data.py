@@ -215,7 +215,8 @@ def clean_locations(location: str, program_name: str) -> list:
                 loc = loc_obj.name.title().replace(" Of ", " of ")
         clean_locations.add(loc)
         if loc not in expected_locations:
-            print(f"Unexpected location for '{program_name}': {loc}")
+            print(f"Unexpected location for '{program_name}': {loc}. If this is intentional, consider "
+                  f"updating dropdownValuesComparator in program_card_area.js and clean_locations in reformat_data.py")
     return list(clean_locations)
 
 
