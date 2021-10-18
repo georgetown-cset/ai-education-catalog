@@ -33,7 +33,7 @@ def reformat_data(input_fi: str) -> list:
         orig_locations = line.get("Location")
         if orig_locations:
             orig_locations = orig_locations.replace("USA", "National")
-        locations = clean_locations(orig_locations)
+        locations = clean_locations(orig_locations, line["Program"])
         if not locations:
             missing_location.append(line["Program"]+"-"+line["Type"])
             locations = ["National"]
@@ -193,12 +193,15 @@ def get_targets(raw_targets: str) -> list:
     return clean_targets
 
 
-def clean_locations(location: str) -> list:
+def clean_locations(location: str, program_name: str) -> list:
     """
     Cleans locations, including turning two-character state names into full names.
-    :param location: string represending location
+    :param location: string representing location
+    :param program_name: name of the program (used in warning messages)
     :return: cleaned/expanded location
     """
+    expected_locations = ["Global", "National", "Virtual", "District of Columbia"] + \
+                         [s.name for s in us.states.STATES_AND_TERRITORIES]
     if not location:
         return []
     clean_locations = set()
@@ -207,10 +210,12 @@ def clean_locations(location: str) -> list:
         if len(loc) == 2:
             loc_obj = us.states.lookup(loc)
             if loc_obj is None:
-                print("Could not convert location for "+loc)
+                print(f"Could not convert location for '{program_name}': {loc}")
             else:
                 loc = loc_obj.name.title().replace(" Of ", " of ")
-        clean_locations.add(loc.strip())
+        clean_locations.add(loc)
+        if loc not in expected_locations:
+            print(f"Unexpected location for '{program_name}': {loc}")
     return list(clean_locations)
 
 

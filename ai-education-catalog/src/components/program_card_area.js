@@ -165,9 +165,10 @@ const ProgramCardArea = (props) => {
 
   const dropdownValuesComparator = (a, b, key) => {
     if(key === "location"){
-      // make "Virtual" and "National" appear first in the location dropdown
-      const a_is_remote = (a === "Virtual") || (a === "National");
-      const b_is_remote = (b === "Virtual") || (b === "National");
+      // make locations above the state level appear first in the dropdown
+      const location_order = ["Global", "National", "Virtual"];
+      const a_is_remote = location_order.indexOf(a) > -1;
+      const b_is_remote = location_order.indexOf(b) > -1;
       if(a_is_remote || b_is_remote) {
         if (a_is_remote && b_is_remote) {
           return a > b ? 1 : -1;
