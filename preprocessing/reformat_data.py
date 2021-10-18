@@ -5,9 +5,11 @@ import argparse
 import json
 import os
 import re
+import requests
 import us
 
 from openpyxl import load_workbook
+from tqdm import tqdm
 
 
 EXPECTED_TYPES = {"After-School Program", "Apprenticeship", "Challenge", "Conference", "Curriculum", "Fellowship",
@@ -18,18 +20,20 @@ EXPECTED_TARGET_AUDIENCE = {"Anyone", "Educators", "Elementary school students",
 REQUIRED_KEYS = ["name", "url", "type", "organization", "location", "type", "target"]
 
 
-def reformat_data(input_fi: str) -> list:
+def reformat_data(input_fi: str, check_links: bool) -> list:
     """
     Reformat xlsx catalog download from
     https://docs.google.com/spreadsheets/d/1y-Ez9NY1nhSyewMOqbosGueSqieiFinj/edit#gid=2077629231
     into list of cleaned rows
     :param input_fi: path to the xlsx download
+    :param check_links: if true, function will check each program link and print a warning message if a request
+        returns a non-200 status code
     :return: list of cleaned rows
     """
     cleaned_data = []
     missing_location = []
     # get_rows returns an iterator of dicts that have had their keys and values stripped
-    for counter, line in enumerate(get_rows(input_fi)):
+    for counter, line in tqdm(enumerate(get_rows(input_fi))):
         orig_locations = line.get("Location")
         if orig_locations:
             orig_locations = orig_locations.replace("USA", "National")
@@ -40,7 +44,7 @@ def reformat_data(input_fi: str) -> list:
         targets = get_targets(line.get("Target"))
         pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
         short_obj = get_short_objective(line.get("Objective"))
-        pre_check_row(line)
+        pre_check_row(line, check_links)
         row = {
             "id": counter,
             "name": line["Program"],
@@ -71,10 +75,12 @@ def reformat_data(input_fi: str) -> list:
     return cleaned_data
 
 
-def pre_check_row(line: dict) -> None:
+def pre_check_row(line: dict, check_link: bool) -> None:
     """
     Runs data checks and prints or raises error depending on severity
     :param line: Line of data
+    :param check_link: if true, will print a warning message if a request to the program's url returns a non-200
+        status code
     :return: None
     """
     row_id = f"'{line['Program']}' in {line['Type']}"
@@ -84,6 +90,15 @@ def pre_check_row(line: dict) -> None:
         raise ValueError(f"Level has timestamp type in {row_id}")
     if line.get("Organization Type") not in EXPECTED_ORGANIZATIONS:
         print(f"Unexpected organization type for {row_id}.")
+    if check_link:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:87.0) Gecko/20100101 Firefox/87.0"
+        }
+        try:
+            resp = requests.get(line["URL"], headers=headers)
+            assert resp.status_code == 200
+        except Exception:
+            print(f"Possibly incorrect link ( {line['URL']} ) for '{line['Program']}'")
 
 
 def postprocess_row(row: dict) -> dict:
@@ -258,11 +273,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--raw_data", default="raw_data/AI Education Catalog.xlsx")
     parser.add_argument("--output_dir", default="../ai-education-catalog/src/data")
+    parser.add_argument("--check_links", default=False, action="store_true",
+                        help="If specified, will check each program link. "
+                             "Warning: this takes a long time and is best done as a final data check.")
     args = parser.parse_args()
 
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
 
-    cleaned_data = reformat_data(args.raw_data)
+    cleaned_data = reformat_data(args.raw_data, args.check_links)
     with open(os.path.join(args.output_dir, "data.js"), mode="w") as f:
         f.write("const data = "+json.dumps(cleaned_data)+"\n\n\nexport {data};")
