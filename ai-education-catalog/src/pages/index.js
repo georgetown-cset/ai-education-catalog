@@ -1,4 +1,5 @@
 import React, {useEffect} from "react"
+import {graphql} from "gatsby";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
@@ -14,7 +15,7 @@ import CatalogToolbar from "../components/toolbar";
 
 const ProgramCardArea = React.lazy(() => import("../components/program_card_area"));
 
-const IndexPage = () => {
+const IndexPage = ({data}) => {
 
   useEffect(() => {
     document.title = "AI Education Catalog";
@@ -99,7 +100,7 @@ const IndexPage = () => {
           , and <Link href={"https://aiedu.org/about-us"} target="_blank" rel="noopener">Gayani Gamage</Link> at the
           AI Education Project. The contributors thank James Dunham, Rebecca Gelles, Igor Mikolic-Torreira,
           Catherine Aiken, and Lynne Weil for their advice and feedback, and Chenxi Liu for assistance with
-          program metadata collection.
+          program metadata collection. The catalog was last updated on {data.site.buildTime}.
         </Typography>
       </div>
       </div>
@@ -111,5 +112,13 @@ const IndexPage = () => {
     </div>
   )
 };
+
+export const query = graphql`
+  query {
+    site {
+      buildTime(formatString: "MMMM DD, YYYY")
+    }
+  }
+`;
 
 export default IndexPage
