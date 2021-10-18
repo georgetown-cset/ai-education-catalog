@@ -154,28 +154,43 @@ const ProgramCardArea = (props) => {
     }
     for(let key in filteredProgramMetadata) {
       filteredProgramMetadata[key] = [...new Set(filteredProgramMetadata[key])].sort((a, b) => {
-        // make "Virtual" and "National" appear first in the location dropdown
-        const a_is_remote = (a === "Virtual") || (a === "National");
-        const b_is_remote = (b === "Virtual") || (b === "National");
-        if((key === "location") && (a_is_remote || b_is_remote)){
-          if(a_is_remote && b_is_remote){
-            return b > a ? 1 : -1;
-          } else if(a_is_remote){
-            return -1;
-          } else {
-            return 1;
-          }
-        }
-        if(a === b){
-          return 0;
-        }
-        return a > b ? 1 : -1;
+        return dropdownValuesComparator(a, b, key);
       });
     }
 
     setFilteredPrograms(filteredData);
     setFilteredCSVPrograms(mkPrettyPrograms(filteredData));
     setFilterMetadata(filteredProgramMetadata);
+  };
+
+  const dropdownValuesComparator = (a, b, key) => {
+    if(key === "location"){
+      // make "Virtual" and "National" appear first in the location dropdown
+      const a_is_remote = (a === "Virtual") || (a === "National");
+      const b_is_remote = (b === "Virtual") || (b === "National");
+      if(a_is_remote || b_is_remote) {
+        if (a_is_remote && b_is_remote) {
+          return a > b ? 1 : -1;
+        } else if (a_is_remote) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+    }
+    if(key === "target"){
+      // make school levels appear in chronological order
+      const target_order = ["Anyone", "Elementary school students", "Middle school students", "High school students",
+        "Postsecondary students", "Educators", "Professionals"];
+      const a_idx = target_order.indexOf(a);
+      const b_idx = target_order.indexOf(b);
+      // put any levels that do not appear in the target order list at the end of the dropdown
+      return (a_idx === -1 ? 100000 : a_idx) > (b_idx === -1 ? 100000 : b_idx) ? 1 : -1;
+    }
+    if(a === b){
+      return 0;
+    }
+    return a > b ? 1 : -1;
   };
 
   const mkPrettyPrograms = (filteredData) => {
