@@ -79,7 +79,8 @@ const IndexPage = ({data}) => {
           selected programs). Some listed programs may have multiple kinds of offerings;
           where this happens, we have chosen the most prominent offering to label the
           program. We also identify programs that are free, target populations
-          underrepresented in STEM fields, or are community oriented.
+          underrepresented in STEM fields, or are community oriented. The descriptions
+          displayed on each program card were retrieved from that program's website.
         </Typography>
         <Typography variant={"body1"} style={{marginBottom: "40px"}}>
           We hope that the catalog is used to increase AI education across the United
