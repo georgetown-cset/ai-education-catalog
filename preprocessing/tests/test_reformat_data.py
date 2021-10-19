@@ -63,11 +63,11 @@ class TestReformatData(unittest.TestCase):
 
     def test_clean_locations_state_and_nonstate_list(self):
         self.assertEqual(sorted(["Kansas", "National", "Oklahoma", "Mississippi"]),
-                         sorted(clean_locations("OK, National, MS, Kansas")))
+                         sorted(clean_locations("OK, National, MS, Kansas", "Test")))
 
     def test_clean_locations_state(self):
-        self.assertEqual(["Oklahoma"], clean_locations("OK"))
+        self.assertEqual(["Oklahoma"], clean_locations("OK", "Test"))
 
     def test_clean_locations_nonstate(self):
-        self.assertEqual(sorted(["National", "Virtual"]), sorted(clean_locations("Virtual, National")))
+        self.assertEqual(sorted(["National", "Virtual"]), sorted(clean_locations("Virtual, National", "Test")))
 
