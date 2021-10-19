@@ -2,3 +2,4 @@ us
 openpyxl
 pytest
 requests
+tqdm
