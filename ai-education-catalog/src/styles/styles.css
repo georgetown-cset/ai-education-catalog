@@ -692,6 +692,10 @@ span, p, div, h1, h2, h3, h4, h5, h6, a, input, table, tr, td, th, label{
         top: 95px;
         bottom: auto;
     }
+
+    #project-description > h4 {
+      font-size: 120% !important;
+    }
 }
 
 #header-color-overlay{
