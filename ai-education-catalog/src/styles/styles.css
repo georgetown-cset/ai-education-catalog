@@ -638,13 +638,13 @@ span, p, div, h1, h2, h3, h4, h5, h6, a, input, table, tr, td, th, label{
     height: auto;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1032px) {
     .header-img{
         width: 20%;
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1032px) {
     .header-img{
         width: 33%;
     }
