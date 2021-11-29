@@ -112,6 +112,7 @@ const ProgramCardArea = (props) => {
     }
     setFilterValues(updatedFilterValues);
     handleFilterRows(updatedFilterValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleFilterRows = (updatedFilterValues) => {
