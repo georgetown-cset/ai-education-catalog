@@ -4,7 +4,7 @@ This repository contains the code that generates the [AI Education Catalog](http
 
 ### Preprocessing
 
-To prepare the data for the catalog, we downloaded the contents of the 
+To prepare the initial version of the catalog data as of the project's first release, we downloaded the contents of the 
 [google sheet version of the catalog](https://docs.google.com/spreadsheets/d/1y-Ez9NY1nhSyewMOqbosGueSqieiFinj/edit#gid=2077629231),
 as an xlsx, reformatted this into `preprocessing/raw_data/ai_education_catalog.csv` using 
 `preprocessing/sheets_to_csv.py`, and then ran `preprocessing/reformat_data.py` to reformat the resulting
