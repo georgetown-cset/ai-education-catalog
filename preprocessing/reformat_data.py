@@ -2,13 +2,13 @@
 Reformat AI Education Catalog spreadsheet into javascript object.
 """
 import argparse
+import csv
 import json
 import os
 import re
 import requests
 import us
 
-from openpyxl import load_workbook
 from tqdm import tqdm
 
 
@@ -22,9 +22,7 @@ REQUIRED_KEYS = ["name", "url", "type", "organization", "location", "type", "tar
 
 def reformat_data(input_fi: str, check_links: bool) -> list:
     """
-    Reformat xlsx catalog download from
-    https://docs.google.com/spreadsheets/d/1y-Ez9NY1nhSyewMOqbosGueSqieiFinj/edit#gid=2077629231
-    into list of cleaned rows
+    Reformat raw csv of educational programs into list of cleaned rows
     :param input_fi: path to the xlsx download
     :param check_links: if true, function will check each program link and print a warning message if a request
         returns a non-200 status code
@@ -32,44 +30,45 @@ def reformat_data(input_fi: str, check_links: bool) -> list:
     """
     cleaned_data = []
     missing_location = []
-    # get_rows returns an iterator of dicts that have had their keys and values stripped
-    for counter, line in tqdm(enumerate(get_rows(input_fi))):
-        orig_locations = line.get("Location")
-        if orig_locations:
-            orig_locations = orig_locations.replace("USA", "National")
-        locations = clean_locations(orig_locations, line["Program"])
-        if not locations:
-            missing_location.append(line["Program"]+"-"+line["Type"])
-            locations = ["National"]
-        targets = get_targets(line.get("Target"))
-        pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
-        short_obj = get_short_objective(line.get("Objective"))
-        pre_check_row(line, check_links)
-        row = {
-            "id": counter,
-            "name": line["Program"],
-            "url": line["URL"],
-            "type": line["Type"],
-            "organization": line.get("Organization Type"),
-            "target": targets,
-            "is_free": line.get("Cost", "").strip().lower() == "free",
-            "location": locations,
-            "is_not_virtual": "Virtual" not in locations,
-            "is_not_national": ("National" not in locations) and (len(locations) > 0),
-            "location_details": get_detailed_location(orig_locations, line.get("Detailed Location")),
-            "is_underrep": bool(line.get("Underrepresented")),
-            "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
-            "race_ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
-            "is_community_program": bool(line.get("Community")),
-            "objective": line.get("Objective"),
-            "short_objective": short_obj,
-            "level": line.get("Level"),
-            "cost": clean_cost(line.get("Cost")),
-            "pre_reqs": pre_reqs,
-            "duration": line.get("Duration")
-        }
-        clean_row = postprocess_row(row)
-        cleaned_data.append(clean_row)
+    with open(input_fi) as f:
+        reader = csv.DictReader(f)
+        for counter, line in tqdm(enumerate(reader)):
+            orig_locations = line.get("Location")
+            if orig_locations:
+                orig_locations = orig_locations.replace("USA", "National")
+            locations = clean_locations(orig_locations, line["Program"])
+            if not locations:
+                missing_location.append(line["Program"]+"-"+line["Type"])
+                locations = ["National"]
+            targets = get_targets(line.get("Target"))
+            pre_reqs = [pr.strip() for pr in line.get("Pre-recs", "").split(",") if len(pr.strip()) > 0]
+            short_obj = get_short_objective(line.get("Objective"))
+            pre_check_row(line, check_links)
+            row = {
+                "id": counter,
+                "name": line["Program"],
+                "url": line["URL"],
+                "type": line["Type"],
+                "organization": line.get("Organization Type"),
+                "target": targets,
+                "is_free": line.get("Cost", "").strip().lower() == "free",
+                "location": locations,
+                "is_not_virtual": "Virtual" not in locations,
+                "is_not_national": ("National" not in locations) and (len(locations) > 0),
+                "location_details": get_detailed_location(orig_locations, line.get("Detailed Location")),
+                "is_underrep": bool(line.get("Underrepresented")),
+                "gender": [g.strip().title() for g in line.get("Gender", "").split(",")],
+                "race_ethnicity": [g.strip().title() for g in line.get("Race/Ethnicity", "").split(",")],
+                "is_community_program": bool(line.get("Community")),
+                "objective": line.get("Objective"),
+                "short_objective": short_obj,
+                "level": line.get("Level"),
+                "cost": clean_cost(line.get("Cost")),
+                "pre_reqs": pre_reqs,
+                "duration": line.get("Duration")
+            }
+            clean_row = postprocess_row(row)
+            cleaned_data.append(clean_row)
     cleaned_data.sort(key=lambda r: r["name"])
     print(f"Missing location for {missing_location}, replaced with 'National'")
     return cleaned_data
@@ -235,43 +234,9 @@ def clean_locations(location: str, program_name: str) -> list:
     return list(clean_locations)
 
 
-def get_rows(filename: str) -> iter:
-    """
-    Reads xlsx file and returns generator of cleaned rows
-    :param filename: xlsx filename
-    :return: Generator of cleaned rows
-    """
-    name_to_comment_rows = {
-        "After School Programs": 4,
-        "Conferences Challenges": 2,
-        "Curriculum": 3,
-        "Federal Initiatives": 2,
-        "Scholarships": 2,
-        "Summer Camps": 3
-    }
-    wb = load_workbook(filename)
-    for sheet in wb:
-        if sheet.title not in name_to_comment_rows:
-            print("Skipping "+sheet.title)
-            continue
-        num_commment_rows = name_to_comment_rows[sheet.title]
-        col_names = None
-        for row in sheet.iter_rows(min_row=num_commment_rows+1):
-            if col_names is None:
-                col_names = [c.value.strip() for c in row if c.value is not None]
-                assert col_names[0] == "Program", f"Expected first column to be 'Program' in {sheet.title}"
-            else:
-                stripped_row = {key: "" if row[idx].value is None else str(row[idx].value).strip().strip(",").strip()
-                             for idx, key in enumerate(col_names)}
-                if not stripped_row["Program"]:
-                    continue
-                stripped_row["URL"] = row[0].hyperlink.target
-                yield stripped_row
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--raw_data", default="raw_data/AI Education Catalog.xlsx")
+    parser.add_argument("--raw_data", default="raw_data/ai_education_catalog.csv")
     parser.add_argument("--output_dir", default="../ai-education-catalog/src/data")
     parser.add_argument("--check_links", default=False, action="store_true",
                         help="If specified, will check each program link. "
