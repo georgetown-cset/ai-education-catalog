@@ -52,9 +52,9 @@ def reformat_sheet(input_sheet: str, output_csv: str):
     :return: None
     """
     rows = get_rows(input_sheet)
-    output_cols = ["Community", "Cost", "Detailed Location", "Duration", "Gender", "Level", "Location",
-                   "Objective", "Organization Type", "Pre-recs", "Program", "Race/Ethnicity", "Target",
-                   "Type", "URL", "Underrepresented"]
+    output_cols = ["Program", "URL", "Type", "Organization Type", "Target", "Cost", "Detailed Location", "Location",
+                   "Underrepresented", "Gender", "Race/Ethnicity", "Community", "Objective", "Level", "Cost",
+                   "Pre-recs", "Duration"]
     with open(output_csv, mode="w") as f:
         writer = csv.DictWriter(f, fieldnames=output_cols)
         writer.writeheader()
